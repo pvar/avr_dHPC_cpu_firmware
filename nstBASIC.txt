@@ -1,0 +1,149 @@
+
+===================================================================================================
+SYNTAX					TYPE		DESCRIPTION
+===================================================================================================
+
+rst						command		reset display
+cls						command		clear screen
+new						command		clear program memory
+list					command		list program in memory
+run						command		start the execution of program
+stop					command		stop the execution of program
+end						command		stop the execution of program
+rem						command		start of a comment
+mem						command		display SRAM (only program space) and EEPROM usage
+beep					command		make a short sound (character 0x07)
+mplay					command		play stored music
+mstop					command		stop playing music
+
+eload					command		load program from EEPROM to SRAM
+esave					command		save program from SRAM to EEPROM
+elist					command		list program stored on EEPROM
+eformat					command		format EEPROM
+
+tempo k					command		set tempo for music playback
+----								k: 60/120/150/180
+
+music "cmd1cmd2..."		command		configure audio channels
+----								cmdX can be one of the following:
+--										Y# activate channel #
+--										A# activate channel #
+--										N# deactivate channel #
+--										D# deactivate channel #
+--										C# clear data on channel #
+--										X# clear data on channel #
+--										M#O1N1D1O2N2D2... enter new note in channel # O:[2..7] N:[a,b,c,d,e,f,g,bb,g#,f#,eb,p] D:[1,2,3,4,5,6,7,8]
+--										E#O1N1D1O2N2D2... enter new note in channel #
+
+delay v					command		delay for the specified number of milliseconds
+----								v: delay in milliseconds
+
+print s					command		print the specified string (in quotes)
+----								s: string in quotes
+
+input v					command		read a numeric value (end with ENTER)
+----								v: variable to store the value
+
+for	v=k to n [step m]	command		repeat block of code for (n-k)/m times
+----								v: counter variable
+----								k: starting value of counter
+----								v: ending value of counter
+----								[m: step for reaching the ending value]
+
+next					command		mark the end of a for-block
+
+let v=k					command		initialize a variable
+----								v: variable to initialize
+----								k: value to set
+
+if (v rop n) c			command		execute a command if a condition is met
+----								v: variable to check
+----								rop: realational operator
+----								n: value, variable or expression to compare against
+----								c: command to execute when condition is met
+
+goto n
+
+gosub n					command		call subroutine starting at the specified line
+----								n: line number
+
+return					command		exit subroutine and return to the line after the last gosub
+
+randomize				command		get an arbitrary seed from timer/counter2
+
+rndseed v				command		set the specified seed
+----								v: new seed
+
+v pindread (p)			expression	return the digital value of specified pin
+----								v: digital value [0/1]
+----								p: pin number [0..7]
+
+v pinaread (p)			expression	return the analog value of specified pin
+----								v: analog value [0..511]
+----								p: pin number [0..7]
+
+a abs (v)				expression	return the absolute value of the specified number
+----								a: absolute value of v
+----								v: value, variable or expression
+
+m rnd (k)				expression	return a pseudo random number from zero to the specified limit
+----								m: random number in range
+----								k: upper limit of range
+
+v peek (n)				expression	read byte from the specified memory address
+----								a: value read
+----								n: memory address
+
+poke a,n				command		write a byte to the specified memory address
+----								a: memory address
+----								n: value to write [0..255]
+
+pindir p,d				command		set direction of specified pin
+----								p: pin number [0..7]
+----								d: direction to apply [0 for input / 1 for output]
+
+pindwrite p,v			command		write a digital value on specified pin
+----								p: pin number [0..7]
+----								v: value to write [0/1]
+
+pen c					command		change the typing colour
+----								c: colour value
+
+paper c					command		change the background colour
+----								c: colour value
+
+pset x,y,c				command		draw a pixel
+----								x: x-coordinate
+----								y: y-coordinate
+----								c: colour
+
+locate l,k				command		move cursor
+----								l: line
+----								k: column
+
+===================================================================================================
+===================================================================================================
+
+colon character (:) separates subsequent commands on the same line
+
+MEMORY_SIZE = PROGRAM_SPACE + VAR_SIZE + STACK_SIZE
+
+
+symbol b1,b2,..,b8		command		create new symbol
+----								b1-b8: character bitmap
+
+
+line k,l,m,n,c			command		draw a line
+----								k: x1-coordinate
+----								l: y1-coordinate
+----								m: x2-coordinate
+----								n: y2-coordinate
+----								c: colour
+
+
+box k,l,m,n,c			command		draw a box
+----								k: x1-coordinate
+----								l: y1-coordinate
+----								m: x2-coordinate
+----								n: y2-coordinate
+----								c: colour
