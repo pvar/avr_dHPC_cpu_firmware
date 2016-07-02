@@ -1,6 +1,6 @@
-/* --------------------------------------------------------------------------- */
-/// program function prototypes			 */
-/* --------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+// program function prototypes
+// ----------------------------------------------------------------------------
 
 static void init_io (void);
 static void init_kb (void);
@@ -26,9 +26,9 @@ int getchar_phy (FILE *stream);
 int putchar_rom (char c, FILE *stream);
 int getchar_rom (FILE *stream);
 
-/* --------------------------------------------------------------------------- */
-/// constants, variables and structures	 */
-/* --------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+// constants, variables and structures
+// ----------------------------------------------------------------------------
 
 #define pri_data_bus_dir DDRC
 #define pri_data_bus_out PORTC
@@ -57,7 +57,6 @@ int getchar_rom (FILE *stream);
 #define BREAK_INT		4	// INT2
 
 #define KB_BUFFER_SIZE 16
-
 
 // keyboard status bits
 #define BREAKCODE	1
@@ -120,13 +119,10 @@ int getchar_rom (FILE *stream);
 #define snd_ena   201 //
 #define snd_abort 200 //
 
-
-
 // streams of data to and from IO devices
 FILE stream_physical = FDEV_SETUP_STREAM (putchar_phy, getchar_phy, _FDEV_SETUP_RW);
 FILE stream_pseudo = FDEV_SETUP_STREAM (putchar_ser, getchar_ser, _FDEV_SETUP_RW);
 FILE stream_eeprom = FDEV_SETUP_STREAM (putchar_rom, getchar_rom, _FDEV_SETUP_RW);
-
 
 // global variables
 uint16_t eeprom_ptr;
@@ -134,11 +130,9 @@ uint8_t edge, kb_bit_cnt, break_flow;
 uint8_t kb_write_ptr, kb_read_ptr, kb_buffer_cnt;
 uint8_t kb_buffer[ KB_BUFFER_SIZE ];
 
-
 // keyboard connectivity messages
 const uint8_t kb_fail_msg[] PROGMEM = "Keyboard self-test failed";
 const uint8_t kb_success_msg[] PROGMEM = "Keyboard connected successfully";
-
 
 // Array for translating scan codes to ASCII
 //	1st column:	SHIFT=0 CAPS=0
@@ -276,9 +270,9 @@ const uint8_t to_ascii[] PROGMEM = {
 	0, 0, 0, 0,
 };
 
-/* --------------------------------------------------------------------------- */
-/// assembler macros					 */
-/* --------------------------------------------------------------------------- */
+// ----------------------------------------------------------------------------
+// assembler macros
+// ----------------------------------------------------------------------------
 
 #define tovga() asm volatile \
 	( \
@@ -316,8 +310,3 @@ const uint8_t to_ascii[] PROGMEM = {
 		"nop \n\t nop \n\t nop \n\t nop \n\t" \
 		"nop \n\t nop \n\t nop \n\t nop \n\t" \
 	)
-
-
-//	: /* no outputs */
-//	: /* no inputs */
-//	: /* no clobbers */

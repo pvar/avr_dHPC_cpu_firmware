@@ -1,7 +1,6 @@
-/* --------------------------------------------------------------------------- */
-/// program function prototypes			 */
-/* --------------------------------------------------------------------------- */
-
+// ----------------------------------------------------------------------------
+// program function prototypes
+// ----------------------------------------------------------------------------
 void scantable (const uint8_t *table);
 uint8_t get_note (void);
 uint8_t get_effect (void);
@@ -15,10 +14,9 @@ void parse_channel (void);
 void parse_notes (void);
 void parser_loop (void);
 
-/* --------------------------------------------------------------------------- */
-/// constants, variables and structures	 */
-/* --------------------------------------------------------------------------- */
-
+// ----------------------------------------------------------------------------
+// constants, variables and structures
+// ----------------------------------------------------------------------------
 const uint8_t msg_welcome[]		PROGMEM = "Welcome to nstBASIC v0.2";
 const uint8_t msg_ram_bytes[]	PROGMEM = " bytes RAM";
 const uint8_t msg_rom_bytes[]	PROGMEM = " bytes ROM";
