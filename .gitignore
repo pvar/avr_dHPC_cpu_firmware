@@ -1,0 +1,5 @@
+old_code
+attempt_v*
+*.o
+*.map
+*.out
