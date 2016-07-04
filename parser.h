@@ -12,7 +12,7 @@ int16_t parse_step3 (void);
 int16_t parse_step4 (void);
 void parse_channel (void);
 void parse_notes (void);
-void parser_loop (void);
+void basic_init (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures
@@ -187,7 +187,6 @@ enum {
 	RELOP_UNKNOWN
 };
 
-
 const uint8_t to_tab[] PROGMEM = { 'T', 'O' + 0x80, 0 };
 const uint8_t step_tab[] PROGMEM = { 'S', 'T', 'E', 'P' + 0x80, 0 };
 const uint8_t highlow_tab[] PROGMEM = { 'H', 'I', 'G', 'H' + 0x80, 'H', 'I' + 0x80, 'L', 'O', 'W' + 0x80, 'L', 'O' + 0x80, 0 };
@@ -201,8 +200,6 @@ const uint8_t highlow_tab[] PROGMEM = { 'H', 'I', 'G', 'H' + 0x80, 'H', 'I' + 0x
 
 #define STACK_GOSUB_FLAG 'G'
 #define STACK_FOR_FLAG 'F'
-
-typedef uint16_t LINENUM;
 
 struct stack_for_frame {
 	uint8_t frame_type;
@@ -234,4 +231,11 @@ uint8_t *variables_begin;
 uint8_t *current_line;
 uint8_t *sp;
 uint8_t table_index;
-LINENUM linenum;
+uint16_t linenum;
+
+uint8_t *start;
+uint8_t *new_end;
+uint8_t linelen;
+boolean isDigital;
+boolean alsoWait = false;
+uint16_t val;

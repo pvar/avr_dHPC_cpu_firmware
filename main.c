@@ -54,7 +54,7 @@ int main (void)
 	TCCR2B = _BV (CS22) | _BV (CS21) | _BV (CS20);
 	TIMSK2 = 0;
 	while (1)
-		parser_loop();
+		basic_init();
 	return 0;
 }
 
@@ -119,9 +119,9 @@ void printmsg (const uint8_t *msg, FILE *stream)
 }
 void printline (FILE *stream)
 {
-	LINENUM line_num;
-	line_num = * ((LINENUM *) (list_line));
-	list_line += sizeof (LINENUM) + sizeof (uint8_t);
+	uint16_t line_num;
+	line_num = * ((uint16_t *) (list_line));
+	list_line += sizeof (uint16_t) + sizeof (uint8_t);
 	// Output the line
 	printnum (line_num, stream);
 	fputc (' ', stream);
@@ -163,7 +163,7 @@ void newline (FILE *stream)
 // ----------------------------------------------------------------------------
 void get_line (uint8_t prompt)
 {
-	txtpos = program_end + sizeof (LINENUM);
+	txtpos = program_end + sizeof (uint16_t);
 	maxpos = txtpos;
 	uint8_t incoming_char;
 	uint8_t temp1, temp2;
@@ -277,9 +277,9 @@ unsigned char *find_line (void)
 	uint8_t *line = program_start;
 	while (1) {
 		if (line == program_end) return line;
-		if (((LINENUM *) line)[0] >= linenum) return line;
+		if (((uint16_t *) line)[0] >= linenum) return line;
 		// Add the line length onto the current address, to get to the next line;
-		line += line[ sizeof (LINENUM) ];
+		line += line[ sizeof (uint16_t) ];
 	}
 }
 
@@ -293,7 +293,7 @@ void ignorespace (void)
 }
 void uppercase (void)
 {
-	uint8_t *c = program_end + sizeof (LINENUM);
+	uint8_t *c = program_end + sizeof (uint16_t);
 	uint8_t quote = 0;
 	while (*c != LF) {
 		// are we in a quoted string?

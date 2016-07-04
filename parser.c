@@ -25,7 +25,8 @@ void scantable (const uint8_t *table)
 	table_index = 0;
 	while (1) {
 		// end of given table...
-		if (pgm_read_byte (table) == 0) return;
+		if (pgm_read_byte (table) == 0)
+            return;
 		// character match...
 		if (txtpos[i] == pgm_read_byte (table)) {
 			i++;
@@ -38,7 +39,8 @@ void scantable (const uint8_t *table)
 				return;
 			}
 			// move to the end of this keyword
-			while ((pgm_read_byte (table) & 0x80) == 0) table++;
+			while ((pgm_read_byte (table) & 0x80) == 0)
+                table++;
 			// move to first character of next keyword and reset position index
 			table++;
 			table_index++;
@@ -472,29 +474,50 @@ int16_t parse_step4 (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// main parser loop
-// ----------------------------------------------------------------------------
-void parser_loop (void)
+/*
+warm_reset()
 {
-	uint8_t *start;
-	uint8_t *new_end;
-	uint8_t linelen;
-	boolean isDigital;
-	boolean alsoWait = false;
-	uint16_t val;
+	// turn-on cursor
+	putchar (vid_cursor_on);
+	// turn-on scroll
+	putchar (vid_scroll_on);
+	// reset program-memory pointer
+	current_line = 0;
+	sp = program + MEMORY_SIZE;
+	printmsg (msg_ok, stdout);
+
+    while(1) {
+        if autorun: EXECLINE
+        get new line
+        if no line number:  return DIRECT
+        on error:           return ERROR_MESSAGE
+        on just delete loop
+        on prog merge loop
+    }
+}
+*/
+
+// ----------------------------------------------------------------------------
+// BASIC init and parser loop
+// ----------------------------------------------------------------------------
+void basic_init (void)
+{
+    // environment init
 	program_start = program;
 	program_end = program_start;
 	sp = program + MEMORY_SIZE; // needed for printnum
 	stack_limit = program + MEMORY_SIZE - STACK_SIZE;
 	variables_begin = stack_limit - 27 * VAR_SIZE;
+
 	// print (available) SRAM size
 	printnum (variables_begin - program_end, stdout);
 	printmsg (msg_ram_bytes, stdout);
+
 	// print EEPROM size
 	printnum (E2END + 1, stdout);
 	printmsg (msg_rom_bytes , stdout);
 	newline (stdout);
+
 warm_reset:
 	// turn-on cursor
 	putchar (vid_cursor_on);
@@ -504,6 +527,7 @@ warm_reset:
 	current_line = 0;
 	sp = program + MEMORY_SIZE;
 	printmsg (msg_ok, stdout);
+
 prompt:
 	if ((main_config & cfg_auto_run) || (main_config & cfg_run_after_load)) {
 		main_config &= ~cfg_auto_run;
@@ -511,57 +535,58 @@ prompt:
 		current_line = program_start;
 		goto execline;
 	}
-/////////////////////////////////////////////////////////////////////////////// get new line
-	// get a new line
+
+	/* get a new line */
 	get_line ('>');
-	// transform to uppercase
 	uppercase();
-	// find the end of new line
+	/* find end of new line */
 	txtpos = program_end + sizeof (uint16_t);
 	while (*txtpos != LF) txtpos++;
-	// move it to the end of program_memory
+	/* move line to the end of program_memory */
 	uint8_t *dest;
 	dest = variables_begin - 1;
 	while (1) {
 		*dest = *txtpos;
-		if (txtpos == program_end + sizeof (uint16_t)) break;
+		if (txtpos == program_end + sizeof (uint16_t))
+            break;
 		dest--;
 		txtpos--;
 	}
 	txtpos = dest;
-/////////////////////////////////////////////////////////////////////////////// embed new line in program
-	// check if the line starts with a (line) number
+
+	/* check if the line starts with a (line) number */
 	linenum = linenum_test();
 	ignorespace();
-	// no number is present: execute line immediately
-	if (linenum == 0) goto direct;
-	// invalid number is present: print error message
+	/* if no number is present --> execute line immediately */
+	if (linenum == 0)
+        goto direct;
+	/* if invalid number is present --> print error message */
 	if (linenum == 0xFFFF) {
 		error_code = 0x9;
 		goto error_message;
 	}
-	// valid number is present:
-	// find the length of what is left after the line number
-	// (including the yet-to-be-populated line header)
-	linelen = 0;
+	/* if valid number is present --> merge line with rest of program */
+	
+    /* find the length of the string after the line number
+	   (including the yet-to-be-populated line header) */
+    linelen = 0;
 	while (txtpos[linelen] != LF) linelen++;
-	// increase length to include LF character
+	/* increase length to include LF character */
 	linelen++;
-	// increase even more to make room for header (line number and line length)
+	/* increase even more to make room for header (line number and line length) */
 	linelen += sizeof (uint16_t) + sizeof (uint8_t);
-	// go to the beginning of header
+	/* go to the beginning of line header */
 	txtpos -= 3;
-	// add line number
+	/* add line number and length*/
 	* ((uint16_t *)txtpos) = linenum;
-	// add line length
-	txtpos[sizeof (LINENUM)] = linelen;
-	// merge this line with the rest of the program
+	txtpos[sizeof (uint16_t)] = linelen;
+	/* merge line with program */
 	start = find_line();
-	// remove any line that has the same number
-	if (start != program_end && * ((LINENUM *)start) == linenum) {
+	/* remove any line with the same line number */
+	if (start != program_end && * ((uint16_t *)start) == linenum) {
 		uint8_t *dest, *from;
 		uint16_t tomove;
-		from = start + start[sizeof (LINENUM)];
+		from = start + start[sizeof (uint16_t)];
 		dest = start;
 		tomove = program_end - from;
 		while (tomove > 0) {
@@ -572,10 +597,10 @@ prompt:
 		}
 		program_end = dest;
 	}
-	// if the line has no text, it was just a delete
-	if (txtpos[sizeof (LINENUM) + sizeof (uint8_t)] == LF)
+	/* if new line has no text, it was just a delete */
+	if (txtpos[sizeof (uint16_t) + sizeof (uint8_t)] == LF)
 		goto prompt;
-	// make room for the new line
+	/* make room for the new line */
 	while (linelen > 0) {
 		uint8_t *from, *dest;
 		uint16_t tomove;
@@ -585,7 +610,6 @@ prompt:
 		new_end = program_end + room_to_make;
 		tomove = program_end - start;
 		// source and destination
-		// we need to move bottom up as these areas may overlap
 		from = program_end;
 		dest = new_end;
 		while (tomove > 0) {
@@ -604,7 +628,8 @@ prompt:
 		program_end = new_end;
 	}
 	goto prompt;
-/////////////////////////////////////////////////////////////////////////////// print error messages
+
+/////////////////////////////////////////////////////////////////////////////// print error message
 error_message:
 	text_color (TXT_COL_ERROR);
 	paper_color (0);
@@ -624,84 +649,94 @@ error_message:
 		}
 		newline (stdout);
 		break;
-	case 0x3:	//// stack overflow
+	case 0x3:	// stack overflow
 		printmsg (err_msg03, stdout);
 		break;
-	case 0x4:	//// unexpected character
+	case 0x4:	// unexpected character
 		printmsg (err_msg04, stdout);
 		break;
-	case 0x5:	//// left parenthesis missing
+	case 0x5:	// left parenthesis missing
 		printmsg (err_msgxl, stdout);
 		printmsg (err_msg05_06, stdout);
 		break;
-	case 0x6:	//// right parenthesis missing
+	case 0x6:	// right parenthesis missing
 		printmsg (err_msgxr, stdout);
 		printmsg (err_msg05_06, stdout);
 		break;
-	case 0x7:	//// variable expected
+	case 0x7:	// variable expected
 		printmsg (err_msg07, stdout);
 		break;
-	case 0x8:	//// jump point not found
+	case 0x8:	// jump point not found
 		printmsg (err_msg08, stdout);
 		break;
-	case 0x9:	//// invalid line number
+	case 0x9:	// invalid line number
 		printmsg (err_msg09, stdout);
 		break;
-	case 0xA:	//// operator expected
+	case 0xA:	// operator expected
 		printmsg (err_msg0A, stdout);
 		break;
-	case 0xB:	//// division by zero
+	case 0xB:	// division by zero
 		printmsg (err_msg0B, stdout);
 		break;
-	case 0xC:	//// invalid pin
+	case 0xC:	// invalid pin
 		printmsg (err_msg0C, stdout);
 		break;
-	case 0xD:	//// pin io error
+	case 0xD:	// pin io error
 		printmsg (err_msg0D, stdout);
 		break;
-	case 0xE:	//// unknown function
+	case 0xE:	// unknown function
 		printmsg (err_msg0E, stdout);
 		break;
-	case 0xF:	//// unknown command
+	case 0xF:	// unknown command
 		printmsg (err_msg0F, stdout);
 		break;
-	case 0x10:	//// invalid coordinates
+	case 0x10:	// invalid coordinates
 		printmsg (err_msg10, stdout);
 		break;
-	case 0x11:	//// invalid variable name
+	case 0x11:	// invalid variable name
 		printmsg (err_msg11, stdout);
 		break;
-	case 0x12:	//// expected byte
+	case 0x12:	// expected byte
 		printmsg (err_msg12, stdout);
 		break;
-	case 0x13:	//// out of range
+	case 0x13:	// out of range
 		printmsg (err_msg13, stdout);
 		break;
-	case 0x14:	//// expected color value
+	case 0x14:	// expected color value
 		printmsg (err_msg14, stdout);
 		break;
 	}
 	text_color (TXT_COL_DEFAULT);
 	paper_color (0);
 	goto warm_reset;
+
+
+
 /////////////////////////////////////////////////////////////////////////////// execute next statement
 run_next_statement:
-	while (*txtpos == ':') txtpos++;
+	while (*txtpos == ':')
+        txtpos++;
 	ignorespace();
-	if (*txtpos == LF) goto execnextline;
+	if (*txtpos == LF)
+        goto execnextline;
 	goto start_interpretation;
+
 direct:
 	break_flow = 0;
-	txtpos = program_end + sizeof (LINENUM);
-	if (*txtpos == LF) goto prompt;
+	txtpos = program_end + sizeof (uint16_t);
+	if (*txtpos == LF)
+        goto prompt;
+
 start_interpretation:
 	if (break_test()) {
 		printmsg (msg_break, stdout);
 		goto warm_reset;
 	}
+
 /////////////////////////////////////////////////////////////////////////////// scan for valid commands
 	scantable (commands);
 	error_code = 0;
+
 	switch (table_index) {
 	case CMD_DELAY:
 		val = parse_step1();
@@ -819,26 +854,32 @@ start_interpretation:
 	default:
 		break;
 	}
+
 /////////////////////////////////////////////////////////////////////////////// execute this line or the next
 execnextline:
 	// if processing direct commands, print prompt and do not proceed
 	if (current_line == NULL)
 		goto warm_reset;
-	current_line += current_line[sizeof (LINENUM)];
+	current_line += current_line[sizeof (uint16_t)];
 execline:
 	// "reset" if reached the end of program
 	if (current_line == program_end)
 		goto warm_reset;
-	txtpos = current_line + sizeof (LINENUM) + sizeof (uint8_t);
+	txtpos = current_line + sizeof (uint16_t) + sizeof (uint8_t);
 	goto start_interpretation;
+
+    
 /////////////////////////////////////////////////////////////////////////////// eeprom related
 elist:
 	eeprom_ptr = 0;
 	for (uint16_t i = 0 ; i < (E2END + 1); i++) {
 		val = fgetc (&stream_eeprom);
-		if (val == '\0') goto execnextline;
-		if (((val < ' ') || (val > '~')) && (val != LF) && (val != CR)) putchar ('?');
-		else putchar (val);
+		if (val == '\0')
+            goto execnextline;
+		if (((val < ' ') || (val > '~')) && (val != LF) && (val != CR))
+            putchar ('?');
+		else
+            putchar (val);
 	}
 	newline (stdout);
 	goto execnextline;
@@ -847,7 +888,8 @@ eformat:
 	for (uint16_t i = 0 ; i < E2END ; i++) {
 		fputc ('\0', &stream_eeprom);
 		// print a dot every 64 bytes
-		if ((i & 0x07f) == 0x40) fputc ('.', stdout);
+		if ((i & 0x07f) == 0x40)
+            fputc ('.', stdout);
 	}
 	newline (stdout);
 	goto execnextline;
@@ -870,7 +912,8 @@ eload:
 esave:
 	eeprom_ptr = 0;
 	list_line = find_line();
-	while (list_line != program_end) printline (&stream_eeprom);
+	while (list_line != program_end)
+        printline (&stream_eeprom);
 	fputc (0, &stream_eeprom);
 	goto execnextline;
 /////////////////////////////////////////////////////////////////////////////// flow control
@@ -893,18 +936,21 @@ forloop: {
 		ignorespace();
 		error_code = 0;
 		initial = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		scantable (to_tab);
 		if (table_index != 0) {
 			error_code = 0x2;
 			goto error_message;
 		}
 		terminal = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		scantable (step_tab);
 		if (table_index == 0) {
 			step = parse_step1();
-			if (error_code) goto error_message;
+			if (error_code)
+                goto error_message;
 		} else step = 1;
 		ignorespace();
 		if (*txtpos != LF && *txtpos != ':') {
@@ -1037,7 +1083,8 @@ input: {
 		EIMSK |= BREAK_INT; //enable emergency break key (INT2)
 		while (chr != LF && chr != CR) {
 			chr = fgetc (stdin);
-			if (break_flow == 1) goto run_next_statement;
+			if (break_flow == 1)
+                goto run_next_statement;
 			switch (chr) {
 			case '-':
 				// only accept minus sign as first character
@@ -1108,7 +1155,8 @@ assignment: {
 		txtpos++;
 		ignorespace();
 		value = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		// Check that we are at the end of the statement
 		if (*txtpos != LF && *txtpos != ':') {
 			error_code = 0x2;
@@ -1121,7 +1169,8 @@ poke: {
 		int16_t value, address;
 		// get the address
 		address = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		if (address > MEMORY_SIZE) {
 			error_code = 0x13;
 			goto error_message;
@@ -1136,7 +1185,8 @@ poke: {
 		// get the value to assign
 		ignorespace();
 		value = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		if (value < 0 || value > 255) {
 			error_code = 0x12;
 			goto error_message;
@@ -1196,7 +1246,8 @@ pindir: {
 		uint16_t a, b;
 		// get pin number [0..7]
 		a = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		// check range
 		if (a < 0 || a > 7) {
 			error_code = 0xC;
@@ -1210,7 +1261,8 @@ pindir: {
 		txtpos++;
 		// get direction [0/1]
 		b = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		// create mask for altering direction
 		a = 1 << a;
 		switch (b) {
@@ -1232,7 +1284,8 @@ pindwrite: {
 		uint16_t a, b;
 		// get pin number [0..7]
 		a = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		// check range
 		if (a < 0 || a > 7) {
 			error_code = 0xC;
@@ -1246,7 +1299,8 @@ pindwrite: {
 		txtpos++;
 		// get value [0/1]
 		b = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		// create mask for altering direction
 		a = 1 << a;
 		switch (b) {
@@ -1279,7 +1333,8 @@ pen: {
 		uint16_t col;
 		// get color value
 		col = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		if (col < 0 || col > 127) {
 			error_code = 0x14;
 			goto error_message;
@@ -1291,7 +1346,8 @@ paper: {
 		uint16_t col;
 		// get color value
 		col = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		if (col < 0 || col > 127) {
 			error_code = 0x14;
 			goto error_message;
@@ -1303,7 +1359,8 @@ locate: {
 		uint16_t line, column;
 		// get target line
 		line = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		if (line < 0 || line > 23) {
 			error_code = 0x10;
 			goto error_message;
@@ -1316,7 +1373,8 @@ locate: {
 		txtpos++;
 		// get target line
 		column = parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		if (column < 0 || column > 31) {
 			error_code = 0x10;
 			goto error_message;
@@ -1344,7 +1402,8 @@ print:
 			uint16_t e;
 			error_code = 0;
 			e = parse_step1();
-			if (error_code) goto error_message;
+			if (error_code)
+                goto error_message;
 			printnum (e, stdout);
 		}
 		// at this point we have three options, a comma or a new line
@@ -1464,7 +1523,8 @@ list:
 	}
 	// find the line
 	list_line = find_line();
-	while (list_line != program_end) printline (stdout);
+	while (list_line != program_end)
+        printline (stdout);
 	goto warm_reset;
 mem: {
 		// SRAM size
@@ -1489,7 +1549,8 @@ rndseed: {
 		error_code = 0;
 		// get seed for PRNG
 		param = (uint16_t)parse_step1();
-		if (error_code) goto error_message;
+		if (error_code)
+            goto error_message;
 		srand (param);
 	}
 	goto run_next_statement;
