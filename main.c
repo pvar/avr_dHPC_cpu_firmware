@@ -76,6 +76,16 @@ void do_beep (void)
 	// enable keyboard interrupt
 	EIMSK |= KEYBOARD_INT;
 }
+
+void printstr (char *str, FILE *stream)
+{
+    uint8_t i = 0;
+	while (str[i] != 0) {
+        fputc (str[i], stream);
+        i++;
+    }
+}
+
 void printnum (int16_t num, FILE *stream)
 {
 	int digits = 0;
@@ -94,37 +104,28 @@ void printnum (int16_t num, FILE *stream)
 		digits--;
 	}
 }
-void printUnum (uint16_t num, FILE *stream)
-{
-	int digits = 0;
-	do {
-		push_byte (num % 10 + '0');
-		num = num / 10;
-		digits++;
-	} while (num > 0);
 
-	while (digits > 0) {
-		fputc (pop_byte(), stream);
-		digits--;
-	}
-}
-void printmsgNoNL (const uint8_t *msg, FILE *stream)
+void printmsg_noNL (const uint8_t *msg, FILE *stream)
 {
-	while (pgm_read_byte (msg) != 0) fputc (pgm_read_byte (msg++), stream);
+	while (pgm_read_byte (msg) != 0)
+        fputc (pgm_read_byte (msg++), stream);
 }
+
 void printmsg (const uint8_t *msg, FILE *stream)
 {
-	printmsgNoNL (msg, stream);
+	printmsg_noNL (msg, stream);
 	newline (stream);
 }
+
 void printline (FILE *stream)
 {
 	uint16_t line_num;
 	line_num = * ((uint16_t *) (list_line));
 	list_line += sizeof (uint16_t) + sizeof (uint8_t);
-	// Output the line
+	// print line number
 	printnum (line_num, stream);
 	fputc (' ', stream);
+	// print line content
 	while (*list_line != LF) {
 		fputc (*list_line, stream);
 		list_line++;
@@ -132,16 +133,19 @@ void printline (FILE *stream)
 	list_line++;
 	newline (stream);
 }
+
 uint8_t print_string (void)
 {
 	uint16_t i = 0;
 	uint8_t delim = *txtpos;
 	// check for opening delimiter
-	if (delim != '"' && delim != '\'') return 0;
+	if (delim != '"' && delim != '\'')
+        return 0;
 	txtpos++;
 	// check for closing delimiter
 	while (txtpos[i] != delim) {
-		if (txtpos[i] == LF) return 0;
+		if (txtpos[i] == LF)
+            return 0;
 		i++;
 	}
 	// print characters
@@ -152,6 +156,7 @@ uint8_t print_string (void)
 	txtpos++; // skip closing
 	return 1;
 }
+
 void newline (FILE *stream)
 {
 	fputc (LF, stream);
@@ -260,11 +265,13 @@ void get_line (uint8_t prompt)
 		}
 	}
 }
+
 void push_byte (uint8_t b)
 {
 	sp--;
 	*sp = b;
 }
+
 unsigned char pop_byte (void)
 {
 	uint8_t b;
@@ -272,6 +279,7 @@ unsigned char pop_byte (void)
 	sp++;
 	return b;
 }
+
 unsigned char *find_line (void)
 {
 	uint8_t *line = program_start;
@@ -284,13 +292,14 @@ unsigned char *find_line (void)
 }
 
 // ----------------------------------------------------------------------------
-// sanitization (kind of)
+// normalization (kind of)
 // ----------------------------------------------------------------------------
 void ignorespace (void)
 {
 	while (*txtpos == SPACE || *txtpos == TAB)
 		txtpos++;
 }
+
 void uppercase (void)
 {
 	uint8_t *c = program_end + sizeof (uint16_t);
@@ -322,6 +331,7 @@ uint16_t isValidFnChar (uint8_t c)
 	else
 		return 0;
 }
+
 uint8_t * filenameWord (void)
 {
 	// SDL - I wasn't sure if this functionality existed above, so I figured i'd put it here
@@ -345,7 +355,6 @@ uint8_t * filenameWord (void)
 	// set the error code if we've got no string
 	if (*ret == '\0')
 		error_code = 1;
-
 	return ret;
 }
 

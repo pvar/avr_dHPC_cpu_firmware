@@ -71,71 +71,71 @@ uint8_t get_note (void)
 	//	PAUSE		13
 	txtpos++;
 	switch (*txtpos) {
-	case 'C':
-	case 'c':
-		txtpos++;
-		if (*txtpos == '#')
-			return 2;
-		else {
-			txtpos--;
-			return 1;
-		}
-		break;
-	case 'D':
-	case 'd':
-		return 3;
-		break;
-	case 'E':
-	case 'e':
-		txtpos++;
-		if (*txtpos == 'B' || *txtpos == 'b')
-			return 4;
-		else {
-			txtpos--;
-			return 5;
-		}
-		break;
-	case 'F':
-	case 'f':
-		txtpos++;
-		if (*txtpos == '#')
-			return 7;
-		else {
-			txtpos--;
-			return 6;
-		}
-		break;
-	case 'G':
-	case 'g':
-		txtpos++;
-		if (*txtpos == '#')
-			return 9;
-		else {
-			txtpos--;
-			return 8;
-		}
-		break;
-	case 'A':
-	case 'a':
-		return 10;
-		break;
-	case 'B':
-	case 'b':
-		txtpos++;
-		if (*txtpos == 'B' || *txtpos == 'b')
-			return 11;
-		else {
-			txtpos--;
-			return 12;
-		}
-		break;
-	case 'P':
-	case 'p':
-		return 13;
-		break;
-	default:
-		error_code = 0x4;
-		break;
+        case 'C':
+        case 'c':
+            txtpos++;
+            if (*txtpos == '#')
+                return 2;
+            else {
+                txtpos--;
+                return 1;
+            }
+            break;
+        case 'D':
+        case 'd':
+            return 3;
+            break;
+        case 'E':
+        case 'e':
+            txtpos++;
+            if (*txtpos == 'B' || *txtpos == 'b')
+                return 4;
+            else {
+                txtpos--;
+                return 5;
+            }
+            break;
+        case 'F':
+        case 'f':
+            txtpos++;
+            if (*txtpos == '#')
+                return 7;
+            else {
+                txtpos--;
+                return 6;
+            }
+            break;
+        case 'G':
+        case 'g':
+            txtpos++;
+            if (*txtpos == '#')
+                return 9;
+            else {
+                txtpos--;
+                return 8;
+            }
+            break;
+        case 'A':
+        case 'a':
+            return 10;
+            break;
+        case 'B':
+        case 'b':
+            txtpos++;
+            if (*txtpos == 'B' || *txtpos == 'b')
+                return 11;
+            else {
+                txtpos--;
+                return 12;
+            }
+            break;
+        case 'P':
+        case 'p':
+            return 13;
+            break;
+        default:
+            error_code = 0x4;
+            break;
 	}
 }
 
@@ -195,19 +195,19 @@ uint8_t get_effect (void)
 	//	vibrato				3
 	txtpos++;
 	switch (*txtpos) {
-	case '=':	// vibrato
-		return 3;
-		break;
-	case '-':	// bend down
-		return 2;
-		break;
-	case '+':	// bend up
-		return 1;
-		break;
-	default:	// no effect
-		txtpos--;
-		return 0;
-		break;
+        case '=':	// vibrato
+            return 3;
+            break;
+        case '-':	// bend down
+            return 2;
+            break;
+        case '+':	// bend up
+            return 1;
+            break;
+        default:	// no effect
+            txtpos--;
+            return 0;
+            break;
 	}
 }
 
@@ -263,35 +263,43 @@ int16_t parse_step1 (void)
 	int16_t value1, value2;
 	value1 = parse_step2();
 	// check for error
-	if (error_code) return value1;
+	if (error_code)
+        return value1;
 	scantable (relop_table);
-	if (table_index == RELOP_UNKNOWN) return value1;
+	if (table_index == RELOP_UNKNOWN)
+        return value1;
 	switch (table_index) {
-	case RELOP_GE:
-		value2 = parse_step2();
-		if (value1 >= value2) return 1;
-		break;
-	case RELOP_NE:
-	case RELOP_NE_BANG:
-		value2 = parse_step2();
-		if (value1 != value2) return 1;
-		break;
-	case RELOP_GT:
-		value2 = parse_step2();
-		if (value1 > value2) return 1;
-		break;
-	case RELOP_EQ:
-		value2 = parse_step2();
-		if (value1 == value2) return 1;
-		break;
-	case RELOP_LE:
-		value2 = parse_step2();
-		if (value1 <= value2) return 1;
-		break;
-	case RELOP_LT:
-		value2 = parse_step2();
-		if (value1 < value2) return 1;
-		break;
+        case RELOP_GE:
+            value2 = parse_step2();
+            if (value1 >= value2)
+                return 1;
+            break;
+        case RELOP_NE:
+        case RELOP_NE_BANG:
+            value2 = parse_step2();
+            if (value1 != value2)
+                return 1;
+            break;
+        case RELOP_GT:
+            value2 = parse_step2();
+            if (value1 > value2)
+                return 1;
+            break;
+        case RELOP_EQ:
+            value2 = parse_step2();
+            if (value1 == value2)
+                return 1;
+            break;
+        case RELOP_LE:
+            value2 = parse_step2();
+            if (value1 <= value2)
+                return 1;
+            break;
+        case RELOP_LT:
+            value2 = parse_step2();
+            if (value1 < value2)
+                return 1;
+            break;
 	}
 	return 0;
 }
@@ -315,7 +323,8 @@ int16_t parse_step2 (void)
 			txtpos++;
 			value2 = parse_step3();
 			value1 += value2;
-		} else return value1;
+		} else
+            return value1;
 	}
 }
 
@@ -339,7 +348,8 @@ int16_t parse_step3 (void)
 				value1 /= value2;
 			else
 				error_code = 0xB;
-		} else return value1;
+		} else
+            return value1;
 	}
 }
 
@@ -412,7 +422,8 @@ int16_t parse_step4 (void)
 			return program[value1];
 		//-----------------------------------------------------------------
 		case FN_ABS:
-			if (value1 < 0) return -value1;
+			if (value1 < 0)
+                return -value1;
 			return value1;
 		//-----------------------------------------------------------------
 		case FN_RND:
@@ -432,7 +443,8 @@ int16_t parse_step4 (void)
 				return 0;
 			}
 			// get the digital value
-			if (sec_data_bus_in & value1) return 1;
+			if (sec_data_bus_in & value1)
+                return 1;
 			return 0;
 		//-----------------------------------------------------------------
 		case FN_PINAREAD:
@@ -638,7 +650,7 @@ error_message:
 		printmsg (err_msg01, stdout);
 		break;
 	case 0x2:	//// syntax error
-		printmsgNoNL (err_msg02, stdout);
+		printmsg_noNL (err_msg02, stdout);
 		if (current_line != NULL) {
 			printf (" -- ");
 			uint8_t tmp = *txtpos;

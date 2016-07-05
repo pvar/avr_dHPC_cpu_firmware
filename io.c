@@ -117,7 +117,8 @@ ISR (INT0_vect)
 	bit_val &= kb_dat_pin;
 	if (! edge) {
 		// start timer
-		if (kb_bit_cnt == 11) TCCR0B = _BV (CS02) | _BV (CS00);
+		if (kb_bit_cnt == 11)
+            TCCR0B = _BV (CS02) | _BV (CS00);
 		if (kb_bit_cnt < 11 && kb_bit_cnt > 2) {	// Bits 3 to 10 are useful data.
 			// Parity, start and stop bits are ignored.
 			raw_data = (raw_data >> 1);
@@ -145,77 +146,79 @@ void kb_decode (uint8_t sc)
 	uint8_t tmp;
 	if (! (kb_status & BREAKCODE)) {	// a key was pressed and/or held...
 		switch (sc) {
-		case 0xAA:					// Basic Assurance Test (BAT) succeeded
-			break;
-		case 0xFC:					// Basic Assurance Test (BAT) failed
-			printmsg (kb_fail_msg, stdout);
-			do_beep();
-			do_beep();
-			break;
-		case 0xE0:					// extended key make-code
-			kb_status |= EXTENDEDKEY;
-			break;
-		case 0xF0:					// break-code
-			kb_status |= BREAKCODE;
-			kb_status &= ~EXTENDEDKEY;
-			break;
-		case 0x58:					// Caps Lock
-			kb_status ^= CAPSLOCK;
-			break;
-		case 0x77:					// Num Lock
-			kb_status ^= NUMLOCK;
-			break;
-		case 0x14:					// left CONTROL
-			kb_status |= CONTROL;
-			break;
-		case 0x12:					// left SHIFT
-		case 0x59:					// right SHIFT
-			kb_status |= SHIFT;
-			break;
-		default:
-			// if CONTROL key is pressed ----------------------------------
-			if (kb_status & CONTROL) {
-				if (sc == 0x21) break_flow = 1;			// CTRL+C
-				if (sc == 0x34) {						// CTRL+G
-					// this has to be done right away,
-					// since "beep" function disables keyboard ISR
-					kb_status &= ~CONTROL;
-					kb_to_buffer (BELL);
-				}
-				if (sc == 0x4B) kb_to_buffer (FF);		// CTRL+L
-				if (sc == 0x1C) kb_to_buffer (HOME);		// CTRL+A
-				if (sc == 0x24) kb_to_buffer (END);		// CTRL+E
-			}
-			// if an EXTENDED KEY is pressed ------------------------------
-			else if (kb_status & EXTENDEDKEY) {
-				if (sc == 0x5A) kb_to_buffer (CR);		// ENTER
-				if (sc == 0x75) kb_to_buffer (ARUP);		// ARROW UP
-				if (sc == 0x72) kb_to_buffer (ARDN);		// ARROW DOWN
-				if (sc == 0x6B) kb_to_buffer (ARLT);		// ARROW LEFT
-				if (sc == 0x74) kb_to_buffer (ARRT);		// ARROW RIGHT
-				if (sc == 0x6C) kb_to_buffer (HOME);		// HOME
-				if (sc == 0x69) kb_to_buffer (END);		// END
-				kb_status &= ~EXTENDEDKEY;
-			}
-			// in any other case ------------------------------------------
-			else {
-				tmp = 0;
-				if (kb_status & SHIFT) tmp += 1;
-				if (kb_status & CAPSLOCK) tmp += 2;
-				kb_to_buffer (pgm_read_byte (to_ascii + 4 * sc + tmp));
-			}
-			break;
+            case 0xAA:					// Basic Assurance Test (BAT) succeeded
+                break;
+            case 0xFC:					// Basic Assurance Test (BAT) failed
+                printmsg (kb_fail_msg, stdout);
+                do_beep();
+                do_beep();
+                break;
+            case 0xE0:					// extended key make-code
+                kb_status |= EXTENDEDKEY;
+                break;
+            case 0xF0:					// break-code
+                kb_status |= BREAKCODE;
+                kb_status &= ~EXTENDEDKEY;
+                break;
+            case 0x58:					// Caps Lock
+                kb_status ^= CAPSLOCK;
+                break;
+            case 0x77:					// Num Lock
+                kb_status ^= NUMLOCK;
+                break;
+            case 0x14:					// left CONTROL
+                kb_status |= CONTROL;
+                break;
+            case 0x12:					// left SHIFT
+            case 0x59:					// right SHIFT
+                kb_status |= SHIFT;
+                break;
+            default:
+                // if CONTROL key is pressed ----------------------------------
+                if (kb_status & CONTROL) {
+                    if (sc == 0x21) break_flow = 1;			// CTRL+C
+                    if (sc == 0x34) {						// CTRL+G
+                        // this has to be done right away,
+                        // since "beep" function disables keyboard ISR
+                        kb_status &= ~CONTROL;
+                        kb_to_buffer (BELL);
+                    }
+                    if (sc == 0x4B) kb_to_buffer (FF);		// CTRL+L
+                    if (sc == 0x1C) kb_to_buffer (HOME);	// CTRL+A
+                    if (sc == 0x24) kb_to_buffer (END);		// CTRL+E
+                }
+                // if an EXTENDED KEY is pressed ------------------------------
+                else if (kb_status & EXTENDEDKEY) {
+                    if (sc == 0x5A) kb_to_buffer (CR);		// ENTER
+                    if (sc == 0x75) kb_to_buffer (ARUP);	// ARROW UP
+                    if (sc == 0x72) kb_to_buffer (ARDN);	// ARROW DOWN
+                    if (sc == 0x6B) kb_to_buffer (ARLT);	// ARROW LEFT
+                    if (sc == 0x74) kb_to_buffer (ARRT);	// ARROW RIGHT
+                    if (sc == 0x6C) kb_to_buffer (HOME);	// HOME
+                    if (sc == 0x69) kb_to_buffer (END);		// END
+                    kb_status &= ~EXTENDEDKEY;
+                }
+                // in any other case ------------------------------------------
+                else {
+                    tmp = 0;
+                    if (kb_status & SHIFT)
+                        tmp += 1;
+                    if (kb_status & CAPSLOCK)
+                        tmp += 2;
+                    kb_to_buffer (pgm_read_byte (to_ascii + 4 * sc + tmp));
+                }
+                break;
 		}
 	} else {							// a pressed key was just released...
 		kb_status &= ~BREAKCODE;
 		switch (sc) {
-		case 0x14:					// left CONTROL
-			kb_status &= ~CONTROL;
-			break;
-		case 0x12:					// left SHIFT
-		case 0x59:					// right SHIFT
-			kb_status &= ~SHIFT;
-			break;
+            case 0x14:					// left CONTROL
+                kb_status &= ~CONTROL;
+                break;
+            case 0x12:					// left SHIFT
+            case 0x59:					// right SHIFT
+                kb_status &= ~SHIFT;
+                break;
 		}
 	}
 }
@@ -276,7 +279,8 @@ void uart_ansi_move_cursor (uint8_t row, uint8_t col)
 // ----------------------------------------------------------------------------
 int putchar_ser (char chr, FILE *stream)
 {
-	if (chr == LF) putchar_ser (CR, stream);
+	if (chr == LF)
+        putchar_ser (CR, stream);
 	loop_until_bit_is_set (UCSR0A, UDRE0);
 	UDR0 = chr;
 }
@@ -307,7 +311,8 @@ int putchar_phy (char chr, FILE *stream)
 			fputc (BS, &stream_pseudo);
 			fputc (SPACE, &stream_pseudo);
 			fputc (BS, &stream_pseudo);
-		} else fputc (chr , &stream_pseudo);
+		} else
+            fputc (chr , &stream_pseudo);
 	}
 	return 0;
 }
@@ -319,7 +324,8 @@ int getchar_phy (FILE *stream)
 {
 	uint8_t chr;
 	// wait for a key
-	while (kb_buffer_cnt == 0) fx_delay_ms (15);
+	while (kb_buffer_cnt == 0)
+        fx_delay_ms (15);
 	// read key from keyboard buffer
 	chr = kb_buffer[kb_read_ptr];
 	// update buffer pointer and data counter

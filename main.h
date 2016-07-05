@@ -7,8 +7,7 @@ int main (void);
 // message and data printing
 void do_beep (void);
 void printnum (int16_t num, FILE *stream);
-void printUnum (uint16_t num, FILE *stream);
-void printmsgNoNL (const uint8_t *msg, FILE *stream);
+void printmsg_noNL (const uint8_t *msg, FILE *stream);
 void printmsg (const uint8_t *msg, FILE *stream);
 void printline (FILE *stream);
 void newline (FILE *stream);
