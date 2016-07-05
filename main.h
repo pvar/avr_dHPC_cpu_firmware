@@ -16,7 +16,7 @@ uint8_t print_string (void);
 // internal data handling
 void uppercase (void);
 void ignorespace (void);
-void get_line (uint8_t prompt);
+void get_line (void);
 void push_byte (uint8_t b);
 uint8_t pop_byte (void);
 uint8_t *find_line (void);

@@ -166,7 +166,7 @@ void newline (FILE *stream)
 // ----------------------------------------------------------------------------
 // internal data handling
 // ----------------------------------------------------------------------------
-void get_line (uint8_t prompt)
+void get_line (void)
 {
 	txtpos = program_end + sizeof (uint16_t);
 	maxpos = txtpos;

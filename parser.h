@@ -13,6 +13,7 @@ int16_t parse_step4 (void);
 void parse_channel (void);
 void parse_notes (void);
 void basic_init (void);
+void error_message (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures
