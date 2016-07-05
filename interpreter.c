@@ -2,107 +2,109 @@
 // Interpreter mechanism for nstBASIC :: not-so-tinyBASIC
 // ----------------------------------------------------------------------------
 //
+// A simplified interpreter for the venerable BASIC language.
+// The code is heavily tied to the hardware of a homebrew computer.
+//
 // By Panos Varelas <varelaspanos@gmail.com>
 //
 // Based on "TinyBasic Plus" by:
-//   Mike Field <hamster@snap.net.nz>,
-//   Scott Lawrence <yorgle@gmail.com> and
-//   Jurg Wullschleger <wullschleger@gmail.com>
-//   (who fixed whitespace and unary operations)
+//   - Mike Field <hamster@snap.net.nz>,
+//   - Scott Lawrence <yorgle@gmail.com> and
+//   - Jurg Wullschleger <wullschleger@gmail.com>
+//     (fixed whitespace and unary operations)
 //
 // ----------------------------------------------------------------------------
 
 #include "interpreter.h"
 #include "parser.c"
 
-
 void error_message (void)
 {
 	text_color (TXT_COL_ERROR);
 	paper_color (0);
 	switch (error_code) {
-	case 0x1:	//// not yet implemented
-		printmsg (err_msg01, stdout);
-		break;
-	case 0x2:	//// syntax error
-		printmsg_noNL (err_msg02, stdout);
-		if (current_line != NULL) {
-			printf (" -- ");
-			uint8_t tmp = *txtpos;
-			if (*txtpos != LF) *txtpos = '^';
-			list_line = current_line;
-			printline (stdout);
-			*txtpos = tmp;
-		}
-		newline (stdout);
-		break;
-	case 0x3:	// stack overflow
-		printmsg (err_msg03, stdout);
-		break;
-	case 0x4:	// unexpected character
-		printmsg (err_msg04, stdout);
-		break;
-	case 0x5:	// left parenthesis missing
-		printmsg (err_msgxl, stdout);
-		printmsg (err_msg05_06, stdout);
-		break;
-	case 0x6:	// right parenthesis missing
-		printmsg (err_msgxr, stdout);
-		printmsg (err_msg05_06, stdout);
-		break;
-	case 0x7:	// variable expected
-		printmsg (err_msg07, stdout);
-		break;
-	case 0x8:	// jump point not found
-		printmsg (err_msg08, stdout);
-		break;
-	case 0x9:	// invalid line number
-		printmsg (err_msg09, stdout);
-		break;
-	case 0xA:	// operator expected
-		printmsg (err_msg0A, stdout);
-		break;
-	case 0xB:	// division by zero
-		printmsg (err_msg0B, stdout);
-		break;
-	case 0xC:	// invalid pin
-		printmsg (err_msg0C, stdout);
-		break;
-	case 0xD:	// pin io error
-		printmsg (err_msg0D, stdout);
-		break;
-	case 0xE:	// unknown function
-		printmsg (err_msg0E, stdout);
-		break;
-	case 0xF:	// unknown command
-		printmsg (err_msg0F, stdout);
-		break;
-	case 0x10:	// invalid coordinates
-		printmsg (err_msg10, stdout);
-		break;
-	case 0x11:	// invalid variable name
-		printmsg (err_msg11, stdout);
-		break;
-	case 0x12:	// expected byte
-		printmsg (err_msg12, stdout);
-		break;
-	case 0x13:	// out of range
-		printmsg (err_msg13, stdout);
-		break;
-	case 0x14:	// expected color value
-		printmsg (err_msg14, stdout);
-		break;
+        case 0x1:	// not yet implemented
+            printmsg (err_msg01, stdout);
+            break;
+        case 0x2:	// syntax error
+            printmsg_noNL (err_msg02, stdout);
+            if (current_line != NULL) {
+                printf (" -- ");
+                uint8_t tmp = *txtpos;
+                if (*txtpos != LF)
+                    *txtpos = '^';
+                list_line = current_line;
+                printline (stdout);
+                *txtpos = tmp;
+            }
+            newline (stdout);
+            break;
+        case 0x3:	// stack overflow
+            printmsg (err_msg03, stdout);
+            break;
+        case 0x4:	// unexpected character
+            printmsg (err_msg04, stdout);
+            break;
+        case 0x5:	// left parenthesis missing
+            printmsg (err_msgxl, stdout);
+            printmsg (err_msg05_06, stdout);
+            break;
+        case 0x6:	// right parenthesis missing
+            printmsg (err_msgxr, stdout);
+            printmsg (err_msg05_06, stdout);
+            break;
+        case 0x7:	// variable expected
+            printmsg (err_msg07, stdout);
+            break;
+        case 0x8:	// jump point not found
+            printmsg (err_msg08, stdout);
+            break;
+        case 0x9:	// invalid line number
+            printmsg (err_msg09, stdout);
+            break;
+        case 0xA:	// operator expected
+            printmsg (err_msg0A, stdout);
+            break;
+        case 0xB:	// division by zero
+            printmsg (err_msg0B, stdout);
+            break;
+        case 0xC:	// invalid pin
+            printmsg (err_msg0C, stdout);
+            break;
+        case 0xD:	// pin io error
+            printmsg (err_msg0D, stdout);
+            break;
+        case 0xE:	// unknown function
+            printmsg (err_msg0E, stdout);
+            break;
+        case 0xF:	// unknown command
+            printmsg (err_msg0F, stdout);
+            break;
+        case 0x10:	// invalid coordinates
+            printmsg (err_msg10, stdout);
+            break;
+        case 0x11:	// invalid variable name
+            printmsg (err_msg11, stdout);
+            break;
+        case 0x12:	// expected byte
+            printmsg (err_msg12, stdout);
+            break;
+        case 0x13:	// out of range
+            printmsg (err_msg13, stdout);
+            break;
+        case 0x14:	// expected color value
+            printmsg (err_msg14, stdout);
+            break;
 	}
 	text_color (TXT_COL_DEFAULT);
 	paper_color (0);
 }
 
 // ----------------------------------------------------------------------------
-// BASIC init and parser loop
+// Language environment init
 // ----------------------------------------------------------------------------
 void basic_init (void)
 {
-    // environment init
 	program_start = program;
 	program_end = program_start;
 	sp = program + MEMORY_SIZE; // needed for printnum
@@ -118,7 +120,9 @@ void basic_init (void)
 	printmsg (msg_rom_bytes , stdout);
 	newline (stdout);
 
-INTERPRETER_LOOP://=================================================================================
+// =================================================================================================
+   INTERPRETER_LOOP:
+// =================================================================================================
 
 warm_reset:
 	// turn-on cursor
@@ -131,6 +135,7 @@ warm_reset:
 	printmsg (msg_ok, stdout);
 
 prompt:
+    // check if autorun is enabled
 	if ((main_config & cfg_auto_run) || (main_config & cfg_run_after_load)) {
 		main_config &= ~cfg_auto_run;
 		main_config &= ~cfg_run_after_load;

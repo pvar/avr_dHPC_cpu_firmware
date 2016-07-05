@@ -1,20 +1,22 @@
 // ----------------------------------------------------------------------------
-// parser functions for nstBASIC :: not-so-tinyBASIC
+// parser functions for nstBASIC
 // ----------------------------------------------------------------------------
 //
-// By Panos Varelas <varelaspanos@gmail.com>
+// nstBASIC (not-so-tiny BASIC) is limited implementation
+// of the venerable BASIC language. The code is heavily tied
+// to the hardware of a homebrew computer.
+//
+// Created by Panos Varelas <varelaspanos@gmail.com>
 //
 // Based on "TinyBasic Plus" by:
-//   Mike Field <hamster@snap.net.nz>,
-//   Scott Lawrence <yorgle@gmail.com> and
-//   Jurg Wullschleger <wullschleger@gmail.com>
-//   (who fixed whitespace and unary operations)
+//   - Mike Field <hamster@snap.net.nz>,
+//   - Scott Lawrence <yorgle@gmail.com> and
+//   - Jurg Wullschleger <wullschleger@gmail.com>
+//     (fixed whitespace and unary operations)
 //
 // ----------------------------------------------------------------------------
 
 #include "parser.h"
-
-
 
 // ----------------------------------------------------------------------------
 // search for valid function/command name

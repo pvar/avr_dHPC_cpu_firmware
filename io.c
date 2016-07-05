@@ -1,12 +1,19 @@
 // ----------------------------------------------------------------------------
-// Communication with peripherals (GPU, APU, PS2 keyboard, serial port)
+// Peripheral interfacing functions (GPU, APU, PS2 keyboard, serial port)
 // ----------------------------------------------------------------------------
 //
-//  By Panos Varelas <varelaspanos@gmail.com>
+// nstBASIC (not-so-tiny BASIC) is limited implementation
+// of the venerable BASIC language. The code is heavily tied
+// to the hardware of a homebrew computer.
 //
-//  Subroutines handling PS2 protocol are based on code written by ATMEL staff.
-//  Original code was written for the ICCA90 C-compiler.
-//  (application note "313:Interfacing the PC AT Keyboard")
+// Created by Panos Varelas <varelaspanos@gmail.com>
+//
+// Based on "TinyBasic Plus" by:
+//   - Mike Field <hamster@snap.net.nz>,
+//   - Scott Lawrence <yorgle@gmail.com> and
+//   - Jurg Wullschleger <wullschleger@gmail.com>
+//     (fixed whitespace and unary operations)
+//
 // ----------------------------------------------------------------------------
 
 
