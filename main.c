@@ -37,7 +37,7 @@
 
 #include "main.h"
 #include "io.c"
-#include "parser.c"
+#include "interpreter.c"
 
 // ----------------------------------------------------------------------------
 // main program
