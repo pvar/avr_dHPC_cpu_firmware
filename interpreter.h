@@ -1,3 +1,6 @@
+#ifndef INTERPRETER_H
+#define INTERPRETER_H
+
 // ----------------------------------------------------------------------------
 // program function prototypes
 // ----------------------------------------------------------------------------
@@ -46,6 +49,16 @@ const uint8_t err_msg14[]		PROGMEM = "Expected color [0..127]";
 #define STACK_GOSUB_FLAG 'G'
 #define STACK_FOR_FLAG 'F'
 
+enum {
+	POST_CMD_NOTHING = 0,
+	POST_CMD_EXEC_LINE = 1,
+	POST_CMD_NEXT_LINE = 2,
+	POST_CMD_NEXT_STATEMENT = 3,
+	POST_CMD_WARM_RESET = 4,
+	POST_CMD_PROMPT = 5,
+	POST_CMD_LOOP = 6
+};
+
 struct stack_for_frame {
 	uint8_t frame_type;
 	uint8_t for_var;
@@ -70,12 +83,13 @@ uint8_t *inptr;
 
 uint8_t *program_start;
 uint8_t *program_end;
-uint8_t *stack;				// software stack for jumps in BASIC
+uint8_t *stack;				// software stack for calls in nstBASIC
 uint8_t *stack_limit;
 uint8_t *variables_begin;
-uint8_t *current_line;
 uint8_t *sp;
+uint8_t *current_line;
 uint8_t table_index;
+
 uint16_t linenum;
 
 uint8_t *start;
@@ -84,3 +98,6 @@ uint8_t linelen;
 boolean isDigital;
 boolean alsoWait = false;
 uint16_t val;
+uint8_t cmd_status;
+
+#endif

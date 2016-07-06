@@ -1,3 +1,6 @@
+#ifndef IO_H
+#define IO_H
+
 // ----------------------------------------------------------------------------
 // program function prototypes
 // ----------------------------------------------------------------------------
@@ -310,3 +313,5 @@ const uint8_t to_ascii[] PROGMEM = {
 		"nop \n\t nop \n\t nop \n\t nop \n\t" \
 		"nop \n\t nop \n\t nop \n\t nop \n\t" \
 	)
+
+#endif

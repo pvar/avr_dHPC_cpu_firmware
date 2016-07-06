@@ -1,3 +1,6 @@
+#ifndef PARSER_H
+#define PARSER_H
+
 // ----------------------------------------------------------------------------
 // program function prototypes
 // ----------------------------------------------------------------------------
@@ -161,3 +164,6 @@ enum {
 const uint8_t to_tab[] PROGMEM = { 'T', 'O' + 0x80, 0 };
 const uint8_t step_tab[] PROGMEM = { 'S', 'T', 'E', 'P' + 0x80, 0 };
 const uint8_t highlow_tab[] PROGMEM = { 'H', 'I', 'G', 'H' + 0x80, 'H', 'I' + 0x80, 'L', 'O', 'W' + 0x80, 'L', 'O' + 0x80, 0 };
+
+
+#endif

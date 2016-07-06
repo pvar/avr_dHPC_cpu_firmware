@@ -165,7 +165,8 @@ void get_line (void)
 	maxpos = txtpos;
 	uint8_t incoming_char;
 	uint8_t temp1, temp2;
-	if (main_config & cfg_from_eeprom) {	// get new line from eeprom
+    // GET NEW LINE FROM EEPROM
+	if (main_config & cfg_from_eeprom) {
 		while (1) {
 			incoming_char = fgetc (&stream_eeprom);
 			switch (incoming_char) {
@@ -181,7 +182,8 @@ void get_line (void)
 				txtpos++;
 			}
 		}
-	} else {				// get new line from standard input
+	// GET NEW LINE FROM STANDARD INPUT
+    } else {
 		while (1) {
 			incoming_char = fgetc (stdin);
 			switch (incoming_char) {
