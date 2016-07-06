@@ -107,20 +107,21 @@ int getchar_rom (FILE *stream);
 #define vid_locate	   205
 #define vid_color 	   206
 #define vid_paper 	   207
-#define vid_scroll_off 208
-#define vid_scroll_on  209
-#define vid_cursor_off 210
-#define vid_cursor_on  211
+#define vid_cursor_off 208
+#define vid_cursor_on  209
+#define vid_scroll_off 210
+#define vid_scroll_on  211
+
 
 // APU directives
-#define snd_play  207 //
-#define snd_stop  206 //
-#define snd_notes 205 //
-#define snd_tempo 204 //
-#define snd_clr   203 //
-#define snd_dis   202 //
-#define snd_ena   201 //
-#define snd_abort 200 //
+#define snd_play    207 //
+#define snd_stop    206 //
+#define snd_notes   205 //
+#define snd_tempo   204 //
+#define snd_clr     203 //
+#define snd_dis     202 //
+#define snd_ena     201 //
+#define snd_abort   200 //
 
 // streams of data to and from IO devices
 FILE stream_physical = FDEV_SETUP_STREAM (putchar_phy, getchar_phy, _FDEV_SETUP_RW);
