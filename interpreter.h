@@ -6,6 +6,8 @@
 // ----------------------------------------------------------------------------
 void basic_init (void);
 void error_message (void);
+void append_newline (void);
+void remove_line (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures

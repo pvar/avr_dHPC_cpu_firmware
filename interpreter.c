@@ -32,6 +32,57 @@
 #include "cmd_pinctl.c"
 #include "cmd_other.c"
 
+void append_newline (void)
+{
+	// make room for line
+	while (linelen > 0) {
+		uint8_t *from, *dest;
+		uint16_t tomove;
+		uint16_t room_to_make;
+		room_to_make = txtpos - program_end;
+		if (room_to_make > linelen)
+            room_to_make = linelen;
+		new_end = program_end + room_to_make;
+		tomove = program_end - start;
+		// source and destination
+		from = program_end;
+		dest = new_end;
+		while (tomove > 0) {
+			from--;
+			dest--;
+			*dest = *from;
+			tomove--;
+		}
+		// copy line content
+		for (tomove = 0; tomove < room_to_make; tomove++) {
+			*start = *txtpos;
+			txtpos++;
+			start++;
+			linelen--;
+		}
+		program_end = new_end;
+	}
+}
+
+void remove_line (void)
+{
+    if (start != program_end && * ((uint16_t *)start) == linenum) {
+		uint8_t *dest, *from;
+		uint16_t tomove;
+		from = start + start[sizeof (uint16_t)];
+		dest = start;
+		tomove = program_end - from;
+		while (tomove > 0) {
+			*dest = *from;
+			from++;
+			dest++;
+			tomove--;
+		}
+		program_end = dest;
+	}
+}
+
+
 void error_message (void)
 {
 	text_color (TXT_COL_ERROR);
@@ -161,9 +212,12 @@ prompt:
 getline:
 	get_line();
 	uppercase();
+
 	/* find end of new line */
 	txtpos = program_end + sizeof (uint16_t);
-	while (*txtpos != LF) txtpos++;
+	while (*txtpos != LF)
+        txtpos++;
+
 	/* move line to the end of program_memory */
 	uint8_t *dest;
 	dest = variables_begin - 1;
@@ -176,84 +230,43 @@ getline:
 	}
 	txtpos = dest;
 
-	/* check if the line starts with a (line) number */
+	/* check if the line begins with line number */
 	linenum = linenum_test();
 	ignorespace();
-
-	/* if no number is present --> execute line immediately */
+	/* if no number is present --> execute immediately */
 	if (linenum == 0)
         goto direct;
 
-	/* if invalid number is present --> print error message */
+    /* if invalid line number --> print error message */
 	if (linenum == 0xFFFF) {
 		error_code = 0x9;
 		error_message();
         goto warm_reset;
-	}
-
-	/* if valid number is present --> merge line with rest of program */
-    /* find the length of the string after the line number
-	   (including the yet-to-be-populated line header) */
-    linelen = 0;
-	while (txtpos[linelen] != LF) linelen++;
-	/* increase length to include LF character */
-	linelen++;
-	/* increase even more to make room for header (line number and line length) */
-	linelen += sizeof (uint16_t) + sizeof (uint8_t);
-	/* go to the beginning of line header */
-	txtpos -= 3;
-	/* add line number and length*/
-	* ((uint16_t *)txtpos) = linenum;
-	txtpos[sizeof (uint16_t)] = linelen;
-	/* merge line with program */
-	start = find_line();
-	/* remove any line with the same line number */
-	if (start != program_end && * ((uint16_t *)start) == linenum) {
-		uint8_t *dest, *from;
-		uint16_t tomove;
-		from = start + start[sizeof (uint16_t)];
-		dest = start;
-		tomove = program_end - from;
-		while (tomove > 0) {
-			*dest = *from;
-			from++;
-			dest++;
-			tomove--;
-		}
-		program_end = dest;
-	}
-
-	/* if new line has no text, it was just a delete */
-	if (txtpos[sizeof (uint16_t) + sizeof (uint8_t)] == LF)
-		goto prompt;
-
-	/* make room for the new line */
-	while (linelen > 0) {
-		uint8_t *from, *dest;
-		uint16_t tomove;
-		uint16_t room_to_make;
-		room_to_make = txtpos - program_end;
-		if (room_to_make > linelen) room_to_make = linelen;
-		new_end = program_end + room_to_make;
-		tomove = program_end - start;
-		// source and destination
-		from = program_end;
-		dest = new_end;
-		while (tomove > 0) {
-			from--;
-			dest--;
-			*dest = *from;
-			tomove--;
-		}
-		// copy over the bytes into the new space
-		for (tomove = 0; tomove < room_to_make; tomove++) {
-			*start = *txtpos;
-			txtpos++;
-			start++;
-			linelen--;
-		}
-		program_end = new_end;
-	}
+    }
+    /* if valid line number --> merge with program */
+    else {
+        /* find length of line */
+        linelen = 0;
+        while (txtpos[linelen] != LF)
+            linelen++;
+        /* increase length to count LF */
+        linelen++;
+        /* increase even more for line-header (line number and line length) */
+        linelen += sizeof (uint16_t) + sizeof (uint8_t);
+        /* move pointer to the beginning of line header */
+        txtpos -= 3;
+        /* add line number and length*/
+        * ((uint16_t *)txtpos) = linenum;
+        txtpos[sizeof (uint16_t)] = linelen;
+        /* find and remove line with the same line number */
+        start = find_line();
+        remove_line();
+        /* if new line is empty --> it was just a line deletion */
+        if (txtpos[sizeof (uint16_t) + sizeof (uint8_t)] == LF)
+            goto prompt;
+        /* append new line to program */
+        append_newline();
+    }
 	goto prompt;
 
 direct:
@@ -476,16 +489,6 @@ start_interpretation:
             goto start_interpretation;
         } else
             cmd_status = POST_CMD_NEXT_LINE;
-        /*
-        ignorespace();
-        while (*txtpos == ':')
-            txtpos++;
-        ignorespace();
-        if (*txtpos == LF)
-            cmd_status == POST_CMD_NEXT_LINE;
-        else
-            goto start_interpretation;
-        */
     }
 
     // check if should proceed to next line
