@@ -180,7 +180,7 @@ int8_t poke (void)
 
 int8_t list (void)
 {
-	linenum = linenum_test(); // returns 0 if no line found
+	linenum = get_linenumber(); // returns 0 if no line found
 	// should be EOL
 	if (txtpos[0] != LF) {
 		error_code = 0x4;
@@ -228,4 +228,38 @@ int8_t rndseed (void)
     }
     srand (param);
 	return POST_CMD_NEXT_STATEMENT;
+}
+
+int8_t prog_run (void)
+{
+    //enable emergency break key (INT2)
+    EIMSK |= BREAK_INT;
+    // disable cursor
+    putchar (vid_cursor_off);
+    // disable auto scroll
+    putchar (vid_scroll_off);
+    current_line = program_start;
+    return POST_CMD_EXEC_LINE;
+}
+
+int8_t prog_end (void)
+{
+    // should be at end of line
+    if (txtpos[0] != LF) {
+        error_code = 0x2;
+        return POST_CMD_WARM_RESET;
+    }
+    // set current line at the end of program
+    current_line = program_end;
+    return POST_CMD_EXEC_LINE;
+}
+
+int8_t prog_new (void)
+{
+    if (txtpos[0] != LF) {
+        error_code = 0x2;
+        return POST_CMD_WARM_RESET;
+    }
+    program_end = program_start;
+    return POST_CMD_PROMPT;
 }

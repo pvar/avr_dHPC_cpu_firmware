@@ -23,7 +23,6 @@ uint8_t *find_line (void);
 int16_t str_to_num (uint8_t *strptr);
 
 uint8_t break_test (void);
-uint16_t linenum_test (void);
 
 // file-access related
 uint16_t isValidFnChar (uint8_t c);

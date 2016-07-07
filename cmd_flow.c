@@ -19,6 +19,30 @@
 #include "interpreter.h"
 #include "cmd_flow.h"
 
+uint8_t gotoline (void)
+{
+    linenum = parse_step1();
+    if (error_code || *txtpos != LF) {
+        error_code = 0x4;
+        return POST_CMD_WARM_RESET;
+    }
+    current_line = find_line();
+    return POST_CMD_EXEC_LINE;
+}
+
+uint8_t check (void)
+{
+    val = parse_step1();
+    if (error_code || *txtpos == LF) {
+        error_code = 0x4;
+        return POST_CMD_WARM_RESET;
+    }
+    if (val != 0)
+        return POST_CMD_LOOP;
+    else
+        return POST_CMD_NEXT_LINE;
+}
+
 uint8_t loopfor (void)
 {
 		uint8_t var;

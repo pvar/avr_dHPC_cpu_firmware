@@ -4,10 +4,14 @@
 // ----------------------------------------------------------------------------
 // program function prototypes
 // ----------------------------------------------------------------------------
-void basic_init (void);
-void error_message (void);
-void append_newline (void);
+
+uint16_t get_linenumber (void);
+void move_line (void);
+void append_line (void);
 void remove_line (void);
+void error_message (void);
+void basic_init (void);
+void interpreter (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures
@@ -51,6 +55,9 @@ const uint8_t err_msg14[]		PROGMEM = "Expected color [0..127]";
 #define STACK_GOSUB_FLAG 'G'
 #define STACK_FOR_FLAG 'F'
 
+typedef uint16_t LINE_NUMBER;
+typedef uint8_t LINE_LENGTH;
+
 enum {
 	POST_CMD_NOTHING = 0,
 	POST_CMD_EXEC_LINE = 1,
@@ -92,7 +99,7 @@ uint8_t *sp;
 uint8_t *current_line;
 uint8_t table_index;
 
-uint16_t linenum;
+LINE_NUMBER linenum;
 
 uint8_t *start;
 uint8_t *new_end;

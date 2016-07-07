@@ -5,6 +5,8 @@
  * function prototypes
  */
 
+uint8_t gotoline (void);
+uint8_t check (void);
 uint8_t loopfor (void);
 uint8_t gosub (void);
 uint8_t next (void);

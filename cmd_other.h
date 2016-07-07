@@ -5,6 +5,10 @@
  * function prototypes
  */
 
+
+int8_t prog_run (void);
+int8_t prog_end (void);
+int8_t prog_new (void);
 int8_t input (void);
 int8_t assignment (void);
 int8_t poke (void);

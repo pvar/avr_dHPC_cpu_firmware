@@ -32,7 +32,23 @@
 #include "cmd_pinctl.c"
 #include "cmd_other.c"
 
-void append_newline (void)
+uint16_t get_linenumber (void)
+{
+	uint16_t num = 0;
+	ignorespace();
+	while (*txtpos >= '0' && *txtpos <= '9') {
+		// Trap overflows
+		if (num >= 0xFFFF / 10) {
+			num = 0xFFFF;
+			break;
+		}
+		num = num * 10 + *txtpos - '0';
+		txtpos++;
+	}
+	return	num;
+}
+
+void append_line (void)
 {
 	// make room for line
 	while (linelen > 0) {
@@ -80,6 +96,26 @@ void remove_line (void)
 		}
 		program_end = dest;
 	}
+}
+
+void move_line (void)
+{
+	/* find end of new line */
+	txtpos = program_end + sizeof (uint16_t);
+	while (*txtpos != LF)
+        txtpos++;
+
+	/* move line to the end of program_memory */
+	uint8_t *dest;
+	dest = variables_begin - 1;
+	while (1) {
+		*dest = *txtpos;
+		if (txtpos == program_end + sizeof (uint16_t))
+            break;
+		dest--;
+		txtpos--;
+	}
+	txtpos = dest;
 }
 
 
@@ -184,11 +220,14 @@ void basic_init (void)
 	printnum (E2END + 1, stdout);
 	printmsg (msg_rom_bytes , stdout);
 	newline (stdout);
+}
 
-// =================================================================================================
-   INTERPRETER_LOOP:
-// =================================================================================================
+// ----------------------------------------------------------------------------
+//   interpreter loop
+// ----------------------------------------------------------------------------
 
+void interpreter (void)
+{
 warm_reset:
 	// turn-on cursor
 	putchar (vid_cursor_on);
@@ -199,81 +238,71 @@ warm_reset:
 	sp = program + MEMORY_SIZE;
 	printmsg (msg_ok, stdout);
 
-prompt:
-    // check if autorun is enabled
-	if ((main_config & cfg_auto_run) || (main_config & cfg_run_after_load)) {
-		main_config &= ~cfg_auto_run;
-		main_config &= ~cfg_run_after_load;
-		current_line = program_start;
-        txtpos = current_line + sizeof (uint16_t) + sizeof (uint8_t);
-        goto start_interpretation;
-	}
+    prompt:
+    while(1) {
+        // check if autorun is enabled
+        if ((main_config & cfg_auto_run) || (main_config & cfg_run_after_load)) {
+            main_config &= ~cfg_auto_run;
+            main_config &= ~cfg_run_after_load;
+            current_line = program_start;
+            txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+            goto start_interpretation;
+        }
 
-getline:
-	get_line();
-	uppercase();
+        error_code = 0;
+        get_line();
+        uppercase();
+        move_line();
 
-	/* find end of new line */
-	txtpos = program_end + sizeof (uint16_t);
-	while (*txtpos != LF)
-        txtpos++;
+        /* attempt to read line number */
+        linenum = get_linenumber();
+        ignorespace();
 
-	/* move line to the end of program_memory */
-	uint8_t *dest;
-	dest = variables_begin - 1;
-	while (1) {
-		*dest = *txtpos;
-		if (txtpos == program_end + sizeof (uint16_t))
-            break;
-		dest--;
-		txtpos--;
-	}
-	txtpos = dest;
-
-	/* check if the line begins with line number */
-	linenum = linenum_test();
-	ignorespace();
-	/* if no number is present --> execute immediately */
-	if (linenum == 0)
-        goto direct;
-
-    /* if invalid line number --> print error message */
-	if (linenum == 0xFFFF) {
-		error_code = 0x9;
-		error_message();
-        goto warm_reset;
+        /* if line number is present --> manipulate line */
+        if (linenum != 0) {
+            /* if line number invalid --> ignore line -- warm reset */
+            if (linenum == 0xFFFF) {
+                error_code = 0x9;
+                error_message();
+                goto warm_reset;
+            }
+            /* if valid line number --> merge with program */
+            else {
+                /* find length of line */
+                linelen = 0;
+                while (txtpos[linelen] != LF)
+                    linelen++;
+                /* increase to account for LF */
+                linelen++;
+                /* increase even more for line-header */
+                linelen += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+                /* move pointer to the beginning of line header */
+                txtpos -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+                /* add line number and length*/
+                * ((LINE_NUMBER *)txtpos) = linenum;
+                txtpos[sizeof (LINE_NUMBER)] = linelen;
+                /* remove line with same line number */
+                start = find_line();
+                remove_line();
+                /* if new line is empty --> get another one */
+                if (txtpos[sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH)] == LF)
+                    continue;
+                /* append new line to program */
+                append_line();
+            }
+        }
+        /* if there is no line number --> execute it immediately */
+        else {
+            break_flow = 0;
+            txtpos = program_end + sizeof (uint16_t);
+            if (*txtpos == LF)
+                continue;
+            else
+                break;
+        }
     }
-    /* if valid line number --> merge with program */
-    else {
-        /* find length of line */
-        linelen = 0;
-        while (txtpos[linelen] != LF)
-            linelen++;
-        /* increase length to count LF */
-        linelen++;
-        /* increase even more for line-header (line number and line length) */
-        linelen += sizeof (uint16_t) + sizeof (uint8_t);
-        /* move pointer to the beginning of line header */
-        txtpos -= 3;
-        /* add line number and length*/
-        * ((uint16_t *)txtpos) = linenum;
-        txtpos[sizeof (uint16_t)] = linelen;
-        /* find and remove line with the same line number */
-        start = find_line();
-        remove_line();
-        /* if new line is empty --> it was just a line deletion */
-        if (txtpos[sizeof (uint16_t) + sizeof (uint8_t)] == LF)
-            goto prompt;
-        /* append new line to program */
-        append_newline();
-    }
-	goto prompt;
 
-direct:
-	break_flow = 0;
-	txtpos = program_end + sizeof (uint16_t);
-	if (*txtpos == LF)
-        goto prompt;
+
 
 // -------------------------------------------------------------------------------------------------
 // -------------------------------------------------------------------------------------------------
@@ -304,51 +333,20 @@ start_interpretation:
             cmd_status = POST_CMD_NEXT_LINE;
             break;
         case CMD_NEW:
-            if (txtpos[0] != LF) {
-                error_code = 0x2;
-                error_message();
-                cmd_status = POST_CMD_WARM_RESET;
-                break;
-            }
-            program_end = program_start;
-            cmd_status = POST_CMD_PROMPT;
+            cmd_status = prog_new();
             break;
         case CMD_BEEP:
             do_beep();
             cmd_status = POST_CMD_NEXT_LINE;
             break;
         case CMD_RUN:
-            //enable emergency break key (INT2)
-            EIMSK |= BREAK_INT;
-            // disable cursor
-            putchar (vid_cursor_off);
-            // disable auto scroll
-            putchar (vid_scroll_off);
-            current_line = program_start;
-            cmd_status = POST_CMD_EXEC_LINE;
+            cmd_status = prog_run();
             break;
         case CMD_IF:
-            val = parse_step1();
-            if (error_code || *txtpos == LF) {
-                error_code = 0x4;
-                cmd_status = POST_CMD_WARM_RESET;
-                break;
-            }
-            if (val != 0) {
-                cmd_status = POST_CMD_LOOP;
-                break;
-            }
-            cmd_status = POST_CMD_NEXT_LINE;
+            cmd_status = check();
             break;
         case CMD_GOTO:
-            linenum = parse_step1();
-            if (error_code || *txtpos != LF) {
-                error_code = 0x4;
-                cmd_status = POST_CMD_WARM_RESET;
-                break;
-            }
-            current_line = find_line();
-            cmd_status = POST_CMD_EXEC_LINE;
+            cmd_status = gotoline();
             break;
         case CMD_MPLAY:
             cmd_status = play();
@@ -364,14 +362,7 @@ start_interpretation:
             break;
         case CMD_END:
         case CMD_STOP:
-            // set current line at the end of program
-            if (txtpos[0] != LF) {
-                error_code = 0x2;
-                cmd_status = POST_CMD_WARM_RESET;
-                break;
-            }
-            current_line = program_end;
-            cmd_status = POST_CMD_EXEC_LINE;
+            cmd_status = prog_end();
             break;
         case CMD_LIST:
             cmd_status = list();
@@ -387,6 +378,8 @@ start_interpretation:
             break;
         case CMD_NEXT:
             cmd_status = next();
+            if (error_code)
+                break;
             cmd_status = gosub_return();
             break;
         case CMD_LET:
@@ -505,6 +498,6 @@ start_interpretation:
 		goto warm_reset;
 
     // if reached here, start execution of next line
-	txtpos = current_line + sizeof (uint16_t) + sizeof (uint8_t);
+	txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
 	goto start_interpretation;
 }

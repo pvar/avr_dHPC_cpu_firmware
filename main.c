@@ -37,17 +37,20 @@
 // ----------------------------------------------------------------------------
 int main (void)
 {
-	init_io();
-	do_beep();
-	text_color (TXT_COL_DEFAULT);
-	paper_color (0);
-	printmsg (msg_welcome, stdout);
-	// setup timer2 for seed generation
-	TCCR2A = 0;
-	TCCR2B = _BV (CS22) | _BV (CS21) | _BV (CS20);
-	TIMSK2 = 0;
-	while (1)
-		basic_init();
+    init_io();
+    text_color (TXT_COL_DEFAULT);
+    paper_color (0);
+    printmsg (msg_welcome, stdout);
+    do_beep();
+
+    // setup timer2 for seed generation
+    TCCR2A = 0;
+    TCCR2B = _BV (CS22) | _BV (CS21) | _BV (CS20);
+    TIMSK2 = 0;
+
+    //while (1)
+    basic_init();
+    interpreter();
 	return 0;
 }
 
@@ -56,24 +59,24 @@ int main (void)
 // ----------------------------------------------------------------------------
 void do_beep (void)
 {
-	// disable keyboard interrupt
-	EIMSK &= ~KEYBOARD_INT;
-	uint8_t cnt = 100;
-	while (cnt > 0) {
-		aux_ctl_bus_out &= ~buzzer_led;
-		fx_delay_us (750);
-		aux_ctl_bus_out |= buzzer_led;
-		fx_delay_us (500);
-		cnt--;
-	}
-	// enable keyboard interrupt
-	EIMSK |= KEYBOARD_INT;
+    // disable keyboard interrupt
+    EIMSK &= ~KEYBOARD_INT;
+    uint8_t cnt = 100;
+    while (cnt > 0) {
+        aux_ctl_bus_out &= ~buzzer_led;
+        fx_delay_us (750);
+        aux_ctl_bus_out |= buzzer_led;
+        fx_delay_us (500);
+        cnt--;
+    }
+    // enable keyboard interrupt
+    EIMSK |= KEYBOARD_INT;
 }
 
 void printstr (char *str, FILE *stream)
 {
     uint8_t i = 0;
-	while (str[i] != 0) {
+    while (str[i] != 0) {
         fputc (str[i], stream);
         i++;
     }
@@ -112,9 +115,9 @@ void printmsg (const uint8_t *msg, FILE *stream)
 
 void printline (FILE *stream)
 {
-	uint16_t line_num;
-	line_num = * ((uint16_t *) (list_line));
-	list_line += sizeof (uint16_t) + sizeof (uint8_t);
+	LINE_NUMBER line_num;
+	line_num = * ((LINE_NUMBER *) (list_line));
+	list_line += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
 	// print line number
 	printnum (line_num, stream);
 	fputc (' ', stream);
@@ -370,23 +373,6 @@ void fx_delay_us (uint16_t us)
 		_delay_us (1);
 		us--;
 	}
-}
-
-// check if this a line-number
-uint16_t linenum_test (void)
-{
-	uint16_t num = 0;
-	ignorespace();
-	while (*txtpos >= '0' && *txtpos <= '9') {
-		// Trap overflows
-		if (num >= 0xFFFF / 10) {
-			num = 0xFFFF;
-			break;
-		}
-		num = num * 10 + *txtpos - '0';
-		txtpos++;
-	}
-	return	num;
 }
 
 // check for attempted break
