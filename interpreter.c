@@ -204,6 +204,7 @@ void error_message (void)
 // ----------------------------------------------------------------------------
 // Language environment init
 // ----------------------------------------------------------------------------
+
 void basic_init (void)
 {
 	program_start = program;
@@ -228,276 +229,288 @@ void basic_init (void)
 
 void interpreter (void)
 {
-warm_reset:
-	// turn-on cursor
-	putchar (vid_cursor_on);
-	// turn-on scroll
-	putchar (vid_scroll_on);
-	// reset program-memory pointer
-	current_line = 0;
-	sp = program + MEMORY_SIZE;
-	printmsg (msg_ok, stdout);
+    uint8_t exec_status;
 
-    prompt:
+    /* start interpreter with a warm-reset */
+    exec_status = POST_CMD_WARM_RESET;
+
     while(1) {
-        // check if autorun is enabled
-        if ((main_config & cfg_auto_run) || (main_config & cfg_run_after_load)) {
-            main_config &= ~cfg_auto_run;
-            main_config &= ~cfg_run_after_load;
-            current_line = program_start;
-            txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-            goto start_interpretation;
+
+        /* if asked --> perform a warm-reset */
+        if (exec_status == POST_CMD_WARM_RESET) {
+            exec_status = POST_CMD_NOTHING;
+            // turn-on cursor
+            putchar (vid_cursor_on);
+            // turn-on scroll
+            putchar (vid_scroll_on);
+            // reset program-memory pointer
+            current_line = 0;
+            sp = program + MEMORY_SIZE;
+            printmsg (msg_ok, stdout);
         }
 
-        error_code = 0;
-        get_line();
-        uppercase();
-        move_line();
+        while(1) {
+            error_code = 0;
 
-        /* attempt to read line number */
-        linenum = get_linenumber();
-        ignorespace();
-
-        /* if line number is present --> manipulate line */
-        if (linenum != 0) {
-            /* if line number invalid --> ignore line -- warm reset */
-            if (linenum == 0xFFFF) {
-                error_code = 0x9;
-                error_message();
-                goto warm_reset;
-            }
-            /* if valid line number --> merge with program */
-            else {
-                /* find length of line */
-                linelen = 0;
-                while (txtpos[linelen] != LF)
-                    linelen++;
-                /* increase to account for LF */
-                linelen++;
-                /* increase even more for line-header */
-                linelen += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-                /* move pointer to the beginning of line header */
-                txtpos -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-                /* add line number and length*/
-                * ((LINE_NUMBER *)txtpos) = linenum;
-                txtpos[sizeof (LINE_NUMBER)] = linelen;
-                /* remove line with same line number */
-                start = find_line();
-                remove_line();
-                /* if new line is empty --> get another one */
-                if (txtpos[sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH)] == LF)
-                    continue;
-                /* append new line to program */
-                append_line();
-            }
-        }
-        /* if there is no line number --> execute it immediately */
-        else {
-            break_flow = 0;
-            txtpos = program_end + sizeof (uint16_t);
-            if (*txtpos == LF)
-                continue;
-            else
+            // check if autorun is enabled
+            if ((main_config & cfg_auto_run) || (main_config & cfg_run_after_load)) {
+                main_config &= ~cfg_auto_run;
+                main_config &= ~cfg_run_after_load;
+                current_line = program_start;
+                txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
                 break;
-        }
-    }
+            }
 
+            get_line();
+            uppercase();
+            move_line();
 
-
-// -------------------------------------------------------------------------------------------------
-// -------------------------------------------------------------------------------------------------
-
-start_interpretation:
-
-	if (break_test()) {
-		printmsg (msg_break, stdout);
-		goto warm_reset;
-	}
-
-    /*
-    fputc ('\n', &stream_pseudo);
-    fputc ('>', &stream_pseudo);
-    printnum ((uint16_t)cmd_status, &stream_pseudo);
-    fputc ('\n', &stream_pseudo);
-    */
-
-    cmd_status = POST_CMD_NOTHING;
-    table_index = 0;
-	error_code = 0;
-	scantable (commands);
-
-	switch (table_index) {
-        case CMD_DELAY:
-            val = parse_step1();
-            fx_delay_ms (val);
-            cmd_status = POST_CMD_NEXT_LINE;
-            break;
-        case CMD_NEW:
-            cmd_status = prog_new();
-            break;
-        case CMD_BEEP:
-            do_beep();
-            cmd_status = POST_CMD_NEXT_LINE;
-            break;
-        case CMD_RUN:
-            cmd_status = prog_run();
-            break;
-        case CMD_IF:
-            cmd_status = check();
-            break;
-        case CMD_GOTO:
-            cmd_status = gotoline();
-            break;
-        case CMD_MPLAY:
-            cmd_status = play();
-            break;
-        case CMD_MSTOP:
-            cmd_status = stop();
-            break;
-        case CMD_TEMPO:
-            cmd_status = tempo();
-            break;
-        case CMD_MUSIC:
-            cmd_status = music();
-            break;
-        case CMD_END:
-        case CMD_STOP:
-            cmd_status = prog_end();
-            break;
-        case CMD_LIST:
-            cmd_status = list();
-            break;
-        case CMD_MEM:
-            cmd_status = mem();
-            break;
-        case CMD_PEN:
-            cmd_status = pen();
-            break;
-        case CMD_PAPER:
-            cmd_status = paper();
-            break;
-        case CMD_NEXT:
-            cmd_status = next();
-            if (error_code)
-                break;
-            cmd_status = gosub_return();
-            break;
-        case CMD_LET:
-            cmd_status = assignment();
-            break;
-        case CMD_GOSUB:
-            cmd_status = gosub();
-            break;
-        case CMD_RETURN:
-            cmd_status = gosub_return();
-            break;
-        case CMD_RANDOMIZE:
-            cmd_status = randomize();
-            break;
-        case CMD_RNDSEED:
-            cmd_status = rndseed();
-            break;
-        case CMD_FOR:
-            cmd_status = loopfor();
-            break;
-        case CMD_INPUT:
-            cmd_status = input();
-            break;
-        case CMD_POKE:
-            cmd_status = poke();
-            break;
-        case CMD_PSET:
-            cmd_status = pset();
-            break;
-        case CMD_ELIST:
-            cmd_status = elist();
-            break;
-        case CMD_EFORMAT:
-            cmd_status = eformat();
-            break;
-        case CMD_ECHAIN:
-            main_config |= cfg_run_after_load;
-            cmd_status = eload();
-            break;
-        case CMD_ESAVE:
-            cmd_status = esave();
-            break;
-        case CMD_ELOAD:
-            cmd_status = eload();
-            break;
-        case CMD_RST:
-            cmd_status = reset_display();
-            break;
-        case CMD_PRINT:
-        case CMD_QMARK:
-            cmd_status = print();
-            break;
-        case CMD_LOCATE:
-            cmd_status = locate();
-            break;
-        case CMD_CLS:
-            cmd_status = clear_screen();
-            break;
-        case CMD_REM:
-        case CMD_HASH:
-        case CMD_QUOTE:
-            cmd_status = POST_CMD_NEXT_LINE;
-            break;
-        case CMD_PINDIR:
-            cmd_status = pindir();
-            break;
-        case CMD_PINDWRITE:
-            cmd_status = pindwrite();
-            break;
-        case CMD_DEFAULT:
-            cmd_status = assignment();
-            break;
-        default:
-            cmd_status = POST_CMD_NEXT_LINE;
-            break;
-	}
-
-    // check if there was an error
-    if (error_code)
-        error_message();
-
-    // check if should warm reset
-    if (cmd_status == POST_CMD_WARM_RESET)
-        goto warm_reset;
-
-    // check if should return to prompt
-    if (cmd_status == POST_CMD_PROMPT)
-        goto prompt;
-
-    // check if should restart interpretation
-    if (cmd_status == POST_CMD_LOOP)
-        goto start_interpretation;
-
-    if (cmd_status == POST_CMD_NEXT_STATEMENT) {
-        ignorespace();
-        if (*txtpos == ':') {
-            while (*txtpos == ':')
-                txtpos++;
+            /* attempt to read line number */
+            linenum = get_linenumber();
             ignorespace();
-            goto start_interpretation;
-        } else
-            cmd_status = POST_CMD_NEXT_LINE;
+
+            /* if line number is present --> manipulate line */
+            if (linenum != 0) {
+                /* if line number invalid --> ignore line -- warm reset */
+                if (linenum == 0xFFFF) {
+                    error_code = 0x9;
+                    break;
+                }
+                /* if valid line number --> merge with program */
+                else {
+                    /* find length of line */
+                    linelen = 0;
+                    while (txtpos[linelen] != LF)
+                        linelen++;
+                    /* increase to account for LF */
+                    linelen++;
+                    /* increase even more for line-header */
+                    linelen += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+                    /* move pointer to the beginning of line header */
+                    txtpos -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+                    /* add line number and length*/
+                    * ((LINE_NUMBER *)txtpos) = linenum;
+                    txtpos[sizeof (LINE_NUMBER)] = linelen;
+                    /* remove line with same line number */
+                    start = find_line();
+                    remove_line();
+                    /* if new line is empty --> get another one */
+                    if (txtpos[sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH)] == LF)
+                        continue;
+                    /* append new line to program */
+                    append_line();
+                }
+            }
+            /* if there is no line number --> execute it immediately */
+            else {
+                break_flow = 0;
+                txtpos = program_end + sizeof (uint16_t);
+                if (*txtpos == LF)
+                    continue;
+                else
+                    break;
+            }
+        } // end of prompt loop
+
+        /* if no error --> start execution */
+        if (error_code == 0)
+            exec_status = execution();
+
+        /*
+         * do not combine these two checks!
+         * have to check for error again, just after execution...
+         */
+
+        /* if error --> print message */
+        if (error_code)
+            error_message();
+
+    } // end of warm-reset loop
+}
+
+uint8_t execution (void)
+{
+    while(1) {
+        if (break_test()) {
+            printmsg (msg_break, stdout);
+            return POST_CMD_WARM_RESET;
+        }
+
+        cmd_status = POST_CMD_NOTHING;
+        table_index = 0;
+        error_code = 0;
+        scantable (commands);
+
+        switch (table_index) {
+            case CMD_DELAY:
+                val = parse_step1();
+                fx_delay_ms (val);
+                cmd_status = POST_CMD_NEXT_LINE;
+                break;
+            case CMD_NEW:
+                cmd_status = prog_new();
+                break;
+            case CMD_BEEP:
+                do_beep();
+                cmd_status = POST_CMD_NEXT_LINE;
+                break;
+            case CMD_RUN:
+                cmd_status = prog_run();
+                break;
+            case CMD_IF:
+                cmd_status = check();
+                break;
+            case CMD_GOTO:
+                cmd_status = gotoline();
+                break;
+            case CMD_MPLAY:
+                cmd_status = play();
+                break;
+            case CMD_MSTOP:
+                cmd_status = stop();
+                break;
+            case CMD_TEMPO:
+                cmd_status = tempo();
+                break;
+            case CMD_MUSIC:
+                cmd_status = music();
+                break;
+            case CMD_END:
+            case CMD_STOP:
+                cmd_status = prog_end();
+                break;
+            case CMD_LIST:
+                cmd_status = list();
+                break;
+            case CMD_MEM:
+                cmd_status = mem();
+                break;
+            case CMD_PEN:
+                cmd_status = pen();
+                break;
+            case CMD_PAPER:
+                cmd_status = paper();
+                break;
+            case CMD_NEXT:
+                cmd_status = next();
+                if (error_code)
+                    break;
+                cmd_status = gosub_return();
+                break;
+            case CMD_LET:
+                cmd_status = assignment();
+                break;
+            case CMD_GOSUB:
+                cmd_status = gosub();
+                break;
+            case CMD_RETURN:
+                cmd_status = gosub_return();
+                break;
+            case CMD_RANDOMIZE:
+                cmd_status = randomize();
+                break;
+            case CMD_RNDSEED:
+                cmd_status = rndseed();
+                break;
+            case CMD_FOR:
+                cmd_status = loopfor();
+                break;
+            case CMD_INPUT:
+                cmd_status = input();
+                break;
+            case CMD_POKE:
+                cmd_status = poke();
+                break;
+            case CMD_PSET:
+                cmd_status = pset();
+                break;
+            case CMD_ELIST:
+                cmd_status = elist();
+                break;
+            case CMD_EFORMAT:
+                cmd_status = eformat();
+                break;
+            case CMD_ECHAIN:
+                main_config |= cfg_run_after_load;
+                cmd_status = eload();
+                break;
+            case CMD_ESAVE:
+                cmd_status = esave();
+                break;
+            case CMD_ELOAD:
+                cmd_status = eload();
+                break;
+            case CMD_RST:
+                cmd_status = reset_display();
+                break;
+            case CMD_PRINT:
+            case CMD_QMARK:
+                cmd_status = print();
+                break;
+            case CMD_LOCATE:
+                cmd_status = locate();
+                break;
+            case CMD_CLS:
+                cmd_status = clear_screen();
+                break;
+            case CMD_REM:
+            case CMD_HASH:
+            case CMD_QUOTE:
+                cmd_status = POST_CMD_NEXT_LINE;
+                break;
+            case CMD_PINDIR:
+                cmd_status = pindir();
+                break;
+            case CMD_PINDWRITE:
+                cmd_status = pindwrite();
+                break;
+            case CMD_DEFAULT:
+                cmd_status = assignment();
+                break;
+            default:
+                cmd_status = POST_CMD_NEXT_LINE;
+                break;
+        }
+
+        // check if should warm reset
+        if (cmd_status == POST_CMD_WARM_RESET)
+            return POST_CMD_WARM_RESET;
+
+        // check if should return to prompt
+        if (cmd_status == POST_CMD_PROMPT)
+            return POST_CMD_PROMPT;
+
+        // check if should restart interpretation
+        if (cmd_status == POST_CMD_LOOP)
+            continue;
+
+        if (cmd_status == POST_CMD_NEXT_STATEMENT) {
+            ignorespace();
+            if (*txtpos == ':') {
+                while (*txtpos == ':')
+                    txtpos++;
+                ignorespace();
+                continue;
+            } else
+                cmd_status = POST_CMD_NEXT_LINE;
+        }
+
+        // check if should proceed to next line
+        if (cmd_status == POST_CMD_NEXT_LINE) {
+            // check if in direct mode (no line number)
+            if (current_line == NULL)
+                return POST_CMD_WARM_RESET;
+            // proceed to next line
+            current_line += current_line[sizeof (uint16_t)];
+        }
+
+        // warm reset if reached end of program
+        if (current_line == program_end)
+            return POST_CMD_WARM_RESET;
+
+        // if reached here, start execution of next line
+        txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
     }
-
-    // check if should proceed to next line
-    if (cmd_status == POST_CMD_NEXT_LINE) {
-        // check if in direct mode (no line number)
-        if (current_line == NULL)
-            goto warm_reset;
-        // proceed to next line
-        current_line += current_line[sizeof (uint16_t)];
-    }
-
-	// warm reset if reached end of program
-	if (current_line == program_end)
-		goto warm_reset;
-
-    // if reached here, start execution of next line
-	txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-	goto start_interpretation;
+    //fputc ('>', &stream_pseudo);
+    //printnum ((uint16_t)cmd_status, &stream_pseudo);
 }

@@ -12,6 +12,7 @@ void remove_line (void);
 void error_message (void);
 void basic_init (void);
 void interpreter (void);
+uint8_t execution (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures
