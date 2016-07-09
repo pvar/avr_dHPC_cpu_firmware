@@ -118,6 +118,26 @@ void move_line (void)
 	txtpos = dest;
 }
 
+void prep_line (void)
+{
+    /* find length of line */
+    linelen = 0;
+    while (txtpos[linelen] != LF)
+        linelen++;
+    /* increase to account for LF */
+    linelen++;
+    /* increase even more for line-header */
+    linelen += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+    /* move pointer to the beginning of line header */
+    txtpos -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+    /* add line number and length*/
+    * ((LINE_NUMBER *)txtpos) = linenum;
+
+    txtpos[sizeof (LINE_NUMBER)] = linelen;
+    //* ((LINE_LENGTH *)(txtpos + sizeof(LINE_NUMBER))) = linelen;
+}
+
+
 
 void error_message (void)
 {
@@ -201,6 +221,18 @@ void error_message (void)
 	paper_color (0);
 }
 
+void warm_reset (void)
+{
+    // turn-on cursor
+    putchar (vid_cursor_on);
+    // turn-on scroll
+    putchar (vid_scroll_on);
+    // reset program-memory pointer
+    current_line = 0;
+    sp = program + MEMORY_SIZE;
+    printmsg (msg_ok, stdout);
+}
+
 // ----------------------------------------------------------------------------
 // Language environment init
 // ----------------------------------------------------------------------------
@@ -235,24 +267,15 @@ void interpreter (void)
     exec_status = POST_CMD_WARM_RESET;
 
     while(1) {
-
-        /* if asked --> perform a warm-reset */
+        /* if have to --> perform warm-reset */
         if (exec_status == POST_CMD_WARM_RESET) {
             exec_status = POST_CMD_NOTHING;
-            // turn-on cursor
-            putchar (vid_cursor_on);
-            // turn-on scroll
-            putchar (vid_scroll_on);
-            // reset program-memory pointer
-            current_line = 0;
-            sp = program + MEMORY_SIZE;
-            printmsg (msg_ok, stdout);
+            warm_reset();
         }
 
         while(1) {
             error_code = 0;
-
-            // check if autorun is enabled
+            /* check if autorun is enabled */
             if ((main_config & cfg_auto_run) || (main_config & cfg_run_after_load)) {
                 main_config &= ~cfg_auto_run;
                 main_config &= ~cfg_run_after_load;
@@ -260,48 +283,34 @@ void interpreter (void)
                 txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
                 break;
             }
-
             get_line();
             uppercase();
             move_line();
-
             /* attempt to read line number */
             linenum = get_linenumber();
             ignorespace();
-
-            /* if line number is present --> manipulate line */
+            /* line number is present --> manipulate line */
             if (linenum != 0) {
-                /* if line number invalid --> ignore line -- warm reset */
+                /* invalid line number --> ignore line :: warm reset */
                 if (linenum == 0xFFFF) {
                     error_code = 0x9;
                     break;
                 }
-                /* if valid line number --> merge with program */
+                /* valid line number --> merge with program */
                 else {
-                    /* find length of line */
-                    linelen = 0;
-                    while (txtpos[linelen] != LF)
-                        linelen++;
-                    /* increase to account for LF */
-                    linelen++;
-                    /* increase even more for line-header */
-                    linelen += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-                    /* move pointer to the beginning of line header */
-                    txtpos -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-                    /* add line number and length*/
-                    * ((LINE_NUMBER *)txtpos) = linenum;
-                    txtpos[sizeof (LINE_NUMBER)] = linelen;
+                    /* embed line number and line length */
+                    prep_line();
                     /* remove line with same line number */
                     start = find_line();
                     remove_line();
-                    /* if new line is empty --> get another one */
+                    /* new line is empty --> get another one */
                     if (txtpos[sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH)] == LF)
                         continue;
                     /* append new line to program */
                     append_line();
                 }
             }
-            /* if there is no line number --> execute it immediately */
+            /* no line number --> execute it immediately */
             else {
                 break_flow = 0;
                 txtpos = program_end + sizeof (uint16_t);
@@ -310,22 +319,18 @@ void interpreter (void)
                 else
                     break;
             }
-        } // end of prompt loop
-
+        }
         /* if no error --> start execution */
         if (error_code == 0)
             exec_status = execution();
 
-        /*
-         * do not combine these two checks!
-         * have to check for error again, just after execution...
-         */
+        // do not combine these two checks!
+        // should check for error again, after execution...
 
         /* if error --> print message */
         if (error_code)
             error_message();
-
-    } // end of warm-reset loop
+    }
 }
 
 uint8_t execution (void)

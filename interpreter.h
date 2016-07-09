@@ -13,6 +13,8 @@ void error_message (void);
 void basic_init (void);
 void interpreter (void);
 uint8_t execution (void);
+void warm_reset (void);
+void prep_line (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures
