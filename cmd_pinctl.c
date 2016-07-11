@@ -16,7 +16,6 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "interpreter.h"
 #include "cmd_pinctl.h"
 
 uint8_t pindir (void)

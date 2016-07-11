@@ -1,6 +1,10 @@
 #ifndef CMD_EEPROM_H
 #define CMD_EEPROM_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "interpreter.h"
+
 /*
  * function prototypes
  */

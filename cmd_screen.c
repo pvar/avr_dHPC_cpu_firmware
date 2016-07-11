@@ -16,7 +16,6 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "interpreter.h"
 #include "cmd_screen.h"
 
 uint8_t reset_display (void)

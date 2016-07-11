@@ -16,7 +16,6 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "interpreter.h"
 #include "cmd_audio.h"
 
 uint8_t play (void)

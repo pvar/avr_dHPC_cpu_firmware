@@ -16,7 +16,6 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "interpreter.h"
 #include "cmd_flow.h"
 
 uint8_t gotoline (void)

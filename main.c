@@ -16,19 +16,8 @@
 //
 // ----------------------------------------------------------------------------
 
-#define F_CPU UINT32_C(20000000)
-#define BAUD 57600
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <avr/io.h>
-#include <avr/eeprom.h>
-#include <avr/pgmspace.h>
-#include <avr/interrupt.h>
-#include <util/delay.h>
-#include <util/setbaud.h>
-
 #include "main.h"
+
 #include "io.c"
 #include "interpreter.c"
 

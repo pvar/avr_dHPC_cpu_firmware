@@ -1,3 +1,21 @@
+#ifndef MAIN_H
+#define MAIN_H
+
+#define F_CPU UINT32_C(20000000)
+#define BAUD 57600
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <avr/io.h>
+#include <avr/eeprom.h>
+#include <avr/pgmspace.h>
+#include <avr/interrupt.h>
+#include <util/delay.h>
+#include <util/setbaud.h>
+
+#include "io.h"
+#include "interpreter.h"
+
 // ----------------------------------------------------------------------------
 // program function prototypes
 // ----------------------------------------------------------------------------
@@ -36,10 +54,6 @@ void fx_delay_us (uint16_t us);
 // constants, variables and structures
 // ----------------------------------------------------------------------------
 
-#define MEMORY_SIZE (RAMEND - 1200)
-// MEMORY_SIZE = PROGRAM_SPACE + VAR_SIZE + STACK_SIZE
-// 1200 is the approximate footprint of all variables and CPU stack
-
 #define MAXCPL 32
 #define TXT_COL_DEFAULT 76
 #define TXT_COL_ERROR 3
@@ -53,3 +67,5 @@ void fx_delay_us (uint16_t us);
 #define cfg_from_eeprom 	8 // 4th bit
 
 uint8_t main_config;
+
+#endif

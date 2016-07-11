@@ -16,9 +16,7 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "interpreter.h"
 #include "cmd_other.h"
-
 
 int8_t input (void)
 {

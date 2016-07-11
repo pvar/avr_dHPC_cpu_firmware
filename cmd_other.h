@@ -1,6 +1,10 @@
 #ifndef CMD_OTHER_H
 #define CMD_OTHER_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "interpreter.h"
+
 /*
  * function prototypes
  */

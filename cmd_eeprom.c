@@ -16,7 +16,6 @@
 //
 // ----------------------------------------------------------------------------
 
-#include "interpreter.h"
 #include "cmd_eeprom.h"
 
 uint8_t elist (void)

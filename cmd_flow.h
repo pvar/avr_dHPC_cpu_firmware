@@ -1,6 +1,10 @@
 #ifndef CMD_FLOW_H
 #define CMD_FLOW_H
 
+#include <stdio.h>
+#include <stdlib.h>
+#include "interpreter.h"
+
 /*
  * function prototypes
  */
