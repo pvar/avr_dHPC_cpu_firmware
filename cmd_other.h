@@ -9,7 +9,6 @@
  * function prototypes
  */
 
-
 int8_t prog_run (void);
 int8_t prog_end (void);
 int8_t prog_new (void);

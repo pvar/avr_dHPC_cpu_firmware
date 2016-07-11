@@ -57,14 +57,13 @@ void fx_delay_us (uint16_t us);
 #define MAXCPL 32
 #define TXT_COL_DEFAULT 76
 #define TXT_COL_ERROR 3
-#define boolean uint8_t			// remove pseudo-type boolean!!!
 #define true 1
 #define false 0
 
-#define cfg_auto_run 		1 // 1st bit
-#define cfg_run_after_load	2 // 2nd bit
-#define cfg_from_sdcard		4 // 3rd bit
-#define cfg_from_eeprom 	8 // 4th bit
+#define cfg_auto_run 		1   // 1st bit
+#define cfg_run_after_load	2   // 2nd bit
+#define cfg_from_sdcard		4   // 3rd bit
+#define cfg_from_eeprom 	8   // 4th bit
 
 uint8_t main_config;
 
