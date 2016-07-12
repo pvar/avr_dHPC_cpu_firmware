@@ -38,7 +38,7 @@ uint8_t pen (void)
 {
 		uint16_t col;
 		// get color value
-		col = parse_step1();
+		col = parse_expr_s1();
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }
@@ -54,7 +54,7 @@ uint8_t paper (void)
 {
     uint16_t col;
     // get color value
-    col = parse_step1();
+    col = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
@@ -70,7 +70,7 @@ uint8_t locate (void)
 {
     uint16_t line, column;
     // get target line
-    line = parse_step1();
+    line = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
@@ -85,7 +85,7 @@ uint8_t locate (void)
     }
     txtpos++;
     // get target line
-    column = parse_step1();
+    column = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
@@ -117,7 +117,7 @@ uint8_t print (void)
 		} else {
 			uint16_t e;
 			error_code = 0;
-			e = parse_step1();
+			e = parse_expr_s1();
 			if (error_code) {
                 return POST_CMD_WARM_RESET;
             }
@@ -144,7 +144,7 @@ uint8_t pset (void)
 {
     uint16_t x, y, col;
     // get x-coordinate
-    x = parse_step1();
+    x = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
@@ -159,7 +159,7 @@ uint8_t pset (void)
     }
     txtpos++;
     // get y-coordinate
-    y = parse_step1();
+    y = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
@@ -174,7 +174,7 @@ uint8_t pset (void)
     }
     txtpos++;
     // get color
-    col = parse_step1();
+    col = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }

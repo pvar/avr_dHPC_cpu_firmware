@@ -124,7 +124,7 @@ int8_t assignment (void)
     }
     txtpos++;
     ignorespace();
-    value = parse_step1();
+    value = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
@@ -141,7 +141,7 @@ int8_t poke (void)
 {
     int16_t value, address;
     // get the address
-    address = parse_step1();
+    address = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
@@ -158,7 +158,7 @@ int8_t poke (void)
     txtpos++;
     // get the value to assign
     ignorespace();
-    value = parse_step1();
+    value = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
@@ -220,7 +220,7 @@ int8_t rndseed (void)
     uint16_t param;
     error_code = 0;
     // get seed for PRNG
-    param = (uint16_t)parse_step1();
+    param = (uint16_t)parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }

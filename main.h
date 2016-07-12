@@ -43,8 +43,8 @@ int16_t str_to_num (uint8_t *strptr);
 uint8_t break_test (void);
 
 // file-access related
-uint16_t isValidFnChar (uint8_t c);
-uint8_t * filenameWord (void);
+uint16_t valid_filename_char (uint8_t c);
+uint8_t * valid_filename (void);
 
 // delay functions
 void fx_delay_ms (uint16_t ms);

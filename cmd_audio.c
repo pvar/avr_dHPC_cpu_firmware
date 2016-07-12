@@ -34,7 +34,7 @@ uint8_t tempo (void)
 {
 		uint16_t specified_tempo;
 		ignorespace();
-		specified_tempo = parse_step1();
+		specified_tempo = parse_expr_s1();
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }

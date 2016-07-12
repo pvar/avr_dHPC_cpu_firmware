@@ -9,11 +9,11 @@
 // program function prototypes
 // ----------------------------------------------------------------------------
 
-static void init_io (void);
-static void init_kb (void);
+static void kb_decode (uint8_t sc);
+static void kb_to_buffer (uint8_t chr);
 
-void kb_decode (uint8_t sc);
-void kb_to_buffer (uint8_t chr);
+void init_io (void);
+void init_kb (void);
 
 void uart_ansi_rst_clr (void);
 void uart_ansi_move_cursor (uint8_t row, uint8_t col);

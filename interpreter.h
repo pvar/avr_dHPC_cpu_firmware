@@ -17,15 +17,15 @@
 // ----------------------------------------------------------------------------
 
 uint16_t get_linenumber (void);
-void move_line (void);
-void append_line (void);
-void remove_line (void);
-void error_message (void);
 void basic_init (void);
 void interpreter (void);
-uint8_t execution (void);
-void warm_reset (void);
-void prep_line (void);
+static uint8_t execution (void);
+static void warm_reset (void);
+static void append_line (void);
+static void remove_line (void);
+static void move_line (void);
+static void prep_line (void);
+static void error_message (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures
@@ -60,7 +60,7 @@ const uint8_t err_msg01[20];
 const uint8_t err_msg02[13];
 const uint8_t err_msg03[15];
 const uint8_t err_msg04[21];
-const uint8_t err_msg05_06[20];
+const uint8_t err_msg05[20];
 const uint8_t err_msg07[18];
 const uint8_t err_msg08[21];
 const uint8_t err_msg09[20];

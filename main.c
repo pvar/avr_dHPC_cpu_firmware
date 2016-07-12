@@ -271,9 +271,11 @@ unsigned char *find_line (void)
 {
 	uint8_t *line = program_start;
 	while (1) {
-		if (line == program_end) return line;
-		if (((uint16_t *) line)[0] >= linenum) return line;
-		// Add the line length onto the current address, to get to the next line;
+		if (line == program_end)
+            return line;
+		if (((uint16_t *) line)[0] >= linenum)
+            return line;
+		// add line length to current address :: get to next line;
 		line += line[ sizeof (uint16_t) ];
 	}
 }
@@ -305,7 +307,7 @@ void uppercase (void)
 // ----------------------------------------------------------------------------
 
 // return 1 if the character is acceptable for a file name
-uint16_t isValidFnChar (uint8_t c)
+uint16_t valid_filename_char (uint8_t c)
 {
 	if ((c >= '0' && c <= '9')
 		|| (c >= 'A' && c <= 'Z')
@@ -319,27 +321,27 @@ uint16_t isValidFnChar (uint8_t c)
 		return 0;
 }
 
-uint8_t * filenameWord (void)
+uint8_t * valid_filename (void)
 {
 	// SDL - I wasn't sure if this functionality existed above, so I figured i'd put it here
 	uint8_t * ret = txtpos;
 	error_code = 0;
 	// make sure there are no quotes or spaces, search for valid characters
 	// while (*txtpos == SPACE || *txtpos == TAB || *txtpos == SQUOTE || *txtpos == DQUOTE) txtpos++;
-	while (!isValidFnChar (*txtpos))
+	while (!valid_filename_char (*txtpos))
 		txtpos++;
 	ret = txtpos;
 	if (*ret == '\0') {
 		error_code = 1;
 		return ret;
 	}
-	// now, find the next nonfnchar
+	// find the next invalid char
 	txtpos++;
-	while (isValidFnChar (*txtpos))
+	while (valid_filename_char (*txtpos))
 		txtpos++;
 	if (txtpos != ret)
 		*txtpos = '\0';
-	// set the error code if we've got no string
+	// set error code if no string
 	if (*ret == '\0')
 		error_code = 1;
 	return ret;

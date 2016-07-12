@@ -22,7 +22,7 @@ uint8_t pindir (void)
 {
 		uint16_t a, b;
 		// get pin number [0..7]
-		a = parse_step1();
+		a = parse_expr_s1();
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }
@@ -38,7 +38,7 @@ uint8_t pindir (void)
 		}
 		txtpos++;
 		// get direction [0/1]
-		b = parse_step1();
+		b = parse_expr_s1();
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }
@@ -63,7 +63,7 @@ uint8_t pindwrite (void)
 {
 		uint16_t a, b;
 		// get pin number [0..7]
-		a = parse_step1();
+		a = parse_expr_s1();
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }
@@ -79,7 +79,7 @@ uint8_t pindwrite (void)
 		}
 		txtpos++;
 		// get value [0/1]
-		b = parse_step1();
+		b = parse_expr_s1();
         if (error_code) {
             return POST_CMD_WARM_RESET;
         }

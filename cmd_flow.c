@@ -20,7 +20,7 @@
 
 uint8_t gotoline (void)
 {
-    linenum = parse_step1();
+    linenum = parse_expr_s1();
     if (error_code || *txtpos != LF) {
         error_code = 0x4;
         return POST_CMD_WARM_RESET;
@@ -31,7 +31,7 @@ uint8_t gotoline (void)
 
 uint8_t check (void)
 {
-    val = parse_step1();
+    val = parse_expr_s1();
     if (error_code || *txtpos == LF) {
         error_code = 0x4;
         return POST_CMD_WARM_RESET;
@@ -61,7 +61,7 @@ uint8_t loopfor (void)
 		txtpos++;
 		ignorespace();
 		error_code = 0;
-		initial = parse_step1();
+		initial = parse_expr_s1();
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }
@@ -70,13 +70,13 @@ uint8_t loopfor (void)
 			error_code = 0x2;
             return POST_CMD_WARM_RESET;
 		}
-		terminal = parse_step1();
+		terminal = parse_expr_s1();
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }
         scantable (step_tab);
 		if (table_index == 0) {
-			step = parse_step1();
+			step = parse_expr_s1();
 			if (error_code) {
                 return POST_CMD_WARM_RESET;
             }
@@ -110,7 +110,7 @@ uint8_t loopfor (void)
 uint8_t gosub (void)
 {
 	error_code = 0;
-	linenum = parse_step1();
+	linenum = parse_expr_s1();
 	if (!error_code && *txtpos == LF) {
 		struct stack_gosub_frame *f;
 		if (sp + sizeof (struct stack_gosub_frame) < stack_limit) {
@@ -191,7 +191,7 @@ uint8_t gosub_return (void)
             return POST_CMD_WARM_RESET;
 		}
 	}
-	// Didn't find the variable we've been looking for
+	// cannot find the return point
 	error_code = 0x8;
     return POST_CMD_WARM_RESET;
 }

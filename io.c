@@ -163,134 +163,11 @@ const uint8_t to_ascii[512] PROGMEM = {
 	0, 0, 0, 0,
 };
 
-// ----------------------------------------------------------------------------
-// IO initialization
-// ----------------------------------------------------------------------------
-static void init_io (void)
-{
-	// setup fundamental stream
-	stdout = stdin = &stream_physical;
-	// configure analog to digital converter
-	ADMUX = 0;
-	ADCSRA = _BV (ADEN) | _BV (ADPS2) | _BV (ADPS1) | _BV (ADPS0);
-	// do the first conversion (initialization)
-	ADCSRA |= _BV (ADSC);
-	while (ADCSRA & _BV (ADSC));
-	// configure secondary data bus pins (inputs with pull-up resistors)
-	sec_data_bus_dir = 0;
-	sec_data_bus_out = 255;
-	// configure buzzer and LED pin
-	aux_ctl_bus_dir |= buzzer_led;
-	aux_ctl_bus_out |= buzzer_led;
-	// setup keyboard connection
-	init_kb();
-	// initial data bus value
-	pri_data_bus_dir = 255;
-	// setup GPU control pins
-	peripheral_bus_dir &= ~from_gpu;
-	peripheral_bus_dir |= to_gpu;
-	// setup APU control pins
-	peripheral_bus_dir &= ~from_apu;
-	peripheral_bus_dir |= to_apu;
-	// display "boot" message
-	//putchar( vid_reset );
-	// setup UART connection
-	UBRR0H = UBRRH_VALUE;
-	UBRR0L = UBRRL_VALUE;
-	UCSR0C = _BV (UCSZ01) | _BV (UCSZ00);	// 8bit data
-	UCSR0B = _BV (RXEN0) | _BV (TXEN0);	// enable RX - TX
-	uart_ansi_rst_clr();
-}
-
-
-
-// ----------------------------------------------------------------------------
-// setup communication with keyboard
-// ----------------------------------------------------------------------------
-static void init_kb (void)
-{
-	//enable emergency break key (INT2)
-	aux_ctl_bus_dir	&= ~break_key;		// configure relevant pin as input
-	aux_ctl_bus_out	|= break_key;		// enable pull up resistor
-	EIMSK |= BREAK_INT;					// enable INT2 interrupt
-	// setup clock and data pins as inputs
-	peripheral_bus_dir &= ~kb_dat_pin;
-	peripheral_bus_dir &= ~kb_clk_pin;
-	peripheral_bus_out |= kb_dat_pin;
-	peripheral_bus_out |= kb_clk_pin;
-	// setup timer0 for keyboard time-out
-	TCCR0A = _BV (WGM01);
-	TCCR0B = 0;
-	OCR0A = 100;
-	TIMSK0 = _BV (OCIE0A);
-	break_flow = 0;
-	// bit counter
-	kb_bit_cnt = 11;
-	// enable keyboard transmit interrupt (INT0)
-	EICRA = 2;
-	edge = 0;
-	EIMSK |= KEYBOARD_INT;
-	sei();
-}
-
-// ----------------------------------------------------------------------------
-// ISR for receiving BREAK signal
-// ----------------------------------------------------------------------------
-ISR (INT2_vect)
-{
-	// signal program-break
-	break_flow = 1;
-	// disable emergency break key
-	EIMSK &= ~BREAK_INT;
-}
-
-// ----------------------------------------------------------------------------
-// ISR for deleting residual bits
-// ----------------------------------------------------------------------------
-ISR (TIMER0_COMPA_vect)   // , ISR_NAKED )
-{
-	// reset bit counter
-	kb_bit_cnt = 11;
-	// stop timer
-	TCCR0B = 0;
-}
-
-// ----------------------------------------------------------------------------
-// ISR for reading and storing incoming bits (PS2 clock)
-// ----------------------------------------------------------------------------
-ISR (INT0_vect)
-{
-	uint8_t bit_val;						// incoming bit
-	static uint8_t raw_data;				// received scan code
-	// get bit value as quickly as possible!
-	bit_val = peripheral_bus_in;
-	bit_val &= kb_dat_pin;
-	if (! edge) {
-		// start timer
-		if (kb_bit_cnt == 11)
-            TCCR0B = _BV (CS02) | _BV (CS00);
-		if (kb_bit_cnt < 11 && kb_bit_cnt > 2) {	// Bits 3 to 10 are useful data.
-			// Parity, start and stop bits are ignored.
-			raw_data = (raw_data >> 1);
-			if (bit_val) raw_data = raw_data | 0x80;
-		}
-		EICRA = 3;								// set interrupt on rising edge
-		edge = 1;								// 1: rising edge
-	} else {
-		kb_bit_cnt--;
-		if (kb_bit_cnt == 0) {				// when all bits are received
-			kb_decode (raw_data);
-			kb_bit_cnt = 11;
-		}
-		EICRA = 2;								// set interrupt on falling edge
-		edge = 0;								// 0: falling edge
-	}
-}
 
 // ----------------------------------------------------------------------------
 // translation of keyboard scan codes to ASCII
 // ----------------------------------------------------------------------------
-void kb_decode (uint8_t sc)
+static void kb_decode (uint8_t sc)
 {
 	static uint8_t kb_status = 0;
 	uint8_t tmp;
@@ -376,7 +253,7 @@ void kb_decode (uint8_t sc)
 // ----------------------------------------------------------------------------
 // write to keyboard buffer
 // ----------------------------------------------------------------------------
-void kb_to_buffer (uint8_t chr)
+static void kb_to_buffer (uint8_t chr)
 {
 	// only proceed if keyboard buffer is not full
 	if (kb_buffer_cnt < KB_BUFFER_SIZE) {
@@ -390,6 +267,130 @@ void kb_to_buffer (uint8_t chr)
 			kb_write_ptr = 0;
 	} else
 		do_beep();	// should not beep while running a program !!!
+}
+
+// ----------------------------------------------------------------------------
+// IO initialization
+// ----------------------------------------------------------------------------
+void init_io (void)
+{
+	// setup fundamental stream
+	stdout = stdin = &stream_physical;
+	// configure analog to digital converter
+	ADMUX = 0;
+	ADCSRA = _BV (ADEN) | _BV (ADPS2) | _BV (ADPS1) | _BV (ADPS0);
+	// do the first conversion (initialization)
+	ADCSRA |= _BV (ADSC);
+	while (ADCSRA & _BV (ADSC));
+	// configure secondary data bus pins (inputs with pull-up resistors)
+	sec_data_bus_dir = 0;
+	sec_data_bus_out = 255;
+	// configure buzzer and LED pin
+	aux_ctl_bus_dir |= buzzer_led;
+	aux_ctl_bus_out |= buzzer_led;
+	// setup keyboard connection
+	init_kb();
+	// initial data bus value
+	pri_data_bus_dir = 255;
+	// setup GPU control pins
+	peripheral_bus_dir &= ~from_gpu;
+	peripheral_bus_dir |= to_gpu;
+	// setup APU control pins
+	peripheral_bus_dir &= ~from_apu;
+	peripheral_bus_dir |= to_apu;
+	// display "boot" message
+	//putchar( vid_reset );
+	// setup UART connection
+	UBRR0H = UBRRH_VALUE;
+	UBRR0L = UBRRL_VALUE;
+	UCSR0C = _BV (UCSZ01) | _BV (UCSZ00);	// 8bit data
+	UCSR0B = _BV (RXEN0) | _BV (TXEN0);	// enable RX - TX
+	uart_ansi_rst_clr();
+}
+
+
+
+// ----------------------------------------------------------------------------
+// setup communication with keyboard
+// ----------------------------------------------------------------------------
+void init_kb (void)
+{
+	//enable emergency break key (INT2)
+	aux_ctl_bus_dir	&= ~break_key;		// configure relevant pin as input
+	aux_ctl_bus_out	|= break_key;		// enable pull up resistor
+	EIMSK |= BREAK_INT;					// enable INT2 interrupt
+	// setup clock and data pins as inputs
+	peripheral_bus_dir &= ~kb_dat_pin;
+	peripheral_bus_dir &= ~kb_clk_pin;
+	peripheral_bus_out |= kb_dat_pin;
+	peripheral_bus_out |= kb_clk_pin;
+	// setup timer0 for keyboard time-out
+	TCCR0A = _BV (WGM01);
+	TCCR0B = 0;
+	OCR0A = 100;
+	TIMSK0 = _BV (OCIE0A);
+	break_flow = 0;
+	// bit counter
+	kb_bit_cnt = 11;
+	// enable keyboard transmit interrupt (INT0)
+	EICRA = 2;
+	edge = 0;
+	EIMSK |= KEYBOARD_INT;
+	sei();
+}
+
+// ----------------------------------------------------------------------------
+// ISR for receiving BREAK signal
+// ----------------------------------------------------------------------------
+ISR (INT2_vect)
+{
+	// signal program-break
+	break_flow = 1;
+	// disable emergency break key
+	EIMSK &= ~BREAK_INT;
+}
+
+// ----------------------------------------------------------------------------
+// ISR for deleting residual bits
+// ----------------------------------------------------------------------------
+ISR (TIMER0_COMPA_vect)   // , ISR_NAKED )
+{
+	// reset bit counter
+	kb_bit_cnt = 11;
+	// stop timer
+	TCCR0B = 0;
+}
+
+// ----------------------------------------------------------------------------
+// ISR for reading and storing incoming bits (PS2 clock)
+// ----------------------------------------------------------------------------
+ISR (INT0_vect)
+{
+	uint8_t bit_val;						// incoming bit
+	static uint8_t raw_data;				// received scan code
+	// get bit value as quickly as possible!
+	bit_val = peripheral_bus_in;
+	bit_val &= kb_dat_pin;
+	if (! edge) {
+		// start timer
+		if (kb_bit_cnt == 11)
+            TCCR0B = _BV (CS02) | _BV (CS00);
+		if (kb_bit_cnt < 11 && kb_bit_cnt > 2) {	// Bits 3 to 10 are useful data.
+			// Parity, start and stop bits are ignored.
+			raw_data = (raw_data >> 1);
+			if (bit_val) raw_data = raw_data | 0x80;
+		}
+		EICRA = 3;								// set interrupt on rising edge
+		edge = 1;								// 1: rising edge
+	} else {
+		kb_bit_cnt--;
+		if (kb_bit_cnt == 0) {				// when all bits are received
+			kb_decode (raw_data);
+			kb_bit_cnt = 11;
+		}
+		EICRA = 2;								// set interrupt on falling edge
+		edge = 0;								// 0: falling edge
+	}
 }
 
 // ----------------------------------------------------------------------------
