@@ -18,6 +18,9 @@
 
 #include "io.h"
 
+static void kb_decode (uint8_t sc);
+static void kb_to_buffer (uint8_t chr);
+
 // streams of data to and from IO devices
 FILE stream_physical = FDEV_SETUP_STREAM (putchar_phy, getchar_phy, _FDEV_SETUP_RW);
 FILE stream_pseudo = FDEV_SETUP_STREAM (putchar_ser, getchar_ser, _FDEV_SETUP_RW);
@@ -434,6 +437,7 @@ int putchar_ser (char chr, FILE *stream)
         putchar_ser (CR, stream);
 	loop_until_bit_is_set (UCSR0A, UDRE0);
 	UDR0 = chr;
+    return 0;
 }
 
 // ----------------------------------------------------------------------------

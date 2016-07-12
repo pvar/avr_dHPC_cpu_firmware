@@ -19,13 +19,6 @@
 uint16_t get_linenumber (void);
 void basic_init (void);
 void interpreter (void);
-static uint8_t execution (void);
-static void warm_reset (void);
-static void append_line (void);
-static void remove_line (void);
-static void move_line (void);
-static void prep_line (void);
-static void error_message (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures

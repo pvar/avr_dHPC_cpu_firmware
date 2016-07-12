@@ -9,9 +9,6 @@
 // program function prototypes
 // ----------------------------------------------------------------------------
 
-static void kb_decode (uint8_t sc);
-static void kb_to_buffer (uint8_t chr);
-
 void init_io (void);
 void init_kb (void);
 

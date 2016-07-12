@@ -1,8 +1,8 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#define F_CPU UINT32_C(20000000)
-#define BAUD 57600
+//#define F_CPU UINT32_C(20000000)
+//#define BAUD 57600
 
 #include <stdio.h>
 #include <stdlib.h>

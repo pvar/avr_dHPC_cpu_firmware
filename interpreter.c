@@ -18,6 +18,14 @@
 
 #include "interpreter.h"
 
+static uint8_t execution (void);
+static void warm_reset (void);
+static void append_line (void);
+static void remove_line (void);
+static void move_line (void);
+static void prep_line (void);
+static void error_message (void);
+
 const uint8_t msg_welcome[25]	PROGMEM = "Welcome to nstBASIC v0.2\0";
 const uint8_t msg_ram_bytes[11]	PROGMEM = " bytes RAM\0";
 const uint8_t msg_rom_bytes[11]	PROGMEM = " bytes ROM\0";
@@ -46,14 +54,6 @@ const uint8_t err_msg11[22]		PROGMEM = "Invalid variable name\0";
 const uint8_t err_msg12[23]		PROGMEM = "Expected byte [0..255]\0";
 const uint8_t err_msg13[13]		PROGMEM = "Out of range\0";
 const uint8_t err_msg14[24]		PROGMEM = "Expected color [0..127]\0";
-
-#include "parser.c"
-#include "cmd_audio.c"
-#include "cmd_screen.c"
-#include "cmd_flow.c"
-#include "cmd_eeprom.c"
-#include "cmd_pinctl.c"
-#include "cmd_other.c"
 
 uint16_t get_linenumber (void)
 {

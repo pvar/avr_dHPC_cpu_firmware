@@ -10,17 +10,11 @@
 // ----------------------------------------------------------------------------
 // program function prototypes
 // ----------------------------------------------------------------------------
+
 void scantable (const uint8_t *table);
 void parse_channel (void);
 void parse_notes (void);
 int16_t parse_expr_s1 (void);
-static int16_t parse_expr_s2 (void);
-static int16_t parse_expr_s3 (void);
-static int16_t parse_expr_s4 (void);
-static uint8_t get_note (void);
-static uint8_t get_effect (void);
-static uint8_t get_duration (void);
-static uint8_t get_octave (void);
 
 // ----------------------------------------------------------------------------
 // constants, variables and structures

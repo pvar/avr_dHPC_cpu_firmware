@@ -18,6 +18,14 @@
 
 #include "parser.h"
 
+static int16_t parse_expr_s2 (void);
+static int16_t parse_expr_s3 (void);
+static int16_t parse_expr_s4 (void);
+static uint8_t get_note (void);
+static uint8_t get_effect (void);
+static uint8_t get_duration (void);
+static uint8_t get_octave (void);
+
 // functions which cannot be part of a larger expression  (return nothing / might print a value)
 const uint8_t commands[208] PROGMEM = {
 	'L', 'I', 'S', 'T' + 0x80,
@@ -428,6 +436,9 @@ static int16_t parse_expr_s4 (void)
 		txtpos++;
 		return value1;
 	}
+    /* SOME APPROPRIATE ERROR CODE */
+    error_code = 0x6;
+    return 0;
 }
 
 // ----------------------------------------------------------------------------
@@ -517,6 +528,7 @@ static uint8_t get_note (void)
             error_code = 0x4;
             break;
 	}
+    return 0;
 }
 
 // ----------------------------------------------------------------------------

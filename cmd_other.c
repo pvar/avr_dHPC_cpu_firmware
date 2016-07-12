@@ -23,7 +23,7 @@ int8_t input (void)
     uint8_t chr = 0;
     uint8_t cnt = 0;
     int16_t *var;
-    int16_t test;
+
     // variable to store user value
     ignorespace();
     if (*txtpos < 'A' || *txtpos > 'Z') {
