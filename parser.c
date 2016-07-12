@@ -26,80 +26,97 @@ static uint8_t get_effect (void);
 static uint8_t get_duration (void);
 static uint8_t get_octave (void);
 
-// functions which cannot be part of a larger expression  (return nothing / might print a value)
+// functions which cannot be part of a larger expressions
+// they never return a value, but might print data
 const uint8_t commands[208] PROGMEM = {
-	'L', 'I', 'S', 'T' + 0x80,
-	'N', 'E', 'W' + 0x80,
-	'R', 'U', 'N' + 0x80,
-	'N', 'E', 'X', 'T' + 0x80,
-	'L', 'E', 'T' + 0x80,
-	'I', 'F' + 0x80,
-	'G', 'O', 'T', 'O' + 0x80,
-	'M', 'P', 'L', 'A', 'Y' + 0x80,
-	'M', 'S', 'T', 'O', 'P' + 0x80,
-	'T', 'E', 'M', 'P', 'O' + 0x80,
-	'M', 'U', 'S', 'I', 'C' + 0x80,
-	'G', 'O', 'S', 'U', 'B' + 0x80,
-	'R', 'E', 'T', 'U', 'R', 'N' + 0x80,
-	'R', 'A', 'N', 'D', 'O', 'M', 'I', 'Z', 'E' + 0x80,
-	'R', 'N', 'D', 'S', 'E', 'E', 'D' + 0x80,
-	'R', 'S', 'T' + 0x80,
-	'C', 'L', 'S' + 0x80,
-	'R', 'E', 'M' + 0x80,
-	'F', 'O', 'R' + 0x80,
-	'I', 'N', 'P', 'U', 'T' + 0x80,
-	'B', 'E', 'E', 'P' + 0x80,
-	'P', 'R', 'I', 'N', 'T' + 0x80,
-	'L', 'O', 'C', 'A', 'T', 'E' + 0x80,
-	'P', 'O', 'K', 'E' + 0x80,
-	'P', 'S', 'E', 'T' + 0x80,
-	'S', 'T', 'O', 'P' + 0x80,
-	'E', 'N', 'D' + 0x80,
-	'M', 'E', 'M' + 0x80,
-	'P', 'E', 'N' + 0x80,
-	'P', 'A', 'P', 'E', 'R' + 0x80,
-	'?' + 0x80,
-	'#' + 0x80,
-	'\'' + 0x80,
-	'D', 'E', 'L', 'A', 'Y' + 0x80,
-	'E', 'L', 'I', 'S', 'T' + 0x80,
-	'E', 'F', 'O', 'R', 'M', 'A', 'T' + 0x80,
-	'E', 'C', 'H', 'A', 'I', 'N' + 0x80,
-	'E', 'S', 'A', 'V', 'E' + 0x80,
-	'E', 'L', 'O', 'A', 'D' + 0x80,
-	'F', 'I', 'L', 'E', 'S' + 0x80,
-	'C', 'F', 'O', 'R', 'M', 'A', 'T' + 0x80,
-	'C', 'C', 'H', 'A', 'I', 'N' + 0x80,
-	'C', 'S', 'A', 'V', 'E' + 0x80,
-	'C', 'L', 'O', 'A', 'D' + 0x80,
-	'P', 'I', 'N', 'D', 'I', 'R' + 0x80,
-	'P', 'I', 'N', 'D', 'W', 'R', 'I', 'T', 'E' + 0x80,
-	0
-};
-// functions that must be part of a larger expression (return a value / print nothing)
+            'L', 'I', 'S', 'T' + 0x80,
+            'N', 'E', 'W' + 0x80,
+            'R', 'U', 'N' + 0x80,
+            'N', 'E', 'X', 'T' + 0x80,
+            'L', 'E', 'T' + 0x80,
+            'I', 'F' + 0x80,
+            'G', 'O', 'T', 'O' + 0x80,
+            'M', 'P', 'L', 'A', 'Y' + 0x80,
+            'M', 'S', 'T', 'O', 'P' + 0x80,
+            'T', 'E', 'M', 'P', 'O' + 0x80,
+            'M', 'U', 'S', 'I', 'C' + 0x80,
+            'G', 'O', 'S', 'U', 'B' + 0x80,
+            'R', 'E', 'T', 'U', 'R', 'N' + 0x80,
+            'R', 'A', 'N', 'D', 'O', 'M', 'I', 'Z', 'E' + 0x80,
+            'R', 'N', 'D', 'S', 'E', 'E', 'D' + 0x80,
+            'R', 'S', 'T' + 0x80,
+            'C', 'L', 'S' + 0x80,
+            'R', 'E', 'M' + 0x80,
+            'F', 'O', 'R' + 0x80,
+            'I', 'N', 'P', 'U', 'T' + 0x80,
+            'B', 'E', 'E', 'P' + 0x80,
+            'P', 'R', 'I', 'N', 'T' + 0x80,
+            'L', 'O', 'C', 'A', 'T', 'E' + 0x80,
+            'P', 'O', 'K', 'E' + 0x80,
+            'P', 'S', 'E', 'T' + 0x80,
+            'S', 'T', 'O', 'P' + 0x80,
+            'E', 'N', 'D' + 0x80,
+            'M', 'E', 'M' + 0x80,
+            'P', 'E', 'N' + 0x80,
+            'P', 'A', 'P', 'E', 'R' + 0x80,
+            '?' + 0x80,
+            '#' + 0x80,
+            '\'' + 0x80,
+            'D', 'E', 'L', 'A', 'Y' + 0x80,
+            'E', 'L', 'I', 'S', 'T' + 0x80,
+            'E', 'F', 'O', 'R', 'M', 'A', 'T' + 0x80,
+            'E', 'C', 'H', 'A', 'I', 'N' + 0x80,
+            'E', 'S', 'A', 'V', 'E' + 0x80,
+            'E', 'L', 'O', 'A', 'D' + 0x80,
+            'F', 'I', 'L', 'E', 'S' + 0x80,
+            'C', 'F', 'O', 'R', 'M', 'A', 'T' + 0x80,
+            'C', 'C', 'H', 'A', 'I', 'N' + 0x80,
+            'C', 'S', 'A', 'V', 'E' + 0x80,
+            'C', 'L', 'O', 'A', 'D' + 0x80,
+            'P', 'I', 'N', 'D', 'I', 'R' + 0x80,
+            'P', 'I', 'N', 'D', 'W', 'R', 'I', 'T', 'E' + 0x80,
+            0
+        };
+
+// functions that must be part of a larger expression
+// they always return a value and never print anything
 const uint8_t functions[27] PROGMEM = {
-	'P', 'E', 'E', 'K' + 0x80,
-	'A', 'B', 'S' + 0x80,
-	'R', 'N', 'D' + 0x80,
-	'P', 'I', 'N', 'D', 'R', 'E', 'A', 'D' + 0x80,
-	'P', 'I', 'N', 'A', 'R', 'E', 'A', 'D' + 0x80,
-	0
-};
+            'P', 'E', 'E', 'K' + 0x80,
+            'A', 'B', 'S' + 0x80,
+            'R', 'N', 'D' + 0x80,
+            'P', 'I', 'N', 'D', 'R', 'E', 'A', 'D' + 0x80,
+            'P', 'I', 'N', 'A', 'R', 'E', 'A', 'D' + 0x80,
+            0
+        };
+
 // relational operators
 const uint8_t relop_table[12] PROGMEM = {
-	'>', '=' + 0x80,
-	'<', '>' + 0x80,
-	'>' + 0x80,
-	'=' + 0x80,
-	'<', '=' + 0x80,
-	'<' + 0x80,
-	'!', '=' + 0x80,
-	0
-};
+            '>', '=' + 0x80,
+            '<', '>' + 0x80,
+            '>' + 0x80,
+            '=' + 0x80,
+            '<', '=' + 0x80,
+            '<' + 0x80,
+            '!', '=' + 0x80,
+            0
+        };
+
 // other keywords
-const uint8_t to_tab[3] PROGMEM = { 'T', 'O' + 0x80, 0 };
-const uint8_t step_tab[5] PROGMEM = { 'S', 'T', 'E', 'P' + 0x80, 0 };
-const uint8_t highlow_tab[12] PROGMEM = { 'H', 'I', 'G', 'H' + 0x80, 'H', 'I' + 0x80, 'L', 'O', 'W' + 0x80, 'L', 'O' + 0x80, 0 };
+const uint8_t to_tab[3] PROGMEM = {
+            'T', 'O' + 0x80,
+            0
+        };
+const uint8_t step_tab[5] PROGMEM = {
+            'S', 'T', 'E', 'P' + 0x80,
+            0
+        };
+const uint8_t highlow_tab[12] PROGMEM = {
+            'H', 'I', 'G', 'H' + 0x80,
+            'H', 'I' + 0x80,
+            'L', 'O', 'W' + 0x80,
+            'L', 'O' + 0x80,
+            0
+        };
 
 // ----------------------------------------------------------------------------
 // search for valid function/command name
@@ -107,18 +124,17 @@ const uint8_t highlow_tab[12] PROGMEM = { 'H', 'I', 'G', 'H' + 0x80, 'H', 'I' + 
 void scantable (const uint8_t *table)
 {
 	uint16_t i = 0;
-	table_index = 0;
 	while (1) {
 		// end of given table...
 		if (pgm_read_byte (table) == 0)
             return;
 		// character match...
-		if (txtpos[i] == pgm_read_byte (table)) {
+		if (pgm_read_byte (table) == txtpos[i]) {
 			i++;
 			table++;
 		} else {
 			// match the last character of keyword (0x80 added)
-			if (txtpos[i] + 0x80 == pgm_read_byte (table)) {
+			if (pgm_read_byte (table) == txtpos[i] + 0x80) {
 				txtpos += i + 1;	// point after the scanned keyword
 				ignorespace();
 				return;

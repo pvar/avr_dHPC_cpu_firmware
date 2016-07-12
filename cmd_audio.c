@@ -35,9 +35,8 @@ uint8_t tempo (void)
 		uint16_t specified_tempo;
 		ignorespace();
 		specified_tempo = parse_expr_s1();
-		if (error_code) {
+		if (error_code)
             return POST_CMD_WARM_RESET;
-        }
 		switch (specified_tempo) {
             case 60:
                 send_to_apu (snd_tempo);

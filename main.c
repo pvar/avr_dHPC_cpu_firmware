@@ -205,7 +205,8 @@ void get_line (void)
 				}
 				break;
 			case ARLT:		// ARROW LEFT
-				if (txtpos <= program_end + 2) do_beep();
+				if (txtpos <= program_end + 2)
+                    do_beep();
 				else {
 					putchar (vid_tolft);
 					txtpos--;
@@ -215,7 +216,8 @@ void get_line (void)
 				if (txtpos < maxpos) {
 					txtpos++;
 					putchar (vid_torgt);
-				} else do_beep();
+				} else
+                    do_beep();
 				break;
 			///////////////////////////////////////////////////////
 			case ARUP:		// ARROW UP
@@ -230,7 +232,8 @@ void get_line (void)
 				newline (stdout);
 				return;
 			case BS:
-				if (txtpos <= program_end + 2) do_beep();
+				if (txtpos <= program_end + 2)
+                    do_beep();
 				else {
 					putchar (BS);
 					txtpos--;
@@ -238,12 +241,14 @@ void get_line (void)
 				break;
 			default:
 				// need at least one space to allow shuffling the lines
-				if (txtpos == variables_begin - 2) do_beep();
+				if (txtpos == variables_begin - 2)
+                    do_beep();
 				else {
 					putchar (incoming_char);
 					txtpos[0] = incoming_char;
 					txtpos++;
-					if (txtpos > maxpos) maxpos = txtpos;
+					if (txtpos > maxpos)
+                        maxpos = txtpos;
 				}
 			}
 		}
@@ -292,9 +297,12 @@ void uppercase (void)
 	uint8_t quote = 0;
 	while (*c != LF) {
 		// are we in a quoted string?
-		if (*c == quote) quote = 0;
-		else if (*c == DQUOTE || *c == SQUOTE) quote = *c;
-		else if (quote == 0 && *c >= 'a' && *c <= 'z') *c = *c + 'A' - 'a';
+		if (*c == quote)
+            quote = 0;
+		else if (*c == DQUOTE || *c == SQUOTE)
+            quote = *c;
+		else if (quote == 0 && *c >= 'a' && *c <= 'z')
+            *c = *c + 'A' - 'a';
 		c++;
 	}
 }

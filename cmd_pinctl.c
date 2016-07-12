@@ -23,9 +23,8 @@ uint8_t pindir (void)
 		uint16_t a, b;
 		// get pin number [0..7]
 		a = parse_expr_s1();
-		if (error_code) {
+		if (error_code)
             return POST_CMD_WARM_RESET;
-        }
 		// check range
 		if (a < 0 || a > 7) {
 			error_code = 0xC;
@@ -39,9 +38,8 @@ uint8_t pindir (void)
 		txtpos++;
 		// get direction [0/1]
 		b = parse_expr_s1();
-		if (error_code) {
+		if (error_code)
             return POST_CMD_WARM_RESET;
-        }
 		// create mask for altering direction
 		a = 1 << a;
 		switch (b) {
@@ -64,9 +62,8 @@ uint8_t pindwrite (void)
 		uint16_t a, b;
 		// get pin number [0..7]
 		a = parse_expr_s1();
-		if (error_code) {
+		if (error_code)
             return POST_CMD_WARM_RESET;
-        }
 		// check range
 		if (a < 0 || a > 7) {
 			error_code = 0xC;
@@ -80,9 +77,8 @@ uint8_t pindwrite (void)
 		txtpos++;
 		// get value [0/1]
 		b = parse_expr_s1();
-        if (error_code) {
+        if (error_code)
             return POST_CMD_WARM_RESET;
-        }
 		// create mask for altering direction
 		a = 1 << a;
 		switch (b) {

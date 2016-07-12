@@ -180,8 +180,8 @@ static uint8_t execution (void)
         }
 
         cmd_status = POST_CMD_NOTHING;
-        table_index = 0;
         error_code = 0;
+        table_index = 0;
         scantable (commands);
 
         switch (table_index) {
