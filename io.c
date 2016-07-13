@@ -381,8 +381,7 @@ ISR (INT0_vect)
 		if (kb_bit_cnt < 11 && kb_bit_cnt > 2) {	// Bits 3 to 10 are useful data.
 			// Parity, start and stop bits are ignored.
 			raw_data = (raw_data >> 1);
-			if (bit_val)
-                raw_data = raw_data | 0x80;
+			if (bit_val) raw_data = raw_data | 0x80;
 		}
 		EICRA = 3;								// set interrupt on rising edge
 		edge = 1;								// 1: rising edge

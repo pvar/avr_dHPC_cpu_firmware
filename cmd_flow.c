@@ -152,43 +152,43 @@ uint8_t gosub_return (void)
 	tempsp = sp;
 	while (tempsp < program + MEMORY_SIZE - 1) {
 		switch (tempsp[0]) {
-            case STACK_GOSUB_FLAG:
-                if (table_index == CMD_RETURN) {
-                    struct stack_gosub_frame *f = (struct stack_gosub_frame *)tempsp;
-                    current_line	= f->current_line;
-                    txtpos			= f->txtpos;
-                    sp += sizeof (struct stack_gosub_frame);
-                    return POST_CMD_NEXT_STATEMENT;
-                }
-                // This is not the loop you are looking for... go up in the stack
-                tempsp += sizeof (struct stack_gosub_frame);
-                break;
-            case STACK_FOR_FLAG:
-                // Flag, Var, Final, Step
-                if (table_index == CMD_NEXT) {
-                    struct stack_for_frame *f = (struct stack_for_frame *)tempsp;
-                    // Is the variable we are looking for?
-                    if (txtpos[-1] == f->for_var) {
-                        uint16_t *varaddr = ((uint16_t *)variables_begin) + txtpos[-1] - 'A';
-                        *varaddr = *varaddr + f->step;
-                        // Use a different test depending on the sign of the step increment
-                        if ((f->step > 0 && *varaddr <= f->terminal) || (f->step < 0 && *varaddr >= f->terminal)) {
-                            // We have to loop so don't pop the stack
-                            txtpos = f->txtpos;
-                            current_line = f->current_line;
-                            return POST_CMD_NEXT_STATEMENT;
-                        }
-                        // We've run to the end of the loop. drop out of the loop, popping the stack
-                        sp = tempsp + sizeof (struct stack_for_frame);
-                        return POST_CMD_NEXT_STATEMENT;
-                    }
-                }
-                // This is not the loop you are looking for... go up in the stack
-                tempsp += sizeof (struct stack_for_frame);
-                break;
-            default:
-                //printf( "Stack is full!\n" );
-                return POST_CMD_WARM_RESET;
+		case STACK_GOSUB_FLAG:
+			if (table_index == CMD_RETURN) {
+				struct stack_gosub_frame *f = (struct stack_gosub_frame *)tempsp;
+				current_line	= f->current_line;
+				txtpos			= f->txtpos;
+				sp += sizeof (struct stack_gosub_frame);
+				return POST_CMD_NEXT_STATEMENT;
+			}
+			// This is not the loop you are looking for... go up in the stack
+			tempsp += sizeof (struct stack_gosub_frame);
+			break;
+		case STACK_FOR_FLAG:
+			// Flag, Var, Final, Step
+			if (table_index == CMD_NEXT) {
+				struct stack_for_frame *f = (struct stack_for_frame *)tempsp;
+				// Is the variable we are looking for?
+				if (txtpos[-1] == f->for_var) {
+					uint16_t *varaddr = ((uint16_t *)variables_begin) + txtpos[-1] - 'A';
+					*varaddr = *varaddr + f->step;
+					// Use a different test depending on the sign of the step increment
+					if ((f->step > 0 && *varaddr <= f->terminal) || (f->step < 0 && *varaddr >= f->terminal)) {
+						// We have to loop so don't pop the stack
+						txtpos = f->txtpos;
+						current_line = f->current_line;
+						return POST_CMD_NEXT_STATEMENT;
+					}
+					// We've run to the end of the loop. drop out of the loop, popping the stack
+					sp = tempsp + sizeof (struct stack_for_frame);
+					return POST_CMD_NEXT_STATEMENT;
+				}
+			}
+			// This is not the loop you are looking for... go up in the stack
+			tempsp += sizeof (struct stack_for_frame);
+			break;
+		default:
+			//printf( "Stack is full!\n" );
+            return POST_CMD_WARM_RESET;
 		}
 	}
 	// cannot find the return point
