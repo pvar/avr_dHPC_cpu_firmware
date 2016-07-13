@@ -113,7 +113,6 @@ uint8_t table_index;
 uint8_t *start;
 uint8_t *new_end;
 uint8_t linelen;
-uint16_t val;
 uint8_t cmd_status;
 
 LINE_NUMBER linenum;

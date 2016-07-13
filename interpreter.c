@@ -173,6 +173,7 @@ void interpreter (void)
 
 static uint8_t execution (void)
 {
+    uint16_t value;
     while(1) {
         if (break_test()) {
             printmsg (msg_break, stdout);
@@ -186,8 +187,8 @@ static uint8_t execution (void)
 
         switch (table_index) {
             case CMD_DELAY:
-                val = parse_expr_s1();
-                fx_delay_ms (val);
+                value = parse_expr_s1();
+                fx_delay_ms (value);
                 cmd_status = POST_CMD_NEXT_LINE;
                 break;
             case CMD_NEW:

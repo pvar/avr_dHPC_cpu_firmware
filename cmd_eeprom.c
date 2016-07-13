@@ -20,15 +20,16 @@
 
 uint8_t elist (void)
 {
+    uint8_t value;
 	eeprom_ptr = 0;
 	for (uint16_t i = 0 ; i < (E2END + 1); i++) {
-		val = fgetc (&stream_eeprom);
-		if (val == '\0')
+		value = fgetc (&stream_eeprom);
+		if (value == '\0')
             return POST_CMD_NEXT_LINE;
-		if (((val < ' ') || (val > '~')) && (val != LF) && (val != CR))
+		if (((value < ' ') || (value > '~')) && (value != LF) && (value != CR))
             putchar ('?');
 		else
-            putchar (val);
+            putchar (value);
 	}
 	newline (stdout);
 	return POST_CMD_NEXT_LINE;
@@ -49,11 +50,12 @@ uint8_t eformat (void)
 
 uint8_t eload (void)
 {
+    uint8_t value;
 	// read the first byte of eeprom
 	// if it is a number, assume there is a program we can load
 	eeprom_ptr = 0;
-	val = fgetc (&stream_eeprom);
-	if (val >= '0' && val <= '9') {
+	value = fgetc (&stream_eeprom);
+	if (value >= '0' && value <= '9') {
 		eeprom_ptr = 0;
 		program_end = program_start;
 		main_config |= cfg_from_eeprom;

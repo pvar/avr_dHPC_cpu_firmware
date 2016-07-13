@@ -31,12 +31,13 @@ uint8_t gotoline (void)
 
 uint8_t check (void)
 {
-    val = parse_expr_s1();
+    uint16_t value;
+    value = parse_expr_s1();
     if (error_code || *txtpos == LF) {
         error_code = 0x4;
         return POST_CMD_WARM_RESET;
     }
-    if (val != 0)
+    if (value != 0)
         return POST_CMD_LOOP;
     else
         return POST_CMD_NEXT_LINE;
