@@ -1,6 +1,8 @@
 old_code
 attempt_v*
+documentation
 *.o
 *.map
 *.out
-documentation
+*.elf
+*.eeprom
