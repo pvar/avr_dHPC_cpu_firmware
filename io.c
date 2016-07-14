@@ -26,6 +26,10 @@ FILE stream_physical = FDEV_SETUP_STREAM (putchar_phy, getchar_phy, _FDEV_SETUP_
 FILE stream_pseudo = FDEV_SETUP_STREAM (putchar_ser, getchar_ser, _FDEV_SETUP_RW);
 FILE stream_eeprom = FDEV_SETUP_STREAM (putchar_rom, getchar_rom, _FDEV_SETUP_RW);
 
+static uint8_t edge, kb_bit_cnt;
+static uint8_t kb_buffer_cnt;
+static uint8_t kb_buffer[KB_BUFFER_SIZE];
+
 // keyboard connectivity messages
 const uint8_t kb_fail_msg[26] PROGMEM = "Keyboard self-test failed\0";
 const uint8_t kb_success_msg[32] PROGMEM = "Keyboard connected successfully\0";
@@ -35,7 +39,7 @@ const uint8_t kb_success_msg[32] PROGMEM = "Keyboard connected successfully\0";
 //	2nd column: SHIFT=1 CAPS=0
 //	3th column: SHIFT=0 CAPS=1
 //	4th column: SHIFT=1 CAPS=1
-const uint8_t to_ascii[512] PROGMEM = {
+static const uint8_t to_ascii[512] PROGMEM = {
 	0, 0, 0, 0,			// 00
 	0, 0, 0, 0,
 	0, 0, 0, 0,
