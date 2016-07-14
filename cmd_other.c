@@ -40,7 +40,7 @@ int8_t input (void)
         return POST_CMD_WARM_RESET;
     }
     // get user value (accept only digits)
-    input_buffer_ptr = in_buffer;
+    input_buffer_ptr = input_buffer;
     *input_buffer_ptr = 0;
     cnt = 0;
     EIMSK |= BREAK_INT; //enable emergency break key (INT2)
@@ -64,7 +64,7 @@ int8_t input (void)
                 *input_buffer_ptr = LF;
                 break;
             case BS:
-                if (input_buffer_ptr <= in_buffer)
+                if (input_buffer_ptr <= input_buffer)
                     do_beep();
                 else {
                     putchar (BS);
@@ -88,7 +88,7 @@ int8_t input (void)
     }
     newline (stdout);
     // parse and store user value
-    *var = str_to_num (in_buffer);
+    *var = str_to_num (input_buffer);
 	return POST_CMD_NEXT_STATEMENT;
 }
 

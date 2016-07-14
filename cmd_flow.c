@@ -90,12 +90,12 @@ uint8_t loopfor (void)
 		}
 		if (!error_code && *txtpos == LF) {
 			struct stack_for_frame *f;
-			if (sp + sizeof (struct stack_for_frame) < stack_limit) {
+			if (stack_ptr + sizeof (struct stack_for_frame) < stack_limit) {
 				error_code = 0x3;
                 return POST_CMD_WARM_RESET;
 			}
-			sp -= sizeof (struct stack_for_frame);
-			f = (struct stack_for_frame *)sp;
+			stack_ptr -= sizeof (struct stack_for_frame);
+			f = (struct stack_for_frame *)stack_ptr;
 			((uint16_t *)variables_begin)[var - 'A'] = initial;
 			f->frame_type = STACK_FOR_FLAG;
 			f->for_var = var;
@@ -115,12 +115,12 @@ uint8_t gosub (void)
 	linenum = parse_expr_s1();
 	if (!error_code && *txtpos == LF) {
 		struct stack_gosub_frame *f;
-		if (sp + sizeof (struct stack_gosub_frame) < stack_limit) {
+		if (stack_ptr + sizeof (struct stack_gosub_frame) < stack_limit) {
 			error_code = 0x3;
             return POST_CMD_WARM_RESET;
 		}
-		sp -= sizeof (struct stack_gosub_frame);
-		f = (struct stack_gosub_frame *)sp;
+		stack_ptr -= sizeof (struct stack_gosub_frame);
+		f = (struct stack_gosub_frame *)stack_ptr;
 		f->frame_type = STACK_GOSUB_FLAG;
 		f->txtpos = txtpos;
 		f->current_line = current_line;
@@ -153,7 +153,7 @@ uint8_t gosub_return (uint8_t cmd)
     uint8_t *tmp_stack_ptr;
 
 	// walk up the stack frames and find the frame we want -- if present
-	tmp_stack_ptr = sp;
+	tmp_stack_ptr = stack_ptr;
 	while (tmp_stack_ptr < program + MEMORY_SIZE - 1) {
 		switch (tmp_stack_ptr[0]) {
 		case STACK_GOSUB_FLAG:
@@ -161,7 +161,7 @@ uint8_t gosub_return (uint8_t cmd)
 				struct stack_gosub_frame *f = (struct stack_gosub_frame *)tmp_stack_ptr;
 				current_line	= f->current_line;
 				txtpos			= f->txtpos;
-				sp += sizeof (struct stack_gosub_frame);
+				stack_ptr += sizeof (struct stack_gosub_frame);
 				return POST_CMD_NEXT_STATEMENT;
 			}
 			// This is not the loop you are looking for... go up in the stack
@@ -183,7 +183,7 @@ uint8_t gosub_return (uint8_t cmd)
 						return POST_CMD_NEXT_STATEMENT;
 					}
 					// We've run to the end of the loop. drop out of the loop, popping the stack
-					sp = tmp_stack_ptr + sizeof (struct stack_for_frame);
+					stack_ptr = tmp_stack_ptr + sizeof (struct stack_for_frame);
 					return POST_CMD_NEXT_STATEMENT;
 				}
 			}

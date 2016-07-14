@@ -95,7 +95,7 @@ void basic_init (void)
 {
 	program_start = program;
 	program_end = program_start;
-	sp = program + MEMORY_SIZE; // needed for printnum
+	stack_ptr = program + MEMORY_SIZE; // needed for printnum
 	stack_limit = program + MEMORY_SIZE - STACK_SIZE;
 	variables_begin = stack_limit - 27 * VAR_SIZE;
 
@@ -197,6 +197,7 @@ static uint8_t execution (void)
 {
     uint16_t value;
     uint8_t index;
+    uint8_t cmd_status;
 
     while(1) {
         if (break_test()) {
@@ -379,8 +380,6 @@ static uint8_t execution (void)
         // if reached here, start execution of next line
         txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
     }
-    //fputc ('>', &stream_pseudo);
-    //printnum ((uint16_t)cmd_status, &stream_pseudo);
 }
 
 /**
@@ -396,7 +395,7 @@ static void warm_reset (void)
     putchar (vid_scroll_on);
     // reset program-memory pointer
     current_line = 0;
-    sp = program + MEMORY_SIZE;
+    stack_ptr = program + MEMORY_SIZE;
     printmsg (msg_ok, stdout);
 }
 

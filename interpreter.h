@@ -77,49 +77,23 @@ const uint8_t msg_available[17];
 const uint8_t msg_break[7];
 const uint8_t msg_ok[3];
 
-/*
-const uint8_t err_msgxl[6];
-const uint8_t err_msgxr[7];
-const uint8_t err_msg01[20];
-const uint8_t err_msg02[13];
-const uint8_t err_msg03[15];
-const uint8_t err_msg04[21];
-const uint8_t err_msg05[20];
-const uint8_t err_msg07[18];
-const uint8_t err_msg08[21];
-const uint8_t err_msg09[20];
-const uint8_t err_msg0A[18];
-const uint8_t err_msg0B[17];
-const uint8_t err_msg0C[19];
-const uint8_t err_msg0D[14];
-const uint8_t err_msg0E[17];
-const uint8_t err_msg0F[16];
-const uint8_t err_msg10[20];
-const uint8_t err_msg11[22];
-const uint8_t err_msg12[23];
-const uint8_t err_msg13[13];
-const uint8_t err_msg14[24];
-*/
-
-uint8_t error_code;
 
 uint8_t program[MEMORY_SIZE];
+uint8_t input_buffer[INPUT_BUFFER_SIZE];
 uint8_t *txtpos, *list_line;
-uint8_t in_buffer[INPUT_BUFFER_SIZE];
 
-uint8_t *program_start;
-uint8_t *program_end;
-uint8_t *stack; // software stack for calls in nstBASIC
+uint8_t error_code;
+uint8_t *program_start, *program_end;
 uint8_t *stack_limit;
 uint8_t *variables_begin;
-uint8_t *sp;
 uint8_t *current_line;
+uint8_t *stack_ptr;
 
 uint8_t *start;
 uint8_t *new_end;
-uint8_t linelen;
-uint8_t cmd_status;
 
+LINE_LENGTH linelen;
 LINE_NUMBER linenum;
 
+uint8_t *stack; // software stack for calls in nstBASIC
 #endif

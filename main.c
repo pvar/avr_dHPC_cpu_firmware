@@ -254,19 +254,19 @@ void get_line (void)
 
 void push_byte (uint8_t b)
 {
-	sp--;
-	*sp = b;
+	stack_ptr--;
+	*stack_ptr = b;
 }
 
-unsigned char pop_byte (void)
+uint8_t pop_byte (void)
 {
 	uint8_t b;
-	b = *sp;
-	sp++;
+	b = *stack_ptr;
+	stack_ptr++;
 	return b;
 }
 
-unsigned char *find_line (void)
+uint8_t *find_line (void)
 {
 	uint8_t *line = program_start;
 	while (1) {
