@@ -150,25 +150,27 @@ uint8_t next (void)
 
 uint8_t gosub_return (uint8_t cmd)
 {
+    uint8_t *tmp_stack_ptr;
+
 	// walk up the stack frames and find the frame we want -- if present
-	tempsp = sp;
-	while (tempsp < program + MEMORY_SIZE - 1) {
-		switch (tempsp[0]) {
+	tmp_stack_ptr = sp;
+	while (tmp_stack_ptr < program + MEMORY_SIZE - 1) {
+		switch (tmp_stack_ptr[0]) {
 		case STACK_GOSUB_FLAG:
 			if (cmd == CMD_RETURN) {
-				struct stack_gosub_frame *f = (struct stack_gosub_frame *)tempsp;
+				struct stack_gosub_frame *f = (struct stack_gosub_frame *)tmp_stack_ptr;
 				current_line	= f->current_line;
 				txtpos			= f->txtpos;
 				sp += sizeof (struct stack_gosub_frame);
 				return POST_CMD_NEXT_STATEMENT;
 			}
 			// This is not the loop you are looking for... go up in the stack
-			tempsp += sizeof (struct stack_gosub_frame);
+			tmp_stack_ptr += sizeof (struct stack_gosub_frame);
 			break;
 		case STACK_FOR_FLAG:
 			// Flag, Var, Final, Step
 			if (cmd == CMD_NEXT) {
-				struct stack_for_frame *f = (struct stack_for_frame *)tempsp;
+				struct stack_for_frame *f = (struct stack_for_frame *)tmp_stack_ptr;
 				// Is the variable we are looking for?
 				if (txtpos[-1] == f->for_var) {
 					uint16_t *varaddr = ((uint16_t *)variables_begin) + txtpos[-1] - 'A';
@@ -181,12 +183,12 @@ uint8_t gosub_return (uint8_t cmd)
 						return POST_CMD_NEXT_STATEMENT;
 					}
 					// We've run to the end of the loop. drop out of the loop, popping the stack
-					sp = tempsp + sizeof (struct stack_for_frame);
+					sp = tmp_stack_ptr + sizeof (struct stack_for_frame);
 					return POST_CMD_NEXT_STATEMENT;
 				}
 			}
 			// This is not the loop you are looking for... go up in the stack
-			tempsp += sizeof (struct stack_for_frame);
+			tmp_stack_ptr += sizeof (struct stack_for_frame);
 			break;
 		default:
 			//printf( "Stack is full!\n" );
