@@ -477,6 +477,7 @@ int putchar_phy (char chr, FILE *stream)
 // ----------------------------------------------------------------------------
 int getchar_phy (FILE *stream)
 {
+    static uint8_t kb_read_ptr;
 	uint8_t chr;
 	// wait for a key
 	while (kb_buffer_cnt == 0)
