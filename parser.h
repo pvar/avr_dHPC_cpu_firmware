@@ -7,29 +7,20 @@
 #include "main.h"
 #include "interpreter.h"
 
-// ----------------------------------------------------------------------------
-// program function prototypes
-// ----------------------------------------------------------------------------
+/**
+ ** prototypes of non-static functions
+ **
+ **/
 
-void scantable (const uint8_t *table);
+int8_t scantable (const uint8_t *table);
 void parse_channel (void);
 void parse_notes (void);
 int16_t parse_expr_s1 (void);
 
-// ----------------------------------------------------------------------------
-// constants, variables and structures
-// ----------------------------------------------------------------------------
-
-// functions which cannot be part of a larger expression  (return nothing / might print a value)
-const uint8_t commands[208];
-// functions that must be part of a larger expression (return a value / print nothing)
-const uint8_t functions[27];
-// relational operators
-const uint8_t relop_table[12];
-// other keywords
-const uint8_t to_tab[3];
-const uint8_t step_tab[5];
-const uint8_t highlow_tab[12];
+/**
+ ** definition of constants and custom data types
+ **
+ **/
 
 enum {
 	CMD_LIST = 0,
@@ -98,5 +89,21 @@ enum {
 	RELOP_NE_BANG,
 	RELOP_UNKNOWN
 };
+
+/**
+ ** declarations of global variables
+ **
+ **/
+
+// functions which cannot be part of a larger expression  (return nothing / might print a value)
+const uint8_t commands[208];
+// functions that must be part of a larger expression (return a value / print nothing)
+const uint8_t functions[27];
+// relational operators
+const uint8_t relop_table[12];
+// other keywords
+const uint8_t to_tab[3];
+const uint8_t step_tab[5];
+const uint8_t highlow_tab[12];
 
 #endif

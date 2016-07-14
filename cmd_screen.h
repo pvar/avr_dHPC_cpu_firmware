@@ -6,9 +6,10 @@
 #include "interpreter.h"
 #include "parser.h"
 
-/*
- * function prototypes
- */
+/**
+ ** prototypes of non-static functions
+ **
+ **/
 
 uint8_t reset_display (void);
 uint8_t clear_screen (void);

@@ -5,9 +5,10 @@
 #include <stdlib.h>
 #include "main.h"
 
-// ----------------------------------------------------------------------------
-// program function prototypes
-// ----------------------------------------------------------------------------
+/**
+ ** prototypes of non-static functions
+ **
+ **/
 
 void init_io (void);
 void init_kb (void);
@@ -30,9 +31,10 @@ int getchar_phy (FILE *stream);
 int putchar_rom (char c, FILE *stream);
 int getchar_rom (FILE *stream);
 
-// ----------------------------------------------------------------------------
-// constants, variables and structures
-// ----------------------------------------------------------------------------
+/**
+ ** definition of constants and custom data types
+ **
+ **/
 
 #define pri_data_bus_dir DDRC
 #define pri_data_bus_out PORTC
@@ -123,6 +125,11 @@ int getchar_rom (FILE *stream);
 #define snd_ena     201 //
 #define snd_abort   200 //
 
+/**
+ ** declarations of global variables
+ **
+ **/
+
 // streams of data to and from IO devices
 FILE stream_physical, stream_pseudo, stream_eeprom;
 
@@ -139,9 +146,10 @@ const uint8_t kb_success_msg[32];
 // Array for translating scan codes to ASCII
 const uint8_t to_ascii[512];
 
-// ----------------------------------------------------------------------------
-// assembler macros
-// ----------------------------------------------------------------------------
+/**
+ ** assembler macros
+ **
+ **/
 
 #define tovga() asm volatile \
 	( \

@@ -116,14 +116,14 @@ const uint8_t highlow_tab[12] PROGMEM = {
 // ----------------------------------------------------------------------------
 // search for valid function/command name
 // ----------------------------------------------------------------------------
-void scantable (const uint8_t *table)
+int8_t scantable (const uint8_t *table)
 {
+    int8_t position = 0;
 	uint16_t i = 0;
-	table_index = 0;
 	while (1) {
 		// end of given table...
 		if (pgm_read_byte (table) == 0)
-            return;
+            return position;
 		// character match...
 		if (txtpos[i] == pgm_read_byte (table)) {
 			i++;
@@ -133,18 +133,19 @@ void scantable (const uint8_t *table)
 			if (txtpos[i] + 0x80 == pgm_read_byte (table)) {
 				txtpos += i + 1;	// point after the scanned keyword
 				ignorespace();
-				return;
+				return position;
 			}
 			// move to the end of this keyword
 			while ((pgm_read_byte (table) & 0x80) == 0)
                 table++;
-			// move to first character of next keyword and reset position index
+			// move to first character of next keyword and clear index
 			table++;
-			table_index++;
+			position++;
 			ignorespace();
 			i = 0;
 		}
 	}
+    return position;
 }
 
 // ----------------------------------------------------------------------------
@@ -225,14 +226,15 @@ void parse_notes (void)
 int16_t parse_expr_s1 (void)
 {
 	int16_t value1, value2;
+    uint8_t index;
 	value1 = parse_expr_s2();
 	// check for error
 	if (error_code)
         return value1;
-	scantable (relop_table);
-	if (table_index == RELOP_UNKNOWN)
+	index = scantable (relop_table);
+	if (index == RELOP_UNKNOWN)
         return value1;
-	switch (table_index) {
+	switch (index) {
         case RELOP_GE:
             value2 = parse_expr_s2();
             if (value1 >= value2)
@@ -322,6 +324,7 @@ static int16_t parse_expr_s3 (void)
 // ----------------------------------------------------------------------------
 static int16_t parse_expr_s4 (void)
 {
+    uint8_t index;
 	int16_t value1 = 0;
 	int16_t value2 = 0;
 	/////////////////////////////////////////////////////////////////////////// numbers
@@ -356,12 +359,11 @@ static int16_t parse_expr_s4 (void)
 		}
 		/////////////////////////////////////////////////////////////////////////// functions
 		// search table with function names
-		scantable (functions);
-		if (table_index == FN_UNKNOWN) {
+		index = scantable (functions);
+		if (index == FN_UNKNOWN) {
 			error_code = 0xE;
 			return 0;
 		}
-		uint8_t func_ptr = table_index;
 		// check for left parenthesis
 		if (*txtpos != '(') {
 			error_code = 0x5;
@@ -376,7 +378,7 @@ static int16_t parse_expr_s4 (void)
 			return 0;
 		}
 		txtpos++;
-		switch (func_ptr) {
+		switch (index) {
 		//-----------------------------------------------------------------
 		case FN_PEEK:
 			if (value1 > MEMORY_SIZE) {

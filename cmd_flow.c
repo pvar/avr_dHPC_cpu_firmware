@@ -45,6 +45,7 @@ uint8_t check (void)
 
 uint8_t loopfor (void)
 {
+        uint8_t index;
 		uint8_t var;
 		uint16_t initial, step, terminal;
 		ignorespace();
@@ -66,8 +67,8 @@ uint8_t loopfor (void)
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }
-		scantable (to_tab);
-		if (table_index != 0) {
+		index = scantable (to_tab);
+		if (index != 0) {
 			error_code = 0x2;
             return POST_CMD_WARM_RESET;
 		}
@@ -75,8 +76,8 @@ uint8_t loopfor (void)
 		if (error_code) {
             return POST_CMD_WARM_RESET;
         }
-        scantable (step_tab);
-		if (table_index == 0) {
+        index = scantable (step_tab);
+		if (index == 0) {
 			step = parse_expr_s1();
 			if (error_code) {
                 return POST_CMD_WARM_RESET;
@@ -147,14 +148,14 @@ uint8_t next (void)
     return POST_CMD_NOTHING;
 }
 
-uint8_t gosub_return (void)
+uint8_t gosub_return (uint8_t cmd)
 {
 	// walk up the stack frames and find the frame we want -- if present
 	tempsp = sp;
 	while (tempsp < program + MEMORY_SIZE - 1) {
 		switch (tempsp[0]) {
 		case STACK_GOSUB_FLAG:
-			if (table_index == CMD_RETURN) {
+			if (cmd == CMD_RETURN) {
 				struct stack_gosub_frame *f = (struct stack_gosub_frame *)tempsp;
 				current_line	= f->current_line;
 				txtpos			= f->txtpos;
@@ -166,7 +167,7 @@ uint8_t gosub_return (void)
 			break;
 		case STACK_FOR_FLAG:
 			// Flag, Var, Final, Step
-			if (table_index == CMD_NEXT) {
+			if (cmd == CMD_NEXT) {
 				struct stack_for_frame *f = (struct stack_for_frame *)tempsp;
 				// Is the variable we are looking for?
 				if (txtpos[-1] == f->for_var) {

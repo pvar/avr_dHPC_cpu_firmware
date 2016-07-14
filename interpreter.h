@@ -12,17 +12,19 @@
 #include "cmd_pinctl.h"
 #include "cmd_other.h"
 
-// ----------------------------------------------------------------------------
-// program function prototypes
-// ----------------------------------------------------------------------------
+/**
+ ** prototypes of non-static functions
+ **
+ **/
 
 uint16_t get_linenumber (void);
 void basic_init (void);
 void interpreter (void);
 
-// ----------------------------------------------------------------------------
-// constants, variables and structures
-// ----------------------------------------------------------------------------
+/**
+ ** definition of constants and custom data types
+ **
+ **/
 
 #define MEMORY_SIZE (RAMEND - 1200)
 // MEMORY_SIZE = PROGRAM_SPACE + VAR_SIZE + STACK_SIZE
@@ -40,6 +42,36 @@ void interpreter (void);
 
 typedef uint16_t LINE_NUMBER;
 typedef uint8_t LINE_LENGTH;
+
+enum {
+	POST_CMD_NOTHING = 0,
+	POST_CMD_EXEC_LINE = 1,
+	POST_CMD_NEXT_LINE = 2,
+	POST_CMD_NEXT_STATEMENT = 3,
+	POST_CMD_WARM_RESET = 4,
+	POST_CMD_PROMPT = 5,
+	POST_CMD_LOOP = 6
+};
+
+struct stack_for_frame {
+	uint8_t frame_type;
+	uint8_t for_var;
+	uint16_t terminal;
+	uint16_t step;
+	uint8_t *current_line;
+	uint8_t *txtpos;
+};
+
+struct stack_gosub_frame {
+	uint16_t frame_type;
+	uint8_t *current_line;
+	uint8_t *txtpos;
+};
+
+/**
+ ** declarations of global variables
+ **
+ **/
 
 const uint8_t msg_welcome[25];
 const uint8_t msg_ram_bytes[11];
@@ -69,31 +101,6 @@ const uint8_t err_msg12[23];
 const uint8_t err_msg13[13];
 const uint8_t err_msg14[24];
 
-enum {
-	POST_CMD_NOTHING = 0,
-	POST_CMD_EXEC_LINE = 1,
-	POST_CMD_NEXT_LINE = 2,
-	POST_CMD_NEXT_STATEMENT = 3,
-	POST_CMD_WARM_RESET = 4,
-	POST_CMD_PROMPT = 5,
-	POST_CMD_LOOP = 6
-};
-
-struct stack_for_frame {
-	uint8_t frame_type;
-	uint8_t for_var;
-	uint16_t terminal;
-	uint16_t step;
-	uint8_t *current_line;
-	uint8_t *txtpos;
-};
-
-struct stack_gosub_frame {
-	uint16_t frame_type;
-	uint8_t *current_line;
-	uint8_t *txtpos;
-};
-
 uint8_t program[MEMORY_SIZE];
 uint8_t *txtpos, *maxpos, *list_line;
 uint8_t error_code;
@@ -108,7 +115,6 @@ uint8_t *stack_limit;
 uint8_t *variables_begin;
 uint8_t *sp;
 uint8_t *current_line;
-uint8_t table_index;
 
 uint8_t *start;
 uint8_t *new_end;

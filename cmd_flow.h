@@ -6,15 +6,16 @@
 #include "interpreter.h"
 #include "parser.h"
 
-/*
- * function prototypes
- */
+/**
+ ** prototypes of non-static functions
+ **
+ **/
 
 uint8_t gotoline (void);
 uint8_t check (void);
 uint8_t loopfor (void);
 uint8_t gosub (void);
 uint8_t next (void);
-uint8_t gosub_return (void);
+uint8_t gosub_return (uint8_t cmd);
 
 #endif

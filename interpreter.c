@@ -18,6 +18,11 @@
 
 #include "interpreter.h"
 
+/**
+ ** prototypes of static functions
+ **
+ **/
+
 static uint8_t execution (void);
 static void warm_reset (void);
 static void append_line (void);
@@ -25,6 +30,11 @@ static void remove_line (void);
 static void move_line (void);
 static void prep_line (void);
 static void error_message (void);
+
+/**
+ ** definitions of global variables
+ **
+ **/
 
 const uint8_t msg_welcome[25]	PROGMEM = "Welcome to nstBASIC v0.2\0";
 const uint8_t msg_ram_bytes[11]	PROGMEM = " bytes RAM\0";
@@ -55,6 +65,11 @@ const uint8_t err_msg12[23]		PROGMEM = "Expected byte [0..255]\0";
 const uint8_t err_msg13[13]		PROGMEM = "Out of range\0";
 const uint8_t err_msg14[24]		PROGMEM = "Expected color [0..127]\0";
 
+/**
+ ** @brief Get number of current line
+ **
+ **/
+
 uint16_t get_linenumber (void)
 {
 	uint16_t num = 0;
@@ -71,9 +86,10 @@ uint16_t get_linenumber (void)
 	return	num;
 }
 
-// ----------------------------------------------------------------------------
-// Language environment init
-// ----------------------------------------------------------------------------
+/**
+ ** brief Initialize language environment
+ **
+ **/
 
 void basic_init (void)
 {
@@ -93,9 +109,10 @@ void basic_init (void)
 	newline (stdout);
 }
 
-// ----------------------------------------------------------------------------
-//   interpreter loop
-// ----------------------------------------------------------------------------
+/**
+ ** @brief Interpreter loop
+ **
+ **/
 
 void interpreter (void)
 {
@@ -171,9 +188,16 @@ void interpreter (void)
     }
 }
 
+/**
+ ** @brief Execution loop
+ **
+ **/
+
 static uint8_t execution (void)
 {
     uint16_t value;
+    uint8_t index;
+
     while(1) {
         if (break_test()) {
             printmsg (msg_break, stdout);
@@ -181,11 +205,10 @@ static uint8_t execution (void)
         }
 
         cmd_status = POST_CMD_NOTHING;
-        table_index = 0;
         error_code = 0;
-        scantable (commands);
+        index = scantable (commands);
 
-        switch (table_index) {
+        switch (index) {
             case CMD_DELAY:
                 value = parse_expr_s1();
                 fx_delay_ms (value);
@@ -239,7 +262,7 @@ static uint8_t execution (void)
                 cmd_status = next();
                 if (error_code)
                     break;
-                cmd_status = gosub_return();
+                cmd_status = gosub_return(CMD_NEXT);
                 break;
             case CMD_LET:
                 cmd_status = assignment();
@@ -248,7 +271,7 @@ static uint8_t execution (void)
                 cmd_status = gosub();
                 break;
             case CMD_RETURN:
-                cmd_status = gosub_return();
+                cmd_status = gosub_return(CMD_RETURN);
                 break;
             case CMD_RANDOMIZE:
                 cmd_status = randomize();
@@ -360,6 +383,11 @@ static uint8_t execution (void)
     //printnum ((uint16_t)cmd_status, &stream_pseudo);
 }
 
+/**
+ ** @brief Reset language environment
+ **
+ **/
+
 static void warm_reset (void)
 {
     // turn-on cursor
@@ -371,6 +399,11 @@ static void warm_reset (void)
     sp = program + MEMORY_SIZE;
     printmsg (msg_ok, stdout);
 }
+
+/**
+ ** @brief Add new line to program
+ **
+ **/
 
 static void append_line (void)
 {
@@ -404,6 +437,11 @@ static void append_line (void)
 	}
 }
 
+/**
+ ** @brief Delete a line from program
+ **
+ **/
+
 static void remove_line (void)
 {
     if (start != program_end && * ((uint16_t *)start) == linenum) {
@@ -421,6 +459,11 @@ static void remove_line (void)
 		program_end = dest;
 	}
 }
+
+/**
+ ** @brief Move line to program space
+ **
+ **/
 
 static void move_line (void)
 {
@@ -442,6 +485,11 @@ static void move_line (void)
 	txtpos = dest;
 }
 
+/**
+ ** @brief Add line-header to new line
+ **
+ **/
+
 static void prep_line (void)
 {
     /* find length of line */
@@ -460,6 +508,11 @@ static void prep_line (void)
     txtpos[sizeof (LINE_NUMBER)] = linelen;
     //* ((LINE_LENGTH *)(txtpos + sizeof(LINE_NUMBER))) = linelen;
 }
+
+/**
+ ** @brief Print error message
+ **
+ **/
 
 static void error_message (void)
 {

@@ -6,9 +6,10 @@
 #include "interpreter.h"
 #include "parser.h"
 
-/*
- * function prototypes
- */
+/**
+ ** prototypes of non-static functions
+ **
+ **/
 
 int8_t prog_run (void);
 int8_t prog_end (void);
