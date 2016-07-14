@@ -406,6 +406,7 @@ static void warm_reset (void)
 
 static void append_line (void)
 {
+    uint8_t *new_end;
 	// make room for line
 	while (linelen > 0) {
 		uint8_t *from, *dest;

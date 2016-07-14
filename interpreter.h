@@ -77,7 +77,6 @@ const uint8_t msg_available[17];
 const uint8_t msg_break[7];
 const uint8_t msg_ok[3];
 
-
 uint8_t program[MEMORY_SIZE];
 uint8_t input_buffer[INPUT_BUFFER_SIZE];
 uint8_t *txtpos, *list_line;
@@ -88,9 +87,7 @@ uint8_t *stack_limit;
 uint8_t *variables_begin;
 uint8_t *current_line;
 uint8_t *stack_ptr;
-
 uint8_t *start;
-uint8_t *new_end;
 
 LINE_LENGTH linelen;
 LINE_NUMBER linenum;
