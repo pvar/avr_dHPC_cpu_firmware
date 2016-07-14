@@ -65,6 +65,8 @@ static const uint8_t err_msg12[23]		PROGMEM = "Expected byte [0..255]\0";
 static const uint8_t err_msg13[13]		PROGMEM = "Out of range\0";
 static const uint8_t err_msg14[24]		PROGMEM = "Expected color [0..127]\0";
 
+static uint8_t *start;
+
 /**
  ** @brief Get number of current line
  **

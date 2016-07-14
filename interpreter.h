@@ -87,10 +87,8 @@ uint8_t *stack_limit;
 uint8_t *variables_begin;
 uint8_t *current_line;
 uint8_t *stack_ptr;
-uint8_t *start;
 
 LINE_LENGTH linelen;
 LINE_NUMBER linenum;
 
-uint8_t *stack; // software stack for calls in nstBASIC
 #endif
