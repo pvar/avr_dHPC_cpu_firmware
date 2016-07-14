@@ -7,9 +7,8 @@
 #include "main.h"
 #include "interpreter.h"
 
-/**
- ** prototypes of non-static functions
- **
+/*******************************************************************************
+ ** PROTOTYPES FOR NON-STATIC FUNCTIONS
  **/
 
 int8_t scantable (const uint8_t *table);
@@ -17,9 +16,8 @@ void parse_channel (void);
 void parse_notes (void);
 int16_t parse_expr_s1 (void);
 
-/**
- ** definition of constants and custom data types
- **
+/*******************************************************************************
+ ** CONSTANTS AND CUSTOM DATA TYPES
  **/
 
 enum {
@@ -90,8 +88,8 @@ enum {
 	RELOP_UNKNOWN
 };
 
-/**
- ** declarations of global variables
+/*******************************************************************************
+ ** GLOBAL VARIABLES
  **
  **/
 

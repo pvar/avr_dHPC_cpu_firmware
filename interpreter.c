@@ -36,34 +36,34 @@ static void error_message (void);
  **
  **/
 
-const uint8_t msg_welcome[25]	PROGMEM = "Welcome to nstBASIC v0.2\0";
-const uint8_t msg_ram_bytes[11]	PROGMEM = " bytes RAM\0";
-const uint8_t msg_rom_bytes[11]	PROGMEM = " bytes ROM\0";
-const uint8_t msg_available[17]	PROGMEM = " bytes available\0";
-const uint8_t msg_break[7]		PROGMEM = "Break!\0";
-const uint8_t msg_ok[3]			PROGMEM = "OK\0";
+const uint8_t msg_welcome[25]	        PROGMEM = "Welcome to nstBASIC v0.2\0";
+const uint8_t msg_ram_bytes[11]	        PROGMEM = " bytes RAM\0";
+const uint8_t msg_rom_bytes[11]	        PROGMEM = " bytes ROM\0";
+const uint8_t msg_available[17]	        PROGMEM = " bytes available\0";
+const uint8_t msg_break[7]		        PROGMEM = "Break!\0";
+const uint8_t msg_ok[3]			        PROGMEM = "OK\0";
 
-const uint8_t err_msgxl[6]		PROGMEM = "Left \0";
-const uint8_t err_msgxr[7]		PROGMEM = "Right \0";
-const uint8_t err_msg01[20]		PROGMEM = "Not yet implemented\0";
-const uint8_t err_msg02[13]		PROGMEM = "Syntax error\0";
-const uint8_t err_msg03[15]		PROGMEM = "Stack overflow\0";
-const uint8_t err_msg04[21]		PROGMEM = "Unexpected character\0";
-const uint8_t err_msg05[20]	    PROGMEM = "parenthesis missing\0";
-const uint8_t err_msg07[18]		PROGMEM = "Variable expected\0";
-const uint8_t err_msg08[21]		PROGMEM = "Jump point not found\0";
-const uint8_t err_msg09[20]		PROGMEM = "Invalid line number\0";
-const uint8_t err_msg0A[18]		PROGMEM = "Operator expected\0";
-const uint8_t err_msg0B[17]		PROGMEM = "Division by zero\0";
-const uint8_t err_msg0C[19]		PROGMEM = "Invalid pin [0..7]\0";
-const uint8_t err_msg0D[14]		PROGMEM = "Pin I/O error\0";
-const uint8_t err_msg0E[17]		PROGMEM = "Unknown function\0";
-const uint8_t err_msg0F[16]		PROGMEM = "Unknown command\0";
-const uint8_t err_msg10[20]		PROGMEM = "Invalid coordinates\0";
-const uint8_t err_msg11[22]		PROGMEM = "Invalid variable name\0";
-const uint8_t err_msg12[23]		PROGMEM = "Expected byte [0..255]\0";
-const uint8_t err_msg13[13]		PROGMEM = "Out of range\0";
-const uint8_t err_msg14[24]		PROGMEM = "Expected color [0..127]\0";
+static const uint8_t err_msgxl[6]		PROGMEM = "Left \0";
+static const uint8_t err_msgxr[7]		PROGMEM = "Right \0";
+static const uint8_t err_msg01[20]		PROGMEM = "Not yet implemented\0";
+static const uint8_t err_msg02[13]		PROGMEM = "Syntax error\0";
+static const uint8_t err_msg03[15]		PROGMEM = "Stack overflow\0";
+static const uint8_t err_msg04[21]		PROGMEM = "Unexpected character\0";
+static const uint8_t err_msg05[20]	    PROGMEM = "parenthesis missing\0";
+static const uint8_t err_msg07[18]		PROGMEM = "Variable expected\0";
+static const uint8_t err_msg08[21]		PROGMEM = "Jump point not found\0";
+static const uint8_t err_msg09[20]		PROGMEM = "Invalid line number\0";
+static const uint8_t err_msg0A[18]		PROGMEM = "Operator expected\0";
+static const uint8_t err_msg0B[17]		PROGMEM = "Division by zero\0";
+static const uint8_t err_msg0C[19]		PROGMEM = "Invalid pin [0..7]\0";
+static const uint8_t err_msg0D[14]		PROGMEM = "Pin I/O error\0";
+static const uint8_t err_msg0E[17]		PROGMEM = "Unknown function\0";
+static const uint8_t err_msg0F[16]		PROGMEM = "Unknown command\0";
+static const uint8_t err_msg10[20]		PROGMEM = "Invalid coordinates\0";
+static const uint8_t err_msg11[22]		PROGMEM = "Invalid variable name\0";
+static const uint8_t err_msg12[23]		PROGMEM = "Expected byte [0..255]\0";
+static const uint8_t err_msg13[13]		PROGMEM = "Out of range\0";
+static const uint8_t err_msg14[24]		PROGMEM = "Expected color [0..127]\0";
 
 /**
  ** @brief Get number of current line

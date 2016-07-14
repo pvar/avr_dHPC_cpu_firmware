@@ -13,9 +13,8 @@
 #include "io.h"
 #include "interpreter.h"
 
-/**
- ** prototypes of non-static functions
- **
+/*******************************************************************************
+ ** PROTOTYPES FOR NON-STATIC FUNCTIONS
  **/
 
 int main (void);
@@ -48,9 +47,8 @@ uint8_t * valid_filename (void);
 void fx_delay_ms (uint16_t ms);
 void fx_delay_us (uint16_t us);
 
-/**
- ** definition of constants and custom data types
- **
+/*******************************************************************************
+ ** CONSTANTS AND CUSTOM DATA TYPES
  **/
 
 #define MAXCPL 32
@@ -64,9 +62,8 @@ void fx_delay_us (uint16_t us);
 #define cfg_from_sdcard		4   // 3rd bit
 #define cfg_from_eeprom 	8   // 4th bit
 
-/**
- ** declarations of global variables
- **
+/*******************************************************************************
+ ** GLOBAL VARIABLES
  **/
 
 uint8_t main_config;

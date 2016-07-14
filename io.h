@@ -5,9 +5,8 @@
 #include <stdlib.h>
 #include "main.h"
 
-/**
- ** prototypes of non-static functions
- **
+/*******************************************************************************
+ ** PROTOTYPES FOR NON-STATIC FUNCTIONS
  **/
 
 void init_io (void);
@@ -31,65 +30,64 @@ int getchar_phy (FILE *stream);
 int putchar_rom (char c, FILE *stream);
 int getchar_rom (FILE *stream);
 
-/**
- ** definition of constants and custom data types
- **
+/*******************************************************************************
+ ** CONSTANTS AND CUSTOM DATA TYPES
  **/
 
-#define pri_data_bus_dir DDRC
-#define pri_data_bus_out PORTC
-#define pri_data_bus_in PINC
-#define sec_data_bus_dir DDRA
-#define sec_data_bus_out PORTA
-#define sec_data_bus_in PINA
-#define peripheral_bus_dir DDRD
-#define peripheral_bus_out PORTD
-#define peripheral_bus_in PIND
-#define aux_ctl_bus_dir DDRB
-#define aux_ctl_bus_out PORTB
-#define aux_ctl_bus_in PINB
+#define pri_data_bus_dir    DDRC
+#define pri_data_bus_out    PORTC
+#define pri_data_bus_in     PINC
+#define sec_data_bus_dir    DDRA
+#define sec_data_bus_out    PORTA
+#define sec_data_bus_in     PINA
+#define peripheral_bus_dir  DDRD
+#define peripheral_bus_out  PORTD
+#define peripheral_bus_in   PIND
+#define aux_ctl_bus_dir     DDRB
+#define aux_ctl_bus_out     PORTB
+#define aux_ctl_bus_in      PINB
 
-#define to_gpu			128	// 8th bit (PD7)
-#define from_gpu		64	// 7th bit (PD6)
-#define to_apu			32	// 6th bit (PD5)
-#define from_apu		16	// 5th bit (PD4)
-#define buzzer_led		1	// 1st bit (PB0)
-#define break_key		4	// 3rd bit (PB2)
+#define to_gpu			    128	// 8th bit (PD7)
+#define from_gpu		    64	// 7th bit (PD6)
+#define to_apu			    32	// 6th bit (PD5)
+#define from_apu		    16	// 5th bit (PD4)
+#define buzzer_led		    1	// 1st bit (PB0)
+#define break_key		    4	// 3rd bit (PB2)
 
-#define kb_clk_pin		4	// 3rd bit (PD2)
-#define kb_dat_pin		8	// 4th bit (PD3)
+#define kb_clk_pin		    4	// 3rd bit (PD2)
+#define kb_dat_pin		    8	// 4th bit (PD3)
 
-#define KEYBOARD_INT	1	// INT0 
-#define BREAK_INT		4	// INT2
+#define KEYBOARD_INT	    1	// INT0 
+#define BREAK_INT		    4	// INT2
 
-#define KB_BUFFER_SIZE  16
+#define KB_BUFFER_SIZE      16
 
 // keyboard status bits
-#define BREAKCODE	    1
-#define EXTENDEDKEY	    2
-#define CONTROL		    4
-#define NUMLOCK		    8
-#define SHIFT		    16
-#define CAPSLOCK	    32
+#define BREAKCODE	        1
+#define EXTENDEDKEY	        2
+#define CONTROL		        4
+#define NUMLOCK		        8
+#define SHIFT		        16
+#define CAPSLOCK	        32
 // ASCII special characters
-#define LF		0x0A		// ENTER
-#define FF		0x0C		// CTRL+L
-#define CR		0x0D		// RETURN
-#define TAB		0x09		// TAB
-#define BELL	0x07		// CTRL+G
-#define SPACE	0x20		// SPACE
-#define BS		0x08		// BACKSPACE
-#define ESC		0x1B		// ESC
-#define ETX		0x03		// CTRL+C
-#define DQUOTE	0x22		//
-#define SQUOTE	0x27		//
+#define LF		        0x0A	// ENTER
+#define FF		        0x0C	// CTRL+L
+#define CR		        0x0D	// RETURN
+#define TAB		        0x09	// TAB
+#define BELL	        0x07	// CTRL+G
+#define SPACE	        0x20	// SPACE
+#define BS		        0x08	// BACKSPACE
+#define ESC		        0x1B	// ESC
+#define ETX		        0x03	// CTRL+C
+#define DQUOTE	        0x22	//
+#define SQUOTE	        0x27	//
 // other special characters (arbitrarily defined)
-#define HOME	0x01		// HOME
-#define END		0x02		// END
-#define ARUP	0x04		// ARROW UP
-#define ARDN	0x05		// ARROW DOWN
-#define ARLT	0x10		// ARROW LEFT
-#define ARRT	0x11		// ARROW RIGHT
+#define HOME	        0x01	// HOME
+#define END		        0x02	// END
+#define ARUP	        0x04	// ARROW UP
+#define ARDN	        0x05	// ARROW DOWN
+#define ARLT	        0x10	// ARROW LEFT
+#define ARRT	        0x11	// ARROW RIGHT
 // GPU special characters
 #define vid_tosol	    1
 #define vid_toeol	    2
@@ -120,9 +118,8 @@ int getchar_rom (FILE *stream);
 #define snd_ena         201
 #define snd_abort       200
 
-/**
- ** declarations of global variables
- **
+/*******************************************************************************
+ ** GLOBAL VARIABLES
  **/
 
 // streams of data to and from IO devices
@@ -136,9 +133,8 @@ uint8_t break_flow;
 const uint8_t kb_fail_msg[26];
 const uint8_t kb_success_msg[32];
 
-/**
- ** assembler macros
- **
+/*******************************************************************************
+ ** ASSEMBLER MACROS
  **/
 
 #define tovga() asm volatile \

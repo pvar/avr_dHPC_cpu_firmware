@@ -12,18 +12,16 @@
 #include "cmd_pinctl.h"
 #include "cmd_other.h"
 
-/**
- ** prototypes of non-static functions
- **
+/*******************************************************************************
+ ** PROTOTYPES FOR NON-STATIC FUNCTIONS
  **/
 
 uint16_t get_linenumber (void);
 void basic_init (void);
 void interpreter (void);
 
-/**
- ** definition of constants and custom data types
- **
+/*******************************************************************************
+ ** CONSTANTS AND CUSTOM DATA TYPES
  **/
 
 #define MEMORY_SIZE (RAMEND - 1200)
@@ -68,9 +66,8 @@ struct stack_gosub_frame {
 	uint8_t *txtpos;
 };
 
-/**
- ** declarations of global variables
- **
+/*******************************************************************************
+ ** GLOBAL VARIABLES
  **/
 
 const uint8_t msg_welcome[25];
@@ -79,6 +76,8 @@ const uint8_t msg_rom_bytes[11];
 const uint8_t msg_available[17];
 const uint8_t msg_break[7];
 const uint8_t msg_ok[3];
+
+/*
 const uint8_t err_msgxl[6];
 const uint8_t err_msgxr[7];
 const uint8_t err_msg01[20];
@@ -100,10 +99,12 @@ const uint8_t err_msg11[22];
 const uint8_t err_msg12[23];
 const uint8_t err_msg13[13];
 const uint8_t err_msg14[24];
+*/
+
+uint8_t error_code;
 
 uint8_t program[MEMORY_SIZE];
-uint8_t *txtpos, *maxpos, *list_line;
-uint8_t error_code;
+uint8_t *txtpos, *list_line;
 uint8_t *tempsp;
 uint8_t in_buffer[INPUT_BUFFER_SIZE];
 uint8_t *inptr;

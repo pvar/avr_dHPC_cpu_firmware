@@ -19,7 +19,7 @@
 #include "main.h"
 
 // ----------------------------------------------------------------------------
-// main program
+// execution entry point
 // ----------------------------------------------------------------------------
 int main (void)
 {
@@ -150,8 +150,10 @@ void newline (FILE *stream)
 // ----------------------------------------------------------------------------
 void get_line (void)
 {
+	uint8_t *maxpos; 
+
 	txtpos = program_end + sizeof (uint16_t);
-	maxpos = txtpos;
+    maxpos = txtpos;
 	uint8_t incoming_char;
 	uint8_t temp1, temp2;
     // GET NEW LINE FROM EEPROM

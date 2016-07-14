@@ -6,9 +6,8 @@
 #include "interpreter.h"
 #include "parser.h"
 
-/**
- ** prototypes of non-static functions
- **
+/*******************************************************************************
+ ** PROTOTYPES FOR NON-STATIC FUNCTIONS
  **/
 
 uint8_t elist (void);
