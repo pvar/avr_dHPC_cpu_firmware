@@ -106,7 +106,6 @@ uint8_t error_code;
 uint8_t program[MEMORY_SIZE];
 uint8_t *txtpos, *list_line;
 uint8_t in_buffer[INPUT_BUFFER_SIZE];
-uint8_t *inptr;
 
 uint8_t *program_start;
 uint8_t *program_end;

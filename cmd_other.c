@@ -23,6 +23,7 @@ int8_t input (void)
     uint8_t chr = 0;
     uint8_t cnt = 0;
     int16_t *var;
+    uint8_t *input_buffer_ptr;
 
     // variable to store user value
     ignorespace();
@@ -39,8 +40,8 @@ int8_t input (void)
         return POST_CMD_WARM_RESET;
     }
     // get user value (accept only digits)
-    inptr = in_buffer;
-    inptr[0] = 0;
+    input_buffer_ptr = in_buffer;
+    *input_buffer_ptr = 0;
     cnt = 0;
     EIMSK |= BREAK_INT; //enable emergency break key (INT2)
     while (chr != LF && chr != CR) {
@@ -52,22 +53,22 @@ int8_t input (void)
                 // only accept minus sign as first character
                 if (cnt == 0) {
                     putchar (chr);
-                    inptr[0] = chr;
+                    *input_buffer_ptr = chr;
                     cnt++;
-                    inptr++;
-                    inptr[0] = 0;
+                    input_buffer_ptr++;
+                    *input_buffer_ptr = 0;
                 }
                 break;
             case LF:
             case CR:
-                inptr[0] = LF;
+                *input_buffer_ptr = LF;
                 break;
             case BS:
-                if (inptr <= in_buffer)
+                if (input_buffer_ptr <= in_buffer)
                     do_beep();
                 else {
                     putchar (BS);
-                    inptr--;
+                    input_buffer_ptr--;
                     cnt--;
                 }
                 break;
@@ -75,11 +76,11 @@ int8_t input (void)
                 if (chr >= '0' && chr <= '9') {
                     if (cnt < INPUT_BUFFER_SIZE) {
                         putchar (chr);
-                        inptr[0] = chr;
+                        *input_buffer_ptr = chr;
                         cnt++;
-                        inptr++;
+                        input_buffer_ptr++;
                         // mark last character with ASCII code 0
-                        inptr[0] = 0;
+                        *input_buffer_ptr = 0;
                     } else
                         do_beep();
                 }
