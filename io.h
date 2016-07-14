@@ -136,7 +136,7 @@ FILE stream_physical, stream_pseudo, stream_eeprom;
 // global variables
 uint16_t eeprom_ptr;
 uint8_t edge, kb_bit_cnt, break_flow;
-uint8_t kb_write_ptr, kb_buffer_cnt;
+uint8_t kb_buffer_cnt;
 uint8_t kb_buffer[KB_BUFFER_SIZE];
 
 // keyboard connectivity messages

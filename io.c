@@ -258,6 +258,7 @@ static void kb_decode (uint8_t sc)
 // ----------------------------------------------------------------------------
 static void kb_to_buffer (uint8_t chr)
 {
+    static uint8_t kb_write_ptr = 0;
 	// only proceed if keyboard buffer is not full
 	if (kb_buffer_cnt < KB_BUFFER_SIZE) {
 		// store incoming byte in keyboard buffer
