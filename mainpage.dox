@@ -21,7 +21,7 @@ denote the heritage of the code.
 \section sec_2 More than an interpter
 
 nstBASIC is written for an 8bit microcontroller, just like TinyBasicPlus,
-but the code has been expanded in many ways, refactored and spread accross
+but the code has been expanded in many ways, refactored and spread across
 many files. You could rightly argue that making a larger version of an
 otherwise complete project, cannot be considered as an improvement.
 Nevertheless, such a claim, estranged from any reference to the purpose
@@ -29,7 +29,7 @@ of the project, would be misleading.
 
 TinyBasicPlus is written for the Arduino platform and the user can interact
 with the language interpreter through a serial connection, using a terminal
-emulator on his computer. nstBASIC is something totally diferent! It is only
+emulator on his computer. nstBASIC is something totally different! It is only
 meant to run on the specific hardware of a <b>homemade computer</b>, which
 features a keyboard input, a sound card and a graphics card. Essentially, apart
 from being a language interpreter, nstBASIC acts as the BIOS of the computer:
@@ -40,7 +40,7 @@ It handles communication with the peripherals.
 nstBASIC runs on the CPU of my homemade computer, which is a humble 8bit AVR.
 The specifics of this computer will be discussed in the documentation of the
 relevant project. For now, you should only keep in mind that both the sound card
-and the graphics card are also implemented around 8bit micorcontrollers. The
+and the graphics card are also implemented around 8bit microcontrollers. The
 main idea here, is that nstBASIC can be seen as a piece of firmware. It belongs
 to a set of programs that turn each microcontroller into a self-contained
 device. At the same time, these programs are designed to work together and along
@@ -48,59 +48,59 @@ with some 'glue logic' form a complete system. In other words, nstBASIC is an
 integral part of this computer.
 
 <b>If you wish to use this interpreter of BASIC in an entirely different project
-</b>, don't let the above description discourage you. The hardware dependant
-code is conviently isolated from the interpreter code. All relevant functions
+</b>, don't let the above description discourage you. The hardware dependent
+code is conveniently isolated from the interpreter code. All relevant functions
 reside in \c io.c. Some other functions that you may have to check out, are
 those controlling the IO pins in \c cmd_pinctl.c. In most cases, in order to
 use the interpreter in a different hardware setup, you'll only have to hack
-those two files. This convinient separation of functionality could be seen as
-a by-product of refactorying the interpreter, although in reality, it was a
+those two files. This convenient separation of functionality could be seen as
+a by-product of refactoring the interpreter, although in reality, it was a
 prerequisite. In the original version (TinyBasicPlus), the interpreter was
 implemented in a huge function and the control flow was achieved by the
-abundant use of goto command. The code was super fast but almost imposible to
+abundant use of goto command. The code was super-fast but almost impossible to
 study, improve or extend. In order to remedy the situation, I created a bundle
 of functions and a simple mechanism, that would allow the traversal of some
 signals -- previously hosted in global variables. What better way to do this,
 other than partitioning the code?
 
-\section sec_4 Notes
-
-- nstBASIC was written with the specifications of ATMEGA644 in mind. It could
-easily be ported to other 8bit AVR microcontrollers, given that they have the
-necessary IO pins.
-
-- On my computer, the micorcontroller that runs nstBASIC is running at 20MHz.
-If your application uses a different clock speed, you should update the relevant
-setting (CLOCK) in Makefile. This is mandatory for correct system operation.
-
-- Baud rate for the serial port is set to 57600bps. Once again, if you are
-using a different baud rate, you should upadate the relevant setging (BAUD) in
-Makefile.
-
-- Fuses for the ATMEGA644 were set with help from <a target="_blank"
-href="http://www.engbedded.com/fusecalc/">Engbedded Atmel AVR® Fuse
-Calculator</a>. I made sure I've selected the external clock source with
-the hoghest start-up time and that clock division by 8 was disabled. Other
-than that, there is nothing special you should keep in mind. In my case,
-the arguments for burning with AVRDUDE were as follows:
-"-U lfuse:w:0xe0:m -U hfuse:w:0xdf:m -U efuse:w:0xfc:m"
-
-\section sec_5 Licence
+\section sec_4 License
 
 As described above, nstBASIC derived from the extensive modifications of 
-TinyBasicPlus' core. The interpretter was practically written from scratch
+TinyBasicPlus' core. The interpreter was practically written from scratch
 and the general structure of the code was altered significantly. Some other
 functions though, like the four parser-functions, were only tweaked on a
 cosmetic level. All other functions were written by me.
 
 TinyBasicPlus is distributed under MIT license. All code that was written by me,
-as well as the modified/extended interpreter, is disributed under the
+as well as the modified/extended interpreter, is distributed under the
 <a target="_blank" href="www.gnu.org/licenses/gpl-3.0.html">GPLv3 license</a>.
 The same applies for nstBASIC as a whole.
+
+\section sec_5 Notes
+
+- nstBASIC was written with the specifications of ATMEGA644 in mind. It could
+easily be ported to other 8bit AVR microcontrollers, given that they have the
+necessary IO pins.
+
+- On my computer, the microcontroller that runs nstBASIC is running at 20MHz.
+If your application uses a different clock speed, you should update the relevant
+setting (CLOCK) in Makefile. This is mandatory for correct system operation.
+
+- Baud rate for the serial port is set to 57600bps. Once again, if you are
+using a different baud rate, you should update the relevant setting (BAUD) in
+Makefile.
+
+- Fuses for the ATMEGA644 were set with help from "Engbedded Atmel AVR® Fuse
+Calculator". I made sure I've selected the external clock source with the
+highest start-up time and that clock division by 8 was disabled. Other than
+that, there is nothing special you should keep in mind. In my case, the
+arguments for burning with AVRDUDE were as follows:\n
+"-U lfuse:w:0xe0:m -U hfuse:w:0xdf:m -U efuse:w:0xfc:m"
 
 \section sec_6 Useful links
 
 - My homemade computer <a target="_blank" href="https://github.com/BleuLlama/TinyBasicPlus">hardware schematics</a>.
 - TinyBasicPlus <a target="_blank" href="https://github.com/BleuLlama/TinyBasicPlus">project repository</a>.
-- All about keyboard interfacing in an <a target="_blank" href="http://www.atmel.com/Images/doc1235.pdf">application note by ATMEL</a>.
+- All about keyboard interfacing in an <a target="_blank" href="http://www.atmel.com/Images/doc1235.pdf">ATMEL application note</a>.
+- Engbedded ATMEL AVR® <a target="_blank" href="http://www.engbedded.com/fusecalc/">fuse calculator</a>.
 */
