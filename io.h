@@ -1,13 +1,19 @@
+/**
+ * @file io.h
+ * @brief Functions that handle communication with peripherals.
+ */
+
 #ifndef IO_H
 #define IO_H
 
 #include <stdio.h>
 #include <stdlib.h>
+
 #include "main.h"
 
-/*******************************************************************************
- ** PROTOTYPES FOR NON-STATIC FUNCTIONS
- **/
+// =============================================================================
+// PROTOTYPES OF NON-STATIC FUNCTIONS
+// =============================================================================
 
 void init_io (void);
 void init_kb (void);
@@ -22,7 +28,7 @@ void put_pixel (uint8_t x, uint8_t y, uint8_t color);
 
 void send_to_apu (uint8_t cbyte);
 
-// can not use uintxx_t because of how FILE is defined
+// cannot use uintXX_t because of how FILE is defined
 int putchar_ser (char c, FILE *stream);
 int getchar_ser (FILE *stream);
 int putchar_phy (char c, FILE *stream);
@@ -30,9 +36,9 @@ int getchar_phy (FILE *stream);
 int putchar_rom (char c, FILE *stream);
 int getchar_rom (FILE *stream);
 
-/*******************************************************************************
- ** CONSTANTS AND CUSTOM DATA TYPES
- **/
+// =============================================================================
+// CONSTANTS AND CUSTOM DATA TYPES
+// =============================================================================
 
 #define pri_data_bus_dir    DDRC
 #define pri_data_bus_out    PORTC
@@ -118,9 +124,8 @@ int getchar_rom (FILE *stream);
 #define snd_ena         201
 #define snd_abort       200
 
-/*******************************************************************************
- ** GLOBAL VARIABLES
- **/
+// ============================================================================
+// GLOBAL VARIABLES
 
 // streams of data to and from IO devices
 FILE stream_physical, stream_pseudo, stream_eeprom;
@@ -133,9 +138,8 @@ uint8_t break_flow;
 const uint8_t kb_fail_msg[26];
 const uint8_t kb_success_msg[32];
 
-/*******************************************************************************
- ** ASSEMBLER MACROS
- **/
+// ============================================================================
+// ASSEMBLER MACROS
 
 #define tovga() asm volatile \
 	( \

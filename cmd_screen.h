@@ -1,3 +1,9 @@
+/**
+ * @file cmd_screen.h
+ * @brief Functions that change pen/paper color, clear the screen,
+ * move cursor to an arbitrary position and put characters or pixels.
+ */
+
 #ifndef CMD_SCREEN_H
 #define CMD_SCREEN_H
 
@@ -6,9 +12,9 @@
 #include "interpreter.h"
 #include "parser.h"
 
-/*******************************************************************************
- ** PROTOTYPES FOR NON-STATIC FUNCTIONS
- **/
+// =============================================================================
+// PROTOTYPES OF NON-STATIC FUNCTIONS
+// =============================================================================
 
 uint8_t reset_display (void);
 uint8_t clear_screen (void);

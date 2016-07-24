@@ -1,3 +1,9 @@
+/**
+ * @file cmd_other.h
+ * @brief Functions for program execution and other common tasks,
+ * like assinging values to variables, pritining program list and so on.
+ */
+
 #ifndef CMD_OTHER_H
 #define CMD_OTHER_H
 
@@ -6,9 +12,9 @@
 #include "interpreter.h"
 #include "parser.h"
 
-/*******************************************************************************
- ** PROTOTYPES FOR NON-STATIC FUNCTIONS
- **/
+// =============================================================================
+// PROTOTYPES OF NON-STATIC FUNCTIONS
+// =============================================================================
 
 int8_t prog_run (void);
 int8_t prog_end (void);

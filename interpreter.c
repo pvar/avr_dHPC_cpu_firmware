@@ -1,27 +1,29 @@
-// ----------------------------------------------------------------------------
-// Interpreter loop for nstBASIC
-// ----------------------------------------------------------------------------
-//
-// nstBASIC (not-so-tiny BASIC) is limited implementation
-// of the venerable BASIC language. The code is heavily tied
-// to the hardware of a homebrew computer.
-//
-// Created by Panos Varelas <varelaspanos@gmail.com>
-//
-// Based on "TinyBasic Plus" by:
-//   - Mike Field <hamster@snap.net.nz>,
-//   - Scott Lawrence <yorgle@gmail.com> and
-//   - Jurg Wullschleger <wullschleger@gmail.com>
-//     (fixed whitespace and unary operations)
-//
-// ----------------------------------------------------------------------------
-
-#include "interpreter.h"
+/*
+ * Interpreter for nstBASIC.
+ *
+ * Copyright 2016, Panagiotis Varelas <varelaspanos@gmail.com>
+ *
+ * nstBASIC is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ * 
+ * nstBASIC is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ * 
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
+ */
 
 /**
- ** prototypes of static functions
- **
- **/
+ * @file interpreter.c
+ * @brief Functions that scan user-input for commands and take steps
+ * to execute a program or a single command (direct mode).
+*/
+
+#include "interpreter.h"
 
 static uint8_t execution (void);
 static void warm_reset (void);
@@ -30,11 +32,6 @@ static void remove_line (void);
 static void move_line (void);
 static void prep_line (void);
 static void error_message (void);
-
-/**
- ** definitions of global variables
- **
- **/
 
 const uint8_t msg_welcome[25]	        PROGMEM = "Welcome to nstBASIC v0.2\0";
 const uint8_t msg_ram_bytes[11]	        PROGMEM = " bytes RAM\0";
@@ -68,9 +65,29 @@ static const uint8_t err_msg14[24]		PROGMEM = "Expected color [0..127]\0";
 static uint8_t *start;
 
 /**
- ** @brief Get number of current line
- **
- **/
+ * @brief GET_LINENUMBER details...
+ *
+ * Description of what the function does. This part may refer to the parameters
+ * of the function, like @p param1 or @p param2. A word of code can also be
+ * inserted like @c this which is equivalent to <tt>this</tt>.
+ *
+ * @code
+ * BoxStruct *out = Box_The_Function_Name(param1, param2);
+ * printf("something...\n");
+ * @endcode
+ * 
+ * <b>this is how you write bold text</b> or if it is just one word,
+ * you can just do @b this.
+ *
+ * @param param1 ...
+ * @param param2 ...
+ * @return ...
+ *
+ * @see Some_function_name
+ * @see Some_struct_name
+ * @note ...
+ * @warning ...
+ */
 
 uint16_t get_linenumber (void)
 {
@@ -88,10 +105,9 @@ uint16_t get_linenumber (void)
 	return	num;
 }
 
-/**
- ** brief Initialize language environment
- **
- **/
+/*
+ * see interpreter.h
+ */
 
 void basic_init (void)
 {
@@ -111,10 +127,9 @@ void basic_init (void)
 	newline (stdout);
 }
 
-/**
- ** @brief Interpreter loop
- **
- **/
+/*
+ * see interpreter.h
+ */
 
 void interpreter (void)
 {
@@ -190,10 +205,10 @@ void interpreter (void)
     }
 }
 
-/**
- ** @brief Execution loop
- **
- **/
+/*
+ * ...
+ *
+ */
 
 static uint8_t execution (void)
 {
@@ -384,10 +399,10 @@ static uint8_t execution (void)
     }
 }
 
-/**
- ** @brief Reset language environment
- **
- **/
+/*
+ * ...
+ *
+ */
 
 static void warm_reset (void)
 {
@@ -401,10 +416,10 @@ static void warm_reset (void)
     printmsg (msg_ok, stdout);
 }
 
-/**
- ** @brief Add new line to program
- **
- **/
+/*
+ * ...
+ *
+ */
 
 static void append_line (void)
 {
@@ -439,10 +454,10 @@ static void append_line (void)
 	}
 }
 
-/**
- ** @brief Delete a line from program
- **
- **/
+/*
+ * ...
+ *
+ */
 
 static void remove_line (void)
 {
@@ -462,10 +477,10 @@ static void remove_line (void)
 	}
 }
 
-/**
- ** @brief Move line to program space
- **
- **/
+/*
+ * ...
+ *
+ */
 
 static void move_line (void)
 {
@@ -487,10 +502,10 @@ static void move_line (void)
 	txtpos = dest;
 }
 
-/**
- ** @brief Add line-header to new line
- **
- **/
+/*
+ * ...
+ *
+ */
 
 static void prep_line (void)
 {
@@ -511,10 +526,10 @@ static void prep_line (void)
     //* ((LINE_LENGTH *)(txtpos + sizeof(LINE_NUMBER))) = linelen;
 }
 
-/**
- ** @brief Print error message
- **
- **/
+/*
+ * ...
+ *
+ */
 
 static void error_message (void)
 {

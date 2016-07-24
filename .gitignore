@@ -1,6 +1,7 @@
 old_code
 attempt_v*
 documentation
+doc
 *.o
 *.map
 *.out

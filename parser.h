@@ -1,3 +1,9 @@
+/**
+ * @file parser.h
+ * @brief Functions that parse and assess the value of arithmetic
+ * expressions.
+ */
+
 #ifndef PARSER_H
 #define PARSER_H
 
@@ -7,18 +13,18 @@
 #include "main.h"
 #include "interpreter.h"
 
-/*******************************************************************************
- ** PROTOTYPES FOR NON-STATIC FUNCTIONS
- **/
+// =============================================================================
+// PROTOTYPES OF NON-STATIC FUNCTIONS
+// =============================================================================
 
 int8_t scantable (const uint8_t *table);
 void parse_channel (void);
 void parse_notes (void);
 int16_t parse_expr_s1 (void);
 
-/*******************************************************************************
- ** CONSTANTS AND CUSTOM DATA TYPES
- **/
+// =============================================================================
+// CONSTANTS AND CUSTOM DATA TYPES
+// =============================================================================
 
 enum {
 	CMD_LIST = 0,
@@ -88,10 +94,9 @@ enum {
 	RELOP_UNKNOWN
 };
 
-/*******************************************************************************
- ** GLOBAL VARIABLES
- **
- **/
+// =============================================================================
+// GLOBAL VARIABLES
+// =============================================================================
 
 // functions which cannot be part of a larger expression  (return nothing / might print a value)
 const uint8_t commands[208];

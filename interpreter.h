@@ -1,3 +1,9 @@
+/**
+ * @file interpreter.h
+ * @brief Prototypes for functions that scan user-input for commands
+ * and take steps to execute a program or a single command (direct mode).
+ */
+
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
@@ -12,21 +18,24 @@
 #include "cmd_pinctl.h"
 #include "cmd_other.h"
 
-/*******************************************************************************
- ** PROTOTYPES FOR NON-STATIC FUNCTIONS
- **/
+// =============================================================================
+// PROTOTYPES OF NON-STATIC FUNCTIONS
+// =============================================================================
 
 uint16_t get_linenumber (void);
 void basic_init (void);
 void interpreter (void);
 
-/*******************************************************************************
- ** CONSTANTS AND CUSTOM DATA TYPES
- **/
+// =============================================================================
+// CONSTANTS AND CUSTOM DATA TYPES
+// =============================================================================
+
+/*
+ * MEMORY_SIZE = PROGRAM_SPACE + VAR_SIZE + STACK_SIZE
+ * 1200 is the approximate footprint of all variables and CPU stack
+ */
 
 #define MEMORY_SIZE (RAMEND - 1200)
-// MEMORY_SIZE = PROGRAM_SPACE + VAR_SIZE + STACK_SIZE
-// 1200 is the approximate footprint of all variables and CPU stack
 
 #define HIGHLOW_HIGH	1
 #define HIGHLOW_UNKNOWN 4
@@ -37,6 +46,7 @@ void interpreter (void);
 
 #define STACK_GOSUB_FLAG 'G'
 #define STACK_FOR_FLAG 'F'
+
 
 typedef uint16_t LINE_NUMBER;
 typedef uint8_t LINE_LENGTH;
@@ -66,9 +76,9 @@ struct stack_gosub_frame {
 	uint8_t *txtpos;
 };
 
-/*******************************************************************************
- ** GLOBAL VARIABLES
- **/
+// =============================================================================
+// GLOBAL VARIABLES
+// =============================================================================
 
 const uint8_t msg_welcome[25];
 const uint8_t msg_ram_bytes[11];

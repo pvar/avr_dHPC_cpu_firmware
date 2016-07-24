@@ -1,3 +1,9 @@
+/**
+ * @file cmd_flow.h
+ * @brief Functions that implement FOR loops, unconditional jumps and
+ * sub-routine calls (in nstBASIC).
+ */
+
 #ifndef CMD_FLOW_H
 #define CMD_FLOW_H
 
@@ -6,9 +12,9 @@
 #include "interpreter.h"
 #include "parser.h"
 
-/*******************************************************************************
- ** PROTOTYPES FOR NON-STATIC FUNCTIONS
- **/
+// =============================================================================
+// PROTOTYPES OF NON-STATIC FUNCTIONS
+// =============================================================================
 
 uint8_t gotoline (void);
 uint8_t check (void);
