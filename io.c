@@ -24,9 +24,6 @@
 
 #include "io.h"
 
-static void kb_decode (uint8_t sc);
-static void kb_to_buffer (uint8_t chr);
-
 FILE stream_physical = FDEV_SETUP_STREAM (putchar_phy, getchar_phy, _FDEV_SETUP_RW);
 FILE stream_pseudo = FDEV_SETUP_STREAM (putchar_ser, getchar_ser, _FDEV_SETUP_RW);
 FILE stream_eeprom = FDEV_SETUP_STREAM (putchar_rom, getchar_rom, _FDEV_SETUP_RW);
@@ -175,11 +172,17 @@ static const uint8_t to_ascii[512] PROGMEM = {
 	0, 0, 0, 0,
 };
 
-
-// ----------------------------------------------------------------------------
-// translation of keyboard scan codes to ASCII
-// ----------------------------------------------------------------------------
-static void kb_decode (uint8_t sc)
+/** ---------------------------------------------------------------------------
+ * @brief Keyboard data decoding
+ *
+ * This functions decodes the data transmitted by the keyboard and updates some
+ * variables which hold he state of key modifiers (CAPSLOCK, NUMLOCK, SHIFT and
+ * CTRL). The array to_ascii is only used for decoding the scancodes of normal
+ * (printable) characters. The decoded data are placed in a special buffer, with
+ * the help of put_kb_buffer function.
+ *
+ * ---------------------------------------------------------------------------- */
+void kb_decode (uint8_t sc)
 {
 	static uint8_t kb_status = 0;
 	uint8_t tmp;
@@ -220,21 +223,21 @@ static void kb_decode (uint8_t sc)
                         // this has to be done right away,
                         // since "beep" function disables keyboard ISR
                         kb_status &= ~CONTROL;
-                        kb_to_buffer (BELL);
+                        put_kb_buffer (BELL);
                     }
-                    if (sc == 0x4B) kb_to_buffer (FF);		// CTRL+L
-                    if (sc == 0x1C) kb_to_buffer (HOME);	// CTRL+A
-                    if (sc == 0x24) kb_to_buffer (END);		// CTRL+E
+                    if (sc == 0x4B) put_kb_buffer (FF);		// CTRL+L
+                    if (sc == 0x1C) put_kb_buffer (HOME);	// CTRL+A
+                    if (sc == 0x24) put_kb_buffer (END);		// CTRL+E
                 }
                 // if an EXTENDED KEY is pressed ------------------------------
                 else if (kb_status & EXTENDEDKEY) {
-                    if (sc == 0x5A) kb_to_buffer (CR);		// ENTER
-                    if (sc == 0x75) kb_to_buffer (ARUP);	// ARROW UP
-                    if (sc == 0x72) kb_to_buffer (ARDN);	// ARROW DOWN
-                    if (sc == 0x6B) kb_to_buffer (ARLT);	// ARROW LEFT
-                    if (sc == 0x74) kb_to_buffer (ARRT);	// ARROW RIGHT
-                    if (sc == 0x6C) kb_to_buffer (HOME);	// HOME
-                    if (sc == 0x69) kb_to_buffer (END);		// END
+                    if (sc == 0x5A) put_kb_buffer (CR);		// ENTER
+                    if (sc == 0x75) put_kb_buffer (ARUP);	// ARROW UP
+                    if (sc == 0x72) put_kb_buffer (ARDN);	// ARROW DOWN
+                    if (sc == 0x6B) put_kb_buffer (ARLT);	// ARROW LEFT
+                    if (sc == 0x74) put_kb_buffer (ARRT);	// ARROW RIGHT
+                    if (sc == 0x6C) put_kb_buffer (HOME);	// HOME
+                    if (sc == 0x69) put_kb_buffer (END);		// END
                     kb_status &= ~EXTENDEDKEY;
                 }
                 // in any other case ------------------------------------------
@@ -244,7 +247,7 @@ static void kb_decode (uint8_t sc)
                         tmp += 1;
                     if (kb_status & CAPSLOCK)
                         tmp += 2;
-                    kb_to_buffer (pgm_read_byte (to_ascii + 4 * sc + tmp));
+                    put_kb_buffer (pgm_read_byte (to_ascii + 4 * sc + tmp));
                 }
                 break;
 		}
@@ -262,10 +265,15 @@ static void kb_decode (uint8_t sc)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// write to keyboard buffer
-// ----------------------------------------------------------------------------
-static void kb_to_buffer (uint8_t chr)
+/** ---------------------------------------------------------------------------
+ * @brief Put incoming data to keyboard-buffer
+ *
+ * This function puts incomming data to a special buffer for later use. When
+ * the buffer is full, the system makes a beep sound -- bringing back memories
+ * the home computers of the 80s :D
+ *
+ * ---------------------------------------------------------------------------- */
+void put_kb_buffer (uint8_t chr)
 {
     static uint8_t kb_write_ptr = 0;
 	// only proceed if keyboard buffer is not full
@@ -279,12 +287,16 @@ static void kb_to_buffer (uint8_t chr)
 		if (kb_write_ptr == KB_BUFFER_SIZE)
 			kb_write_ptr = 0;
 	} else
-		do_beep();	// should not beep while running a program !!!
+		do_beep();
 }
 
-// ----------------------------------------------------------------------------
-// IO initialization
-// ----------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
+ * @brief Microcontroiller peripheral initialization
+ *
+ * This function configures the pins of the CPU (actually the microcontroller).
+ * It prepares the ADC, initializes the keyboard and prints some messages.
+ *
+ * ---------------------------------------------------------------------------- */
 void init_io (void)
 {
 	// setup fundamental stream
@@ -321,11 +333,13 @@ void init_io (void)
 	uart_ansi_rst_clr();
 }
 
-
-
-// ----------------------------------------------------------------------------
-// setup communication with keyboard
-// ----------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
+ * @brief Setup communication with keyboard
+ *
+ * This function configures the pins used for communicating with the keyboard
+ * and enables an interrupt for receiving the incoming data.
+ *
+ * ---------------------------------------------------------------------------- */
 void init_kb (void)
 {
 	//enable emergency break key (INT2)
@@ -354,6 +368,10 @@ void init_kb (void)
 
 /** ---------------------------------------------------------------------------
  * @brief BEEP or flash the LED
+ *
+ * This function makes a sound (beep) or flashes an LED, to inform user about
+ * an error (usually when the keyboard buffer is full).
+ *
  * ---------------------------------------------------------------------------- */
 void do_beep (void)
 {
@@ -371,9 +389,218 @@ void do_beep (void)
     EIMSK |= KEYBOARD_INT;
 }
 
-// ----------------------------------------------------------------------------
-// ISR for receiving BREAK signal
-// ----------------------------------------------------------------------------
+
+/** ---------------------------------------------------------------------------
+ * @brief Reset terminal attached to serial port
+ *
+ * This function transmits a special sequrence of chartacters that is interpreted
+ * as a request to reset the terminal.
+ *
+ * ---------------------------------------------------------------------------- */
+void uart_ansi_rst_clr (void)
+{
+	// ANSI reset
+	fputc (27, &stream_pseudo);
+	fputc ('[', &stream_pseudo);
+	fputc ('0', &stream_pseudo);
+	fputc ('m', &stream_pseudo);
+	// ANSI clear
+	fputc (27, &stream_pseudo);
+	fputc ('[', &stream_pseudo);
+	fputc ('H', &stream_pseudo);
+	fputc (27, &stream_pseudo);
+	fputc ('[', &stream_pseudo);
+	fputc ('J', &stream_pseudo);
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Move cursor on attached terminal
+ *
+ * This function transmits a special sequrence of chartacters that moves the
+ * cursor of the terminal to a specific position.
+ *
+ * ---------------------------------------------------------------------------- */
+void uart_ansi_move_cursor (uint8_t row, uint8_t col)
+{
+	fputc (27, &stream_pseudo);
+	fputc ('[', &stream_pseudo);
+	fprintf (&stream_pseudo, "%d", row);
+	fputc (';', &stream_pseudo);
+	fprintf (&stream_pseudo, "%d", col);
+	fputc ('H', &stream_pseudo);
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Send character to device attched on serial port
+ *
+ * ---------------------------------------------------------------------------- */
+int putchar_ser (char chr, FILE *stream)
+{
+	if (chr == LF)
+        putchar_ser (CR, stream);
+	loop_until_bit_is_set (UCSR0A, UDRE0);
+	UDR0 = chr;
+    return 0;
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Get character from device attched on serial port
+ *
+ * ---------------------------------------------------------------------------- */
+int getchar_ser (FILE *stream)
+{
+	uint8_t chr;
+	loop_until_bit_is_set (UCSR0A, RXC0);
+	chr = UDR0;
+	return chr;
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Send character to VGA controller
+ *
+ * This function sends a signle character to the graphics subsystem. If it is
+ * a printable character, it will also be transmitted through the serial port.
+ *
+ * ---------------------------------------------------------------------------- */
+int putchar_phy (char chr, FILE *stream)
+{
+	// send to VGA
+	pri_data_bus_out = chr;
+	vgaready();
+	tovga();
+	// send to UART
+	if (chr < 128) {
+		if (chr == BS) {
+			fputc (BS, &stream_pseudo);
+			fputc (SPACE, &stream_pseudo);
+			fputc (BS, &stream_pseudo);
+		} else
+            fputc (chr , &stream_pseudo);
+	}
+	return 0;
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Get character from keyboard
+ *
+ * The default STANDARD INPUT for this system is the buffer holding the keyboard
+ * keystrokes. This function gets a character from the said buffer.
+ *
+ * ---------------------------------------------------------------------------- */
+int getchar_phy (FILE *stream)
+{
+    static uint8_t kb_read_ptr;
+	uint8_t chr;
+	// wait for a key
+	while (kb_buffer_cnt == 0)
+        fx_delay_ms (15);
+	// read key from keyboard buffer
+	chr = kb_buffer[kb_read_ptr];
+	// update buffer pointer and data counter
+	kb_read_ptr++;
+	kb_buffer_cnt--;
+	// pointer wrapping
+	if (kb_read_ptr == KB_BUFFER_SIZE)
+		kb_read_ptr = 0;
+	return chr;
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Send character to sound controller
+ *
+ * This function sends a signle character to the audio subsystem.
+ *
+ * ---------------------------------------------------------------------------- */
+void send_to_apu (uint8_t cbyte)
+{
+	pri_data_bus_out = cbyte;
+	apuready();
+	toapu();
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Put character in EEPROM
+ *
+ * This function writes a character in EEPROM. It is used by the EEPROM stream.
+ *
+ * ---------------------------------------------------------------------------- */
+int putchar_rom (char chr, FILE *stream)
+{
+	eeprom_update_byte ((uint8_t *) eeprom_ptr++, chr);
+	return 0;
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Get character in EEPROM
+ *
+ * This function reads a character from EEPROM. It is used by the EEPROM stream.
+ *
+ * ---------------------------------------------------------------------------- */
+int getchar_rom (FILE *stream)
+{
+	uint8_t chr = eeprom_read_byte ((uint8_t *) eeprom_ptr++);
+	return chr;
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Change on-screen text colour
+ *
+ * This function sends to the graphics subsystem the necessary control byte,
+ * along with the selected "text" colour.
+ *
+ * ---------------------------------------------------------------------------- */
+void text_color (uint8_t color)
+{
+	putchar (vid_color);
+	putchar (color);
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Change on-screen background colour
+ *
+ * This function sends to the graphics subsystem the necessary control byte,
+ * along with the selected background colour -- paper colour, anyone?
+ *
+ * ---------------------------------------------------------------------------- */
+void paper_color (uint8_t color)
+{
+	putchar (vid_paper);
+	putchar (color);
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Move cursor to arbitrary location
+ *
+ * This function sends to the graphics subsystem the necessary control byte,
+ * along with the new location of the cursor.
+ *
+ * ---------------------------------------------------------------------------- */
+void locate_cursor (uint8_t line, uint8_t column)
+{
+	putchar (vid_locate);
+	putchar (line);
+	putchar (column);
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief Draw a pixel on the screen
+ *
+ * This function sends to the graphics subsystem the necessary control byte,
+ * along with data describing the new pixel (position and colour).
+ *
+ * ---------------------------------------------------------------------------- */
+void put_pixel (uint8_t x, uint8_t y, uint8_t color)
+{
+	putchar (vid_pixel);
+	putchar (x);
+	putchar (y);
+	putchar (color);
+}
+
+/** ---------------------------------------------------------------------------
+ * @brief ISR: Check if user pressed break button.
+ *
+ * ---------------------------------------------------------------------------- */
 ISR (INT2_vect)
 {
 	// signal program-break
@@ -382,9 +609,10 @@ ISR (INT2_vect)
 	EIMSK &= ~BREAK_INT;
 }
 
-// ----------------------------------------------------------------------------
-// ISR for deleting residual bits
-// ----------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
+ * @brief ISR: Ignore/delete bits that do not belong to a keyboard packet.
+ *
+ * ---------------------------------------------------------------------------- */
 ISR (TIMER0_COMPA_vect)   // , ISR_NAKED )
 {
 	// reset bit counter
@@ -393,9 +621,10 @@ ISR (TIMER0_COMPA_vect)   // , ISR_NAKED )
 	TCCR0B = 0;
 }
 
-// ----------------------------------------------------------------------------
-// ISR for reading and storing incoming bits (PS2 clock)
-// ----------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
+ * @brief ISR: Gather bits sent from the keyboard and form packets.
+ *
+ * ---------------------------------------------------------------------------- */
 ISR (INT0_vect)
 {
 	uint8_t bit_val;						// incoming bit
@@ -425,166 +654,3 @@ ISR (INT0_vect)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// UART terminal reset
-// ----------------------------------------------------------------------------
-void uart_ansi_rst_clr (void)
-{
-	// ANSI reset
-	fputc (27, &stream_pseudo);
-	fputc ('[', &stream_pseudo);
-	fputc ('0', &stream_pseudo);
-	fputc ('m', &stream_pseudo);
-	// ANSI clear
-	fputc (27, &stream_pseudo);
-	fputc ('[', &stream_pseudo);
-	fputc ('H', &stream_pseudo);
-	fputc (27, &stream_pseudo);
-	fputc ('[', &stream_pseudo);
-	fputc ('J', &stream_pseudo);
-}
-
-// ----------------------------------------------------------------------------
-// UART terminal cursor movement
-// ----------------------------------------------------------------------------
-void uart_ansi_move_cursor (uint8_t row, uint8_t col)
-{
-	fputc (27, &stream_pseudo);
-	fputc ('[', &stream_pseudo);
-	fprintf (&stream_pseudo, "%d", row);
-	fputc (';', &stream_pseudo);
-	fprintf (&stream_pseudo, "%d", col);
-	fputc ('H', &stream_pseudo);
-}
-
-// ----------------------------------------------------------------------------
-// send character through UART
-// ----------------------------------------------------------------------------
-int putchar_ser (char chr, FILE *stream)
-{
-	if (chr == LF)
-        putchar_ser (CR, stream);
-	loop_until_bit_is_set (UCSR0A, UDRE0);
-	UDR0 = chr;
-    return 0;
-}
-
-// ----------------------------------------------------------------------------
-// get character through UART
-// ----------------------------------------------------------------------------
-int getchar_ser (FILE *stream)
-{
-	uint8_t chr;
-	loop_until_bit_is_set (UCSR0A, RXC0);
-	chr = UDR0;
-	return chr;
-}
-
-// ----------------------------------------------------------------------------
-// send character to VGA and UART (STDOUT)
-// ----------------------------------------------------------------------------
-int putchar_phy (char chr, FILE *stream)
-{
-	// send to VGA
-	pri_data_bus_out = chr;
-	vgaready();
-	tovga();
-	// send to UART
-	if (chr < 128) {
-		if (chr == BS) {
-			fputc (BS, &stream_pseudo);
-			fputc (SPACE, &stream_pseudo);
-			fputc (BS, &stream_pseudo);
-		} else
-            fputc (chr , &stream_pseudo);
-	}
-	return 0;
-}
-
-// ----------------------------------------------------------------------------
-// get character from keyboard (STDIN)
-// ----------------------------------------------------------------------------
-int getchar_phy (FILE *stream)
-{
-    static uint8_t kb_read_ptr;
-	uint8_t chr;
-	// wait for a key
-	while (kb_buffer_cnt == 0)
-        fx_delay_ms (15);
-	// read key from keyboard buffer
-	chr = kb_buffer[kb_read_ptr];
-	// update buffer pointer and data counter
-	kb_read_ptr++;
-	kb_buffer_cnt--;
-	// pointer wrapping
-	if (kb_read_ptr == KB_BUFFER_SIZE)
-		kb_read_ptr = 0;
-	return chr;
-}
-
-// ----------------------------------------------------------------------------
-// send character to APU
-// ----------------------------------------------------------------------------
-void send_to_apu (uint8_t cbyte)
-{
-	pri_data_bus_out = cbyte;
-	apuready();
-	toapu();
-}
-
-// ----------------------------------------------------------------------------
-// send character to EEPROM
-// ----------------------------------------------------------------------------
-int putchar_rom (char chr, FILE *stream)
-{
-	eeprom_update_byte ((uint8_t *) eeprom_ptr++, chr);
-	return 0;
-}
-
-// ----------------------------------------------------------------------------
-// get character from EEPROM
-// ----------------------------------------------------------------------------
-int getchar_rom (FILE *stream)
-{
-	uint8_t chr = eeprom_read_byte ((uint8_t *) eeprom_ptr++);
-	return chr;
-}
-
-// ----------------------------------------------------------------------------
-// set text color
-// ----------------------------------------------------------------------------
-void text_color (uint8_t color)
-{
-	putchar (vid_color);
-	putchar (color);
-}
-
-// ----------------------------------------------------------------------------
-// set background color
-// ----------------------------------------------------------------------------
-void paper_color (uint8_t color)
-{
-	putchar (vid_paper);
-	putchar (color);
-}
-
-// ----------------------------------------------------------------------------
-// move cursor to specified location
-// ----------------------------------------------------------------------------
-void locate_cursor (uint8_t line, uint8_t column)
-{
-	putchar (vid_locate);
-	putchar (line);
-	putchar (column);
-}
-
-// ----------------------------------------------------------------------------
-// put pixel at specified coordinates with given color
-// ----------------------------------------------------------------------------
-void put_pixel (uint8_t x, uint8_t y, uint8_t color)
-{
-	putchar (vid_pixel);
-	putchar (x);
-	putchar (y);
-	putchar (color);
-}

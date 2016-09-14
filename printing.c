@@ -27,6 +27,7 @@
 
 /** ---------------------------------------------------------------------------
  * @brief Print specified string
+ *
  * ---------------------------------------------------------------------------- */
 void printstr (char *str, FILE *stream)
 {
@@ -39,6 +40,7 @@ void printstr (char *str, FILE *stream)
 
 /** ---------------------------------------------------------------------------
  * @brief Print specified integer number
+ *
  * ---------------------------------------------------------------------------- */
 void printnum (int16_t num, FILE *stream)
 {
@@ -61,6 +63,7 @@ void printnum (int16_t num, FILE *stream)
 
 /** ---------------------------------------------------------------------------
  * @brief Print selected message from FLASH (without new-line)
+ *
  * ---------------------------------------------------------------------------- */
 void printmsg_noNL (const uint8_t *msg, FILE *stream)
 {
@@ -70,6 +73,7 @@ void printmsg_noNL (const uint8_t *msg, FILE *stream)
 
 /** ---------------------------------------------------------------------------
  * @brief Print selected message from FLASH (with new-line)
+ *
  * ---------------------------------------------------------------------------- */
 void printmsg (const uint8_t *msg, FILE *stream)
 {
@@ -79,6 +83,7 @@ void printmsg (const uint8_t *msg, FILE *stream)
 
 /** ---------------------------------------------------------------------------
  * @brief Print a program line
+ *
  * ---------------------------------------------------------------------------- */
 void printline (FILE *stream)
 {
@@ -99,7 +104,7 @@ void printline (FILE *stream)
 
 /** ---------------------------------------------------------------------------
  * @brief Print a NEW LINE character
-
+ *
  * ---------------------------------------------------------------------------- */
 void newline (FILE *stream)
 {
@@ -109,6 +114,7 @@ void newline (FILE *stream)
 
 /** ---------------------------------------------------------------------------
  * @brief Print a user string (enclosed in quotes)
+ *
  * ---------------------------------------------------------------------------- */
 uint8_t print_string (void)
 {

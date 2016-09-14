@@ -18,8 +18,8 @@
 #include <avr/interrupt.h>
 
 #include "io.h"
-#include "printing.h"
 #include "interpreter.h"
+#include "printing.h"
 
 // =============================================================================
 // PROTOTYPES OF NON-STATIC FUNCTIONS

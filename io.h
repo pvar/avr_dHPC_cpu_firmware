@@ -15,6 +15,9 @@
 // PROTOTYPES OF NON-STATIC FUNCTIONS
 // =============================================================================
 
+void kb_decode (uint8_t sc);
+void put_kb_buffer (uint8_t chr);
+
 void init_io (void);
 void init_kb (void);
 void do_beep (void);
@@ -127,6 +130,7 @@ int getchar_rom (FILE *stream);
 
 // ============================================================================
 // GLOBAL VARIABLES
+// ============================================================================
 
 // streams of data to and from IO devices
 FILE stream_physical, stream_pseudo, stream_eeprom;
@@ -141,6 +145,7 @@ const uint8_t kb_success_msg[32];
 
 // ============================================================================
 // ASSEMBLER MACROS
+// ============================================================================
 
 #define tovga() asm volatile \
 	( \
