@@ -17,6 +17,7 @@
 
 void init_io (void);
 void init_kb (void);
+void do_beep (void);
 
 void uart_ansi_rst_clr (void);
 void uart_ansi_move_cursor (uint8_t row, uint8_t col);

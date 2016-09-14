@@ -18,6 +18,7 @@
 #include <avr/interrupt.h>
 
 #include "io.h"
+#include "printing.h"
 #include "interpreter.h"
 
 // =============================================================================
@@ -25,14 +26,6 @@
 // =============================================================================
 
 int main (void);
-
-// message and data printing
-void printnum (int16_t num, FILE *stream);
-void printmsg_noNL (const uint8_t *msg, FILE *stream);
-void printmsg (const uint8_t *msg, FILE *stream);
-void printline (FILE *stream);
-void newline (FILE *stream);
-uint8_t print_string (void);
 
 // internal data handling
 void uppercase (void);
@@ -43,7 +36,6 @@ int16_t str_to_num (uint8_t *strptr);
 uint8_t *find_line (void);
 void get_line (void);
 
-void do_beep (void);
 uint8_t break_test (void);
 
 uint16_t valid_filename_char (uint8_t c);

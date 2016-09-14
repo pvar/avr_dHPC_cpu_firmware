@@ -352,6 +352,25 @@ void init_kb (void)
 	sei();
 }
 
+/** ---------------------------------------------------------------------------
+ * @brief BEEP or flash the LED
+ * ---------------------------------------------------------------------------- */
+void do_beep (void)
+{
+    // disable keyboard interrupt
+    EIMSK &= ~KEYBOARD_INT;
+    uint8_t cnt = 100;
+    while (cnt > 0) {
+        aux_ctl_bus_out &= ~buzzer_led;
+        fx_delay_us (750);
+        aux_ctl_bus_out |= buzzer_led;
+        fx_delay_us (500);
+        cnt--;
+    }
+    // enable keyboard interrupt
+    EIMSK |= KEYBOARD_INT;
+}
+
 // ----------------------------------------------------------------------------
 // ISR for receiving BREAK signal
 // ----------------------------------------------------------------------------

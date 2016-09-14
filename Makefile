@@ -28,8 +28,12 @@ BAUD = 57600
 TUNNING = -Os -fshort-enums
 STANDARD = -std=gnu99
 WARNINGS = -Wall -Wstrict-prototypes
-CCFLAGS = $(TUNNING) $(STANDARD) $(WARNINGS) \
-	  -mmcu=$(DEVICE) -DF_CPU=$(CLOCK) -DBAUD=$(BAUD)
+CCFLAGS =   $(TUNNING)  \
+            $(STANDARD) \
+            $(WARNINGS) \
+	        -mmcu=$(DEVICE)  \
+	        -DF_CPU=$(CLOCK) \
+	        -DBAUD=$(BAUD)
 
 LDFLAGS = -Wl,-Map,main.map 
 LDFLAGS += -Wl,--gc-sections 
@@ -56,6 +60,7 @@ rebuild: clean hex
 
 %.lst: %.o
 	$(OBJDUMP) -S --disassemble $< > $@
+	mv *.lst asm/
 
 main.elf: $(OBJECTS)
 	$(CC) $(CCFLAGS) $(LDFLAGS) $^ -o $@

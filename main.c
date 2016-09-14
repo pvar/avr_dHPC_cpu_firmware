@@ -25,9 +25,9 @@
 
 #include "main.h"
 
-// ----------------------------------------------------------------------------
-// execution entry point
-// ----------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
+ * @brief Main function
+ * ---------------------------------------------------------------------------- */
 int main (void)
 {
     init_io();
@@ -47,114 +47,9 @@ int main (void)
 	return 0;
 }
 
-// ----------------------------------------------------------------------------
-// message and data printing
-// ----------------------------------------------------------------------------
-void do_beep (void)
-{
-    // disable keyboard interrupt
-    EIMSK &= ~KEYBOARD_INT;
-    uint8_t cnt = 100;
-    while (cnt > 0) {
-        aux_ctl_bus_out &= ~buzzer_led;
-        fx_delay_us (750);
-        aux_ctl_bus_out |= buzzer_led;
-        fx_delay_us (500);
-        cnt--;
-    }
-    // enable keyboard interrupt
-    EIMSK |= KEYBOARD_INT;
-}
-
-void printstr (char *str, FILE *stream)
-{
-    uint8_t i = 0;
-    while (str[i] != 0) {
-        fputc (str[i], stream);
-        i++;
-    }
-}
-
-void printnum (int16_t num, FILE *stream)
-{
-	int digits = 0;
-	if (num < 0) {
-		num = -num;
-		fputc ('-', stream);
-	}
-	do {
-		push_byte (num % 10 + '0');
-		num = num / 10;
-		digits++;
-	} while (num > 0);
-
-	while (digits > 0) {
-		fputc (pop_byte(), stream);
-		digits--;
-	}
-}
-
-void printmsg_noNL (const uint8_t *msg, FILE *stream)
-{
-	while (pgm_read_byte (msg) != 0)
-        fputc (pgm_read_byte (msg++), stream);
-}
-
-void printmsg (const uint8_t *msg, FILE *stream)
-{
-	printmsg_noNL (msg, stream);
-	newline (stream);
-}
-
-void printline (FILE *stream)
-{
-	LINE_NUMBER line_num;
-	line_num = * ((LINE_NUMBER *) (list_line));
-	list_line += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-	// print line number
-	printnum (line_num, stream);
-	fputc (' ', stream);
-	// print line content
-	while (*list_line != LF) {
-		fputc (*list_line, stream);
-		list_line++;
-	}
-	list_line++;
-	newline (stream);
-}
-
-uint8_t print_string (void)
-{
-	uint16_t i = 0;
-	uint8_t delim = *txtpos;
-	// check for opening delimiter
-	if (delim != '"' && delim != '\'')
-        return 0;
-	txtpos++;
-	// check for closing delimiter
-	while (txtpos[i] != delim) {
-		if (txtpos[i] == LF)
-            return 0;
-		i++;
-	}
-	// print characters
-	while (*txtpos != delim) {
-		fputc (*txtpos, stdout);
-		txtpos++;
-	}
-	txtpos++; // skip closing
-	return 1;
-}
-
-void newline (FILE *stream)
-{
-	fputc (LF, stream);
-	fputc (CR, stream);
-}
-
-// ----------------------------------------------------------------------------
-// internal data handling
-// ----------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
+ * @brief Get a new line from EEPROM or STDIO
+ * ---------------------------------------------------------------------------- */
 void get_line (void)
 {
 	uint8_t *maxpos; 
@@ -163,7 +58,7 @@ void get_line (void)
     maxpos = txtpos;
 	uint8_t incoming_char;
 	uint8_t temp1, temp2;
-    // GET NEW LINE FROM EEPROM
+    // READ FROM EEPROM
 	if (main_config & cfg_from_eeprom) {
 		while (1) {
 			incoming_char = fgetc (&stream_eeprom);
@@ -180,7 +75,7 @@ void get_line (void)
 				txtpos++;
 			}
 		}
-	// GET NEW LINE FROM STANDARD INPUT
+    // READ FROM STANDARD INPUT
     } else {
 		while (1) {
 			incoming_char = fgetc (stdin); // use &stream_pseudo to read from serial
@@ -259,20 +154,29 @@ void get_line (void)
 	}
 }
 
-void push_byte (uint8_t b)
+/** ---------------------------------------------------------------------------
+ * @brief Push a byte in the STACK
+ * ---------------------------------------------------------------------------- */
+void push_byte (uint8_t byte_to_push)
 {
 	stack_ptr--;
-	*stack_ptr = b;
+	*stack_ptr = byte_to_push;
 }
 
+/** ---------------------------------------------------------------------------
+ * @brief Pop a byte from the STACK
+ * ---------------------------------------------------------------------------- */
 uint8_t pop_byte (void)
 {
-	uint8_t b;
-	b = *stack_ptr;
+	uint8_t byte_to_pop;
+	byte_to_pop = *stack_ptr;
 	stack_ptr++;
-	return b;
+	return byte_to_pop;
 }
 
+/* ----------------------------------------------------------------------------
+ * 
+ * ---------------------------------------------------------------------------- */
 uint8_t *find_line (void)
 {
 	uint8_t *line = program_start;
@@ -286,9 +190,10 @@ uint8_t *find_line (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// normalization (kind of)
-// ----------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
+ * @brief Normalize user input
+ * Ignore spaces and transform code (not strings) to upper case
+ * ---------------------------------------------------------------------------- */
 void ignorespace (void)
 {
 	while (*txtpos == SPACE || *txtpos == TAB)
@@ -308,11 +213,10 @@ void uppercase (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// file-access related
-// ----------------------------------------------------------------------------
-
-// return 1 if the character is acceptable for a file name
+/** ---------------------------------------------------------------------------
+ * @brief Check is suitable for name
+ * Check if specified character can be used for a filename
+ * ---------------------------------------------------------------------------- */
 uint16_t valid_filename_char (uint8_t c)
 {
 	if ((c >= '0' && c <= '9')
@@ -327,6 +231,9 @@ uint16_t valid_filename_char (uint8_t c)
 		return 0;
 }
 
+/* ----------------------------------------------------------------------------
+ * 
+ * ---------------------------------------------------------------------------- */
 uint8_t * valid_filename (void)
 {
 	// SDL - I wasn't sure if this functionality existed above, so I figured i'd put it here
@@ -353,9 +260,9 @@ uint8_t * valid_filename (void)
 	return ret;
 }
 
-// ----------------------------------------------------------------------------
-// various
-// ----------------------------------------------------------------------------
+/** ---------------------------------------------------------------------------
+ * @brief Busy-delay functions
+ * ---------------------------------------------------------------------------- */
 void fx_delay_ms (uint16_t ms)
 {
 	while (ms > 0) {
@@ -372,7 +279,9 @@ void fx_delay_us (uint16_t us)
 	}
 }
 
-// check for attempted break
+/** ---------------------------------------------------------------------------
+ * @brief Check if BREAK button was pressed
+ * ---------------------------------------------------------------------------- */
 uint8_t break_test (void)
 {
 	if (break_flow || UDR0 == ETX) {
@@ -382,7 +291,9 @@ uint8_t break_test (void)
 	return 0;
 }
 
-// transform string representation to numeric
+/** ---------------------------------------------------------------------------
+ * @brief Transform string representation to numeric
+ * ---------------------------------------------------------------------------- */
 int16_t str_to_num (uint8_t *strptr)
 {
 	uint8_t negative = 0;

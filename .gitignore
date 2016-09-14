@@ -2,6 +2,7 @@ old_code
 attempt_v*
 documentation
 doc
+asm
 *.o
 *.map
 *.out
