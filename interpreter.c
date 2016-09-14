@@ -27,74 +27,54 @@
 
 static uint8_t execution (void);
 static void warm_reset (void);
-static void append_line (void);
+static void insert_line (void);
 static void remove_line (void);
 static void move_line (void);
 static void prep_line (void);
 static void error_message (void);
 
-const uint8_t msg_welcome[25]	        PROGMEM = "Welcome to nstBASIC v0.2\0";
-const uint8_t msg_ram_bytes[11]	        PROGMEM = " bytes RAM\0";
-const uint8_t msg_rom_bytes[11]	        PROGMEM = " bytes ROM\0";
-const uint8_t msg_available[17]	        PROGMEM = " bytes available\0";
-const uint8_t msg_break[7]		        PROGMEM = "Break!\0";
-const uint8_t msg_ok[3]			        PROGMEM = "OK\0";
+const uint8_t msg_welcome[25]      PROGMEM = "Welcome to nstBASIC v0.2\0";
+const uint8_t msg_ram_bytes[11]	   PROGMEM = " bytes RAM\0";
+const uint8_t msg_rom_bytes[11]    PROGMEM = " bytes ROM\0";
+const uint8_t msg_available[17]    PROGMEM = " bytes available\0";
+const uint8_t msg_break[7]         PROGMEM = "Break!\0";
+const uint8_t msg_ok[3]            PROGMEM = "OK\0";
 
-static const uint8_t err_msgxl[6]		PROGMEM = "Left \0";
-static const uint8_t err_msgxr[7]		PROGMEM = "Right \0";
-static const uint8_t err_msg01[20]		PROGMEM = "Not yet implemented\0";
-static const uint8_t err_msg02[13]		PROGMEM = "Syntax error\0";
-static const uint8_t err_msg03[15]		PROGMEM = "Stack overflow\0";
-static const uint8_t err_msg04[21]		PROGMEM = "Unexpected character\0";
-static const uint8_t err_msg05[20]	    PROGMEM = "parenthesis missing\0";
-static const uint8_t err_msg07[18]		PROGMEM = "Variable expected\0";
-static const uint8_t err_msg08[21]		PROGMEM = "Jump point not found\0";
-static const uint8_t err_msg09[20]		PROGMEM = "Invalid line number\0";
-static const uint8_t err_msg0A[18]		PROGMEM = "Operator expected\0";
-static const uint8_t err_msg0B[17]		PROGMEM = "Division by zero\0";
-static const uint8_t err_msg0C[19]		PROGMEM = "Invalid pin [0..7]\0";
-static const uint8_t err_msg0D[14]		PROGMEM = "Pin I/O error\0";
-static const uint8_t err_msg0E[17]		PROGMEM = "Unknown function\0";
-static const uint8_t err_msg0F[16]		PROGMEM = "Unknown command\0";
-static const uint8_t err_msg10[20]		PROGMEM = "Invalid coordinates\0";
-static const uint8_t err_msg11[22]		PROGMEM = "Invalid variable name\0";
-static const uint8_t err_msg12[23]		PROGMEM = "Expected byte [0..255]\0";
-static const uint8_t err_msg13[13]		PROGMEM = "Out of range\0";
-static const uint8_t err_msg14[24]		PROGMEM = "Expected color [0..127]\0";
+static const uint8_t err_msgxl[6]  PROGMEM = "Left \0";
+static const uint8_t err_msgxr[7]  PROGMEM = "Right \0";
+static const uint8_t err_msg01[20] PROGMEM = "Not yet implemented\0";
+static const uint8_t err_msg02[13] PROGMEM = "Syntax error\0";
+static const uint8_t err_msg03[15] PROGMEM = "Stack overflow\0";
+static const uint8_t err_msg04[21] PROGMEM = "Unexpected character\0";
+static const uint8_t err_msg05[20] PROGMEM = "parenthesis missing\0";
+static const uint8_t err_msg07[18] PROGMEM = "Variable expected\0";
+static const uint8_t err_msg08[21] PROGMEM = "Jump point not found\0";
+static const uint8_t err_msg09[20] PROGMEM = "Invalid line number\0";
+static const uint8_t err_msg0A[18] PROGMEM = "Operator expected\0";
+static const uint8_t err_msg0B[17] PROGMEM = "Division by zero\0";
+static const uint8_t err_msg0C[19] PROGMEM = "Invalid pin [0..7]\0";
+static const uint8_t err_msg0D[14] PROGMEM = "Pin I/O error\0";
+static const uint8_t err_msg0E[17] PROGMEM = "Unknown function\0";
+static const uint8_t err_msg0F[16] PROGMEM = "Unknown command\0";
+static const uint8_t err_msg10[20] PROGMEM = "Invalid coordinates\0";
+static const uint8_t err_msg11[22] PROGMEM = "Invalid variable name\0";
+static const uint8_t err_msg12[23] PROGMEM = "Expected byte [0..255]\0";
+static const uint8_t err_msg13[13] PROGMEM = "Out of range\0";
+static const uint8_t err_msg14[24] PROGMEM = "Expected color [0..127]\0";
 
 static uint8_t *start;
 
-/**
- * @brief GET_LINENUMBER details...
+/** ***************************************************************************
+ * @brief Get current line number.
  *
- * Description of what the function does. This part may refer to the parameters
- * of the function, like @p param1 or @p param2. A word of code can also be
- * inserted like @c this which is equivalent to <tt>this</tt>.
- *
- * @code
- * BoxStruct *out = Box_The_Function_Name(param1, param2);
- * printf("something...\n");
- * @endcode
- * 
- * <b>this is how you write bold text</b> or if it is just one word,
- * you can just do @b this.
- *
- * @param param1 ...
- * @param param2 ...
- * @return ...
- *
- * @see Some_function_name
- * @see Some_struct_name
- * @note ...
- * @warning ...
- */
-
+ * This function examines user input and looks for a valid line number.
+ *****************************************************************************/
 uint16_t get_linenumber (void)
 {
 	uint16_t num = 0;
 	ignorespace();
 	while (*txtpos >= '0' && *txtpos <= '9') {
-		// Trap overflows
+		// check for overflow...
 		if (num >= 0xFFFF / 10) {
 			num = 0xFFFF;
 			break;
@@ -105,15 +85,17 @@ uint16_t get_linenumber (void)
 	return	num;
 }
 
-/*
- * see interpreter.h
- */
-
+/** ***************************************************************************
+ * @brief Initialization of language interpreter.
+ * 
+ * This function initializes pointers used by the interpreter and prints
+ * a welcome message along with the memory size.
+ *****************************************************************************/
 void basic_init (void)
 {
 	program_start = program;
 	program_end = program_start;
-	stack_ptr = program + MEMORY_SIZE; // needed for printnum
+	stack_ptr = program + MEMORY_SIZE;
 	stack_limit = program + MEMORY_SIZE - STACK_SIZE;
 	variables_begin = stack_limit - 27 * VAR_SIZE;
 
@@ -127,10 +109,14 @@ void basic_init (void)
 	newline (stdout);
 }
 
-/*
- * see interpreter.h
- */
-
+/** ***************************************************************************
+ * @brief The interpreter main loop.
+ * 
+ * This function examines user input and determines if the last line entered
+ * was a command or a program line. In the first case, the command is executed
+ * immediately. In the second case, the line read is merged with the rest of
+ * the proigram and into appropriate position.
+ *****************************************************************************/
 void interpreter (void)
 {
     uint8_t exec_status;
@@ -155,20 +141,25 @@ void interpreter (void)
                 txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
                 break;
             }
+
             get_line();
             uppercase();
             move_line();
+
             /* attempt to read line number */
             linenum = get_linenumber();
             ignorespace();
-            /* line number is present --> manipulate line */
+
+            /* chech if line number was found */
             if (linenum != 0) {
-                /* invalid line number --> ignore line :: warm reset */
+
+                /* invalid number --> ignore line & warm reset */
                 if (linenum == 0xFFFF) {
                     error_code = 0x9;
                     break;
                 }
-                /* valid line number --> merge with program */
+
+                /* valid number --> merge with program */
                 else {
                     /* embed line number and line length */
                     prep_line();
@@ -179,9 +170,10 @@ void interpreter (void)
                     if (txtpos[sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH)] == LF)
                         continue;
                     /* append new line to program */
-                    append_line();
+                    insert_line();
                 }
             }
+
             /* no line number --> execute it immediately */
             else {
                 break_flow = 0;
@@ -192,6 +184,7 @@ void interpreter (void)
                     break;
             }
         }
+
         /* if no error --> start execution */
         if (error_code == 0)
             exec_status = execution();
@@ -205,11 +198,15 @@ void interpreter (void)
     }
 }
 
-/*
- * ...
- *
- */
-
+/** ***************************************************************************
+ * @brief Execute specified line.
+ * 
+ * This function executes the line specified by the txtpos pointer. The huge
+ * switch block executes the command found in the beginning of the line. The
+ * presence of a command is achieved withthe help of scantable(). When a program
+ * is running, this function loops and the pointer to next line (@c txtpos) is
+ * updated automatically.
+ *****************************************************************************/
 static uint8_t execution (void)
 {
     uint16_t value;
@@ -399,11 +396,11 @@ static uint8_t execution (void)
     }
 }
 
-/*
- * ...
- *
- */
-
+/** ***************************************************************************
+ * @brief Perform a warm-reset.
+ * 
+ * This function resets program-memory pointer and enables cursor / scrolling.
+ *****************************************************************************/
 static void warm_reset (void)
 {
     // turn-on cursor
@@ -416,25 +413,28 @@ static void warm_reset (void)
     printmsg (msg_ok, stdout);
 }
 
-/*
- * ...
- *
- */
-
-static void append_line (void)
+/** ***************************************************************************
+ * @brief Insert new line in the program.
+ * 
+ * This function calculates the space need by the new line and moves existing
+ * code accordingly, so that the new line will fit. The position at which the
+ * new line should be inserted is specified by the @c txtpos pointer.
+ *****************************************************************************/
+static void insert_line (void)
 {
     uint8_t *new_end;
-	// make room for line
 	while (linelen > 0) {
 		uint8_t *from, *dest;
 		uint16_t tomove;
 		uint16_t room_to_make;
+        // determine memory space to reserve
 		room_to_make = txtpos - program_end;
 		if (room_to_make > linelen)
             room_to_make = linelen;
 		new_end = program_end + room_to_make;
 		tomove = program_end - start;
-		// source and destination
+
+		// move existing cod to make room
 		from = program_end;
 		dest = new_end;
 		while (tomove > 0) {
@@ -443,7 +443,8 @@ static void append_line (void)
 			*dest = *from;
 			tomove--;
 		}
-		// copy line content
+
+		// copy content of new line
 		for (tomove = 0; tomove < room_to_make; tomove++) {
 			*start = *txtpos;
 			txtpos++;
@@ -454,18 +455,21 @@ static void append_line (void)
 	}
 }
 
-/*
- * ...
- *
- */
-
+/** ***************************************************************************
+ * @brief Remove line from program.
+ * 
+ * This function removes a line from the programm and moves over the remaining
+ * code. The line to be deleted is specified by the @c txtpos pointer.
+ *****************************************************************************/
 static void remove_line (void)
 {
     if (start != program_end && * ((uint16_t *)start) == linenum) {
+        // calculate the space taken by the line to be deleted
 		uint8_t *dest, *from;
 		uint16_t tomove;
 		from = start + start[sizeof (uint16_t)];
 		dest = start;
+        // copy onver remaing code
 		tomove = program_end - from;
 		while (tomove > 0) {
 			*dest = *from;
@@ -477,11 +481,13 @@ static void remove_line (void)
 	}
 }
 
-/*
- * ...
- *
- */
-
+/** ***************************************************************************
+ * @brief Move line at the end of program memory.
+ * 
+ * This function moves the newly entered line to the end of program memory.
+ * It is executed whenever the user enters a new line and prior to the 
+ * interpretation / execution.
+ *****************************************************************************/
 static void move_line (void)
 {
 	/* find end of new line */
@@ -502,11 +508,12 @@ static void move_line (void)
 	txtpos = dest;
 }
 
-/*
- * ...
- *
- */
-
+/** ***************************************************************************
+ * @brief Prepare line for merging with the program.
+ * 
+ * This function calculates the size of a line and makes room for storing the
+ * line number.
+ *****************************************************************************/
 static void prep_line (void)
 {
     /* find length of line */
@@ -526,11 +533,12 @@ static void prep_line (void)
     //* ((LINE_LENGTH *)(txtpos + sizeof(LINE_NUMBER))) = linelen;
 }
 
-/*
- * ...
- *
- */
-
+/** ***************************************************************************
+ * @brief Print appropriate error mesage.
+ * 
+ * This function resets colours (text and background) and prints the error
+ * message specified by the @c error_code variable.
+ *****************************************************************************/
 static void error_message (void)
 {
 	text_color (TXT_COL_ERROR);

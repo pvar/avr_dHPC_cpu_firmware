@@ -1,7 +1,6 @@
 /**
  * @file interpreter.h
- * @brief Prototypes for functions that scan user-input for commands
- * and take steps to execute a program or a single command (direct mode).
+ * @brief Prototypes for interpreting and execution functions.
  */
 
 #ifndef INTERPRETER_H

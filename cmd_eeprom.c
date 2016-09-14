@@ -17,13 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
-/**
- * @file cmd_eeprom.c
- * @brief Functions that erase (format) the whole EEPROM space,
- * save and load programs, or load-AND-run (chain) a program.
- */
-
 #include "cmd_eeprom.h"
 
 uint8_t elist (void)

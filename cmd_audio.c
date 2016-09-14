@@ -17,13 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
-/**
- * @file cmd_audio.c
- * @brief Functions that can set notes for each of voice (sound channel),
- * specify reproduction rythm (tempo) and start or stop music playback.
- */
-
 #include "cmd_audio.h"
 
 uint8_t play (void)

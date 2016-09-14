@@ -1,3 +1,9 @@
+/**
+\page page2 Supported commands
+
+@brief Complete listing of supported commands and syntax.
+
+@note colon character (:) separates subsequent commands on the same line
 
 ===================================================================================================
 SYNTAX					TYPE		DESCRIPTION
@@ -122,16 +128,11 @@ locate l,k				command		move cursor
 ----								k: column
 
 ===================================================================================================
+TO BE IMPLEMENTED
 ===================================================================================================
-
-colon character (:) separates subsequent commands on the same line
-
-MEMORY_SIZE = PROGRAM_SPACE + VAR_SIZE + STACK_SIZE
-
 
 symbol b1,b2,..,b8		command		create new symbol
 ----								b1-b8: character bitmap
-
 
 line k,l,m,n,c			command		draw a line
 ----								k: x1-coordinate
@@ -140,10 +141,11 @@ line k,l,m,n,c			command		draw a line
 ----								n: y2-coordinate
 ----								c: colour
 
-
 box k,l,m,n,c			command		draw a box
 ----								k: x1-coordinate
 ----								l: y1-coordinate
 ----								m: x2-coordinate
 ----								n: y2-coordinate
 ----								c: colour
+
+*/

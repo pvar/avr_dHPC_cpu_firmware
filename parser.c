@@ -121,9 +121,19 @@ const uint8_t highlow_tab[12] PROGMEM = {
             0
     };
 
-// ----------------------------------------------------------------------------
-// search for valid function/command name
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Search for valid function or command name.
+ *
+ * This function examines user input or program data (current position in
+ * listing) and looks for a line number.
+ * 
+ * @return The numeric value of the line or zero.
+ *
+ * @note ...
+ *
+ * @warning ...
+ *
+ *****************************************************************************/
 int8_t scantable (const uint8_t *table)
 {
     int8_t position = 0;

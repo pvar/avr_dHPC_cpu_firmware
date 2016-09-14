@@ -1,7 +1,6 @@
 /**
  * @file main.h
- * @brief Functions that perform data preprocessing and simple sanity checks,
- * insert busy-delays and print messages.
+ * @brief Prototypes for fundamental functions.
 
  */
 

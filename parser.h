@@ -1,7 +1,6 @@
 /**
  * @file parser.h
- * @brief Functions that parse and assess the value of arithmetic
- * expressions.
+ * @brief Prototypes for parsing and arithmetic evaluation functions.
  */
 
 #ifndef PARSER_H

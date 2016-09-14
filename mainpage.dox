@@ -1,6 +1,8 @@
 /**
 \mainpage About the project
 
+\tableofcontents
+
 \section sec_1 Another BASIC
 
 This is yet another implementation of BASIC programming language

@@ -1,6 +1,6 @@
 /**
  * @file io.h
- * @brief Functions that handle communication with peripherals.
+ * @brief Prototypes for low-level comunication functions.
  */
 
 #ifndef IO_H

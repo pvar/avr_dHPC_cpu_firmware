@@ -17,12 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
-/**
- * @file cmd_pinctl.c
- * @brief Functions that can set or get the state of a digital IO pin.
- */
-
 #include "cmd_pinctl.h"
 
 uint8_t pindir (void)

@@ -17,13 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
-/**
- * @file cmd_flow.c
- * @brief Functions that implement FOR loops, unconditional jumps and
- * sub-routine calls (in nstBASIC).
- */
-
 #include "cmd_flow.h"
 
 uint8_t gotoline (void)

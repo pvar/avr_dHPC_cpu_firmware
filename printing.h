@@ -1,7 +1,7 @@
 /**
- * @file io.h
- * @brief Functions that handle communication with peripherals.
- */
+ * @file printing.h
+ * @brief Prototypes for printing functions.
+*/
 
 #ifndef PRINTING_H
 #define PRINTING_H

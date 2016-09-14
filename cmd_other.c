@@ -17,13 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
-/**
- * @file cmd_other.c
- * @brief Functions for program execution and other common tasks,
- * like assinging values to variables, pritining program list and so on.
- */
-
 #include "cmd_other.h"
 
 int8_t input (void)

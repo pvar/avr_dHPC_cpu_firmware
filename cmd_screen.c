@@ -17,13 +17,6 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
-/**
- * @file cmd_screen.c
- * @brief Functions that change pen/paper color, clear the screen,
- * move cursor to an arbitrary position and put characters or pixels.
- */
-
 #include "cmd_screen.h"
 
 uint8_t reset_display (void)
