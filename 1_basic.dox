@@ -1,0 +1,144 @@
+/**
+\page page2 nstBASIC command reference
+
+@brief All supported commands along with a short description.
+
+Things to keep in mind:
+- BASIC language is case insensitive. So is nstBASIC.
+- There are only 24 variables available in nstBASIC (a to z).
+- A colon (:) can be used to separate subsequent commands on the same line.
+
+<br><h2 id="cmd_basic">All the classic commands -- almost!</h2>
+<table>
+<tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION
+<tr><td>RST                     <td>command     <td>Reset display
+<tr><td>CLS                     <td>command     <td>Clear screen
+<tr><td>NEW                     <td>command     <td>Clear program memory
+<tr><td>LIST                    <td>command     <td>List program in memory
+<tr><td>RUN                     <td>command     <td>Start execution of program
+<tr><td>STOP                    <td>command     <td>Stop execution of program
+<tr><td>END                     <td>command     <td>Stop execution of program
+<tr><td>REM                     <td>command     <td>Start of comment
+<tr><td>MEM                     <td>command     <td>Display available program space and EEPROM usage
+<tr><td>BEEP                    <td>command     <td>Make a short sound (character 0x07)
+<tr><td>ELOAD                   <td>command     <td>Load program from EEPROM to SRAM
+<tr><td>ESAVE                   <td>command     <td>Save program from SRAM to EEPROM
+<tr><td>ELIST                   <td>command     <td>List program stored on EEPROM
+<tr><td>EFORMAT                 <td>command     <td>Format EEPROM
+<tr><td>DELAY v                 <td>command     <td>Busy delay in milliseconds<br>
+                                                    v: delay in milliseconds
+<tr><td>PRINT "string"          <td>command     <td>Print specified string (in quotes)
+<tr><td>INPUT x                 <td>command     <td>Read a numeric value (hit ENTER to actually get value)<br>
+                                                    x: variable to store the value
+<tr><td>FOR v = k TO n [STEP m] <td>command     <td>Repeat a block of code.<br>
+                                                    The block will be repeated for (n-k) times, if step (m) is not defined. Otherwise, it will be repeated for (n-k)/m times.<br>
+                                                    Block starts on the next line -- ends one line before the corresponding NEXT statement.<br>
+                                                    v: counter variable<br>
+                                                    k: initial value of counter<br>
+                                                    v: final value of counter<br>
+                                                    [m: counter step]
+<tr><td>NEXT                    <td>command     <td>Marks the end of a FOR-block and forces loop counter to update.
+<tr><td>LET v = k               <td>command     <td>Initialize a variable<br>
+                                                    v: variable to initialize<br>
+                                                    k: value to set
+<tr><td>IF (v rop n) c          <td>command     <td>Execute a command if a condition is met<br>
+                                                    v: variable to check<br>
+                                                    rop: realational operator<br>
+                                                    n: value, variable or function to compare against<br>
+                                                    c: command to execute when condition is met
+<tr><td>GOTO n                  <td>command     <td>Jump at specified line<br>
+                                                     n: line number
+<tr><td>GOSUB n                 <td>command     <td>Call subroutine starting at specified line<br>
+                                                     n: line number
+<tr><td>RETURN                  <td>command     <td>Exit subroutine and return to the line after last gosub
+<tr><td>RANDOMIZE               <td>command     <td>Get an arbitrary seed from timer/counter2
+<tr><td>RNDSEED v               <td>command     <td>Set the specified seed<br>
+                                                    v: new seed
+<tr><td>a ABS(v)                <td>function    <td>Return the absolute value of specified expression<br>
+                                                    a: absolute value of v<br>
+                                                    v: an expression
+<tr><td>m RND(k)                <td>function    <td>Return a pseudo random number in range [0..k]<br>
+                                                    m: the random number<br>
+                                                    k: upper limit of range
+<tr><td>v PEEK(n)               <td>function    <td>Read byte from specified memory address<br>
+                                                    v: variable to store value<br>
+                                                    n: memory address
+<tr><td>POKE a, n               <td>command     <td>Write byte to specified memory address<br>
+                                                    a: memory address<br>
+                                                    n: value to write [0..255]
+<tr><td>PEN c                   <td>command     <td>Change text colour<br>
+                                                    c: colour value [0..255]
+<tr><td>PAPER c                 <td>command     <td>Change background colour<br>
+                                                    c: colour value
+<tr><td>PSET x, y, c            <td>command     <td>Draw a pixel<br>
+                                                    x: x-coordinate [0..255]<br>
+                                                    y: y-coordinate [0..239]<br>
+                                                    c: colour [0..255]
+<tr><td>LOCATE y, x             <td>command     <td>Move cursor<br>
+                                                    y: line<br>
+                                                    x: column
+</table>
+
+
+
+<br><h2 id="cmd_music">Music related commands</h2>
+<table>
+<tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION
+<tr><td>MPLAY                   <td>command     <td>Play stored music
+<tr><td>MSTOP                   <td>command     <td>Stop playing music
+<tr><td>TEMPO n                 <td>command     <td>Set tempo for music playback<br>
+                                                    n :: (60, 120, 150, 180)
+<tr><td>MUSIC "CMD1 ... CMDn"   <td>command     <td>Audio channel configuration. CMDx can be one of the following:
+                                                    - Yn: Activate channel n<br>
+                                                    - An: Activate channel n<br>
+                                                    - Nn: Deactivate channel n<br>
+                                                    - Dn: Deactivate channel n<br>
+                                                    - Cn: Clear data on channel n<br>
+                                                    - Xn: Clear data on channel n<br>
+                                                    - Mn O1N1D1 ... OxNyDz: append note(s) in channel n<br>
+                                                    - En O1N1D1 ... OxNyDz: append note(s) in channel n<br>
+                                                        + Ox: octave x :: (2..7)<br>
+                                                        + Ny: note y :: (a, b, c, d, e, f, g, bb, g#, f#, eb, p)<br>
+                                                        + Dz: duration z :: (1 for 1/32, 2 for 1/16, .. 8 for 1/2)
+</table>
+
+
+<br><h2 id="cmd_gpio">GPIO related commands</h2>
+<table>
+<tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION
+<tr><td>PINDIR p,d              <td>command     <td>Set direction of specified pin<br>
+                                                    p: pin number [0..7]<br>
+                                                    d: direction to apply [0 for input / 1 for output]
+<tr><td>v PINDREAD (p)          <td>function    <td>Get the digital value of specified pin<br>
+                                                    v: digital value [0/1]<br>
+                                                    p: pin number [0..7]
+<tr><td>v PINAREAD (p)          <td>function    <td>Get the analog value of specified pin<br>
+                                                    v: analog value [0..511]<br>
+                                                    p: pin number [0..7]
+<tr><td>PINDWRITE p, v          <td>command     <td>Write a digital value on specified pin<br>
+                                                    p: pin number [0..7]<br>
+                                                    v: value to write [0/1]
+</table>
+
+
+
+
+<br><h2 id="cmd_gpio">To be implemented...</h2>
+<table>
+<tr><td>SYMBOL b1, b2, .., b8   <td>command     <td>create new symbol<br>
+                                                    b1-b8: character bitmap
+<tr><td>LINE k, l, m, n, c      <td>command     <td>draw a line<br>
+                                                    k: x1-coordinate<br>
+                                                    l: y1-coordinate<br>
+                                                    m: x2-coordinate<br>
+                                                    n: y2-coordinate<br>
+                                                    c: colour
+<tr><td>BOX k, l, m, n, c       <td>command     <td>draw a box<br>
+                                                    k: x1-coordinate<br>
+                                                    l: y1-coordinate<br>
+                                                    m: x2-coordinate<br>
+                                                    n: y2-coordinate<br>
+                                                    c: colour
+</table>
+
+*/

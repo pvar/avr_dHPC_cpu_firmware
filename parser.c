@@ -122,53 +122,57 @@ const uint8_t highlow_tab[12] PROGMEM = {
     };
 
 /** ***************************************************************************
- * @brief Search for valid function or command name.
+ * @brief Search for any string in specified table.
  *
- * This function examines user input or program data (current position in
- * listing) and looks for a line number.
- * 
- * @return The numeric value of the line or zero.
+ * This function scans current line and looks for any string contained in the
+ * specified array.
  *
- * @note ...
- *
- * @warning ...
- *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @param table A pointer to an array of strings, located in FLASH.
+ * @return The position (index) of the detected string in array.
  *****************************************************************************/
 int8_t scantable (const uint8_t *table)
 {
     int8_t position = 0;
 	uint16_t i = 0;
 	while (1) {
-		// end of given table...
+		// check if at the end of table...
 		if (pgm_read_byte (table) == 0)
             return position;
-		// character match...
+
+		// check for character match...
 		if (txtpos[i] == pgm_read_byte (table)) {
 			i++;
 			table++;
 		} else {
-			// match the last character of keyword (0x80 added)
+			// check if this is the last character of a keyword (add 0x80)
 			if (txtpos[i] + 0x80 == pgm_read_byte (table)) {
-				txtpos += i + 1;	// point after the scanned keyword
+				txtpos += i + 1; // points after the detected keyword
 				ignorespace();
 				return position;
 			}
 			// move to the end of this keyword
 			while ((pgm_read_byte (table) & 0x80) == 0)
                 table++;
-			// move to first character of next keyword and clear index
+			// move to first character of next keyword
 			table++;
+            // increase pointer
 			position++;
-			ignorespace();
+			ignorespace(); // <------------ THIS SHOULDN'T BE HERE!!!
 			i = 0;
 		}
 	}
     return position;
 }
 
-// ----------------------------------------------------------------------------
-// scan string for duration value
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Search for an effect mark.
+ *
+ * This function examines current line and searches for a valid effect mark.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @return A number indicating the defined effect.
+ *****************************************************************************/
 static uint8_t get_effect (void)
 {
 	// EFFECT			RETURN VALUE
@@ -194,9 +198,13 @@ static uint8_t get_effect (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// scan string for channel number
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Search for channel number.
+ *
+ * This function examines current line and searches for sound-channel number.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ *****************************************************************************/
 void parse_channel (void)
 {
 	txtpos++;
@@ -209,9 +217,13 @@ void parse_channel (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// parse string for notes
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Search for notes.
+ *
+ * This function examines current line and searches for notes.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ *****************************************************************************/
 void parse_notes (void)
 {
 	uint8_t tmp1, tmp2, tmp3, tmp4;
@@ -238,9 +250,14 @@ void parse_notes (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// relational operators
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Search for relational operators.
+ *
+ * This function examines current line and searches for any relation operator.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @return The result from the evaluation of the whole expression.
+ *****************************************************************************/
 int16_t parse_expr_s1 (void)
 {
 	int16_t value1, value2;
@@ -288,9 +305,15 @@ int16_t parse_expr_s1 (void)
 	return 0;
 }
 
-// ----------------------------------------------------------------------------
-// additions and subtractions
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Search for subtraction or addition operators.
+ *
+ * This function examines current line and looks for a subtraction
+ * or an addition operator.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @return The result from the evaluation of the sub-expression.
+ *****************************************************************************/
 static int16_t parse_expr_s2 (void)
 {
 	int16_t value1, value2;
@@ -312,9 +335,15 @@ static int16_t parse_expr_s2 (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// multiplications and divisions
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Search for multiplication or division operators.
+ *
+ * This function examines current line and looks for a multiplication
+ * or a division operator.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @return The result from the evaluation of the sub-expression.
+ *****************************************************************************/
 static int16_t parse_expr_s3 (void)
 {
 	int16_t value1, value2;
@@ -337,9 +366,15 @@ static int16_t parse_expr_s3 (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// numbers, variables and functions
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Search for numbers, variables or functions.
+ *
+ * This function examines current line and looks for string representations
+ * of numbers, variables and functions.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @return The result from the evaluation of the sub-expression.
+ *****************************************************************************/
 static int16_t parse_expr_s4 (void)
 {
     uint8_t index;
@@ -473,9 +508,15 @@ static int16_t parse_expr_s4 (void)
     return 0;
 }
 
-// ----------------------------------------------------------------------------
-// scan string for a single note
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Get single note.
+ *
+ * This function examines current line and looks for the string representation
+ * of a note.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @return A number indicating the defined note.
+ *****************************************************************************/
 static uint8_t get_note (void)
 {
 	// NOTE		RETURN VALUE
@@ -563,9 +604,15 @@ static uint8_t get_note (void)
     return 0;
 }
 
-// ----------------------------------------------------------------------------
-// scan string for octave value
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Get octave.
+ *
+ * This function examines current line and looks for the string representation
+ * of an octave number.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @return A number indicating the defined octave.
+ *****************************************************************************/
 static uint8_t get_octave (void)
 {
 	// OCTAVE		RETURN VALUE
@@ -584,9 +631,15 @@ static uint8_t get_octave (void)
 	}
 }
 
-// ----------------------------------------------------------------------------
-// scan string for duration value
-// ----------------------------------------------------------------------------
+/** ***************************************************************************
+ * @brief Get duration value.
+ *
+ * This function examines current line and looks for the string representation
+ * of a note duration.
+ *
+ * @note Scanning begins at the character pointed to by @c txtpos.
+ * @return A number indicating the defined duration.
+ *****************************************************************************/
 static uint8_t get_duration (void)
 {
 	// DURATION			RETURN VALUE
@@ -601,8 +654,7 @@ static uint8_t get_duration (void)
 	txtpos++;
 	if (*txtpos >= '1' && *txtpos <= '8')
 		return *txtpos - '0';
-	else {
-		error_code = 0x4;
-		return 0;
-	}
+
+	error_code = 0x4;
+	return 0;
 }

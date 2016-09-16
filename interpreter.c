@@ -67,7 +67,9 @@ static uint8_t *start;
 /** ***************************************************************************
  * @brief Get current line number.
  *
- * This function examines user input and looks for a valid line number.
+ * This function scans current line and looks for a valid line number.
+ * @note Scanning of current line begins at the character pointed by @c txtpos.
+ * @return The current line number.
  *****************************************************************************/
 uint16_t get_linenumber (void)
 {
@@ -88,8 +90,8 @@ uint16_t get_linenumber (void)
 /** ***************************************************************************
  * @brief Initialization of language interpreter.
  * 
- * This function initializes pointers used by the interpreter and prints
- * a welcome message along with the memory size.
+ * This function initializes pointers used by the interpreter
+ * and prints a welcome message along with the memory size.
  *****************************************************************************/
 void basic_init (void)
 {
@@ -115,7 +117,7 @@ void basic_init (void)
  * This function examines user input and determines if the last line entered
  * was a command or a program line. In the first case, the command is executed
  * immediately. In the second case, the line read is merged with the rest of
- * the proigram and into appropriate position.
+ * the program and into appropriate position.
  *****************************************************************************/
 void interpreter (void)
 {
@@ -201,11 +203,14 @@ void interpreter (void)
 /** ***************************************************************************
  * @brief Execute specified line.
  * 
- * This function executes the line specified by the txtpos pointer. The huge
- * switch block executes the command found in the beginning of the line. The
- * presence of a command is achieved withthe help of scantable(). When a program
- * is running, this function loops and the pointer to next line (@c txtpos) is
- * updated automatically.
+ * This function executes the current line. A helper function (scantable())
+ * looks for the presence of any command and the huge switch block executes
+ * the said command. When a program is running, this function loops over
+ * and keeps executing one line after the other.
+ *
+ * @note The current line begins at the character pointed by @c txtpos.
+ * When running a program, @c txtpos is advanced automatically.
+ * @return The post-execution status. See EXECUTION_STATUS enumerator.
  *****************************************************************************/
 static uint8_t execution (void)
 {
@@ -399,7 +404,8 @@ static uint8_t execution (void)
 /** ***************************************************************************
  * @brief Perform a warm-reset.
  * 
- * This function resets program-memory pointer and enables cursor / scrolling.
+ * This function resets program-memory pointer
+ * and enables cursor and scrolling.
  *****************************************************************************/
 static void warm_reset (void)
 {
@@ -416,9 +422,11 @@ static void warm_reset (void)
 /** ***************************************************************************
  * @brief Insert new line in the program.
  * 
- * This function calculates the space need by the new line and moves existing
- * code accordingly, so that the new line will fit. The position at which the
- * new line should be inserted is specified by the @c txtpos pointer.
+ * This function calculates the space needed by the new line and
+ * moves existing code accordingly, so that the new line will fit.
+ *
+ * @note The position at which the new line should be inserted,
+ * is specified by the @c txtpos pointer.
  *****************************************************************************/
 static void insert_line (void)
 {
@@ -458,8 +466,10 @@ static void insert_line (void)
 /** ***************************************************************************
  * @brief Remove line from program.
  * 
- * This function removes a line from the programm and moves over the remaining
- * code. The line to be deleted is specified by the @c txtpos pointer.
+ * This function removes a line from the programm and moves over
+ * the remaining code.
+ *
+ * @note The line to be deleted is determined by the @c txtpos pointer.
  *****************************************************************************/
 static void remove_line (void)
 {
@@ -511,8 +521,8 @@ static void move_line (void)
 /** ***************************************************************************
  * @brief Prepare line for merging with the program.
  * 
- * This function calculates the size of a line and makes room for storing the
- * line number.
+ * This function calculates the memory space needed for the storing of line,
+ * accounting fot the line number as well.
  *****************************************************************************/
 static void prep_line (void)
 {
@@ -536,8 +546,9 @@ static void prep_line (void)
 /** ***************************************************************************
  * @brief Print appropriate error mesage.
  * 
- * This function resets colours (text and background) and prints the error
- * message specified by the @c error_code variable.
+ * This function resets text and background color and prints an error message.
+ * 
+ * @note The message is indicated by the global variable @c error_code.
  *****************************************************************************/
 static void error_message (void)
 {

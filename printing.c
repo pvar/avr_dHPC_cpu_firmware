@@ -28,11 +28,11 @@
 /** ***************************************************************************
  * @brief Print specified string
  *****************************************************************************/
-void printstr (char *str, FILE *stream)
+void printstr (char *string, FILE *stream)
 {
     uint8_t i = 0;
-    while (str[i] != 0) {
-        fputc (str[i], stream);
+    while (string[i] != 0) {
+        fputc (string[i], stream);
         i++;
     }
 }
@@ -40,18 +40,18 @@ void printstr (char *str, FILE *stream)
 /** ***************************************************************************
  * @brief Print specified integer number
  *****************************************************************************/
-void printnum (int16_t num, FILE *stream)
+void printnum (int16_t number, FILE *stream)
 {
 	int digits = 0;
-	if (num < 0) {
-		num = -num;
+	if (number < 0) {
+		number = -number;
 		fputc ('-', stream);
 	}
 	do {
-		push_byte (num % 10 + '0');
-		num = num / 10;
+		push_byte (number % 10 + '0');
+		number = number / 10;
 		digits++;
-	} while (num > 0);
+	} while (number > 0);
 
 	while (digits > 0) {
 		fputc (pop_byte(), stream);
@@ -62,18 +62,18 @@ void printnum (int16_t num, FILE *stream)
 /** ***************************************************************************
  * @brief Print selected message from FLASH (without new-line)
  *****************************************************************************/
-void printmsg_noNL (const uint8_t *msg, FILE *stream)
+void printmsg_noNL (const uint8_t *message, FILE *stream)
 {
-	while (pgm_read_byte (msg) != 0)
-        fputc (pgm_read_byte (msg++), stream);
+	while (pgm_read_byte (message) != 0)
+        fputc (pgm_read_byte (message++), stream);
 }
 
 /** ***************************************************************************
  * @brief Print selected message from FLASH (with new-line)
  *****************************************************************************/
-void printmsg (const uint8_t *msg, FILE *stream)
+void printmsg (const uint8_t *message, FILE *stream)
 {
-	printmsg_noNL (msg, stream);
+	printmsg_noNL (message, stream);
 	newline (stream);
 }
 
@@ -83,7 +83,7 @@ void printmsg (const uint8_t *msg, FILE *stream)
 void printline (FILE *stream)
 {
 	LINE_NUMBER line_num;
-	line_num = * ((LINE_NUMBER *) (list_line));
+	line_num = *((LINE_NUMBER *)(list_line));
 	list_line += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
 	// print line number
 	printnum (line_num, stream);
@@ -107,7 +107,8 @@ void newline (FILE *stream)
 }
 
 /** ***************************************************************************
- * @brief Print a user string (enclosed in quotes)
+ * @brief Print a user defined string (enclosed in quotes)
+ * @note The opening delimiter of the string is pointed to by @c txtpos.
  *****************************************************************************/
 uint8_t print_string (void)
 {

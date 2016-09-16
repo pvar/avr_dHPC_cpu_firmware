@@ -49,11 +49,11 @@ a self-contained device. At the same time, these programs are designed to
 work together and along with some 'glue logic' form a complete system. In other
 words, nstBASIC is an integral part of this computer.
 
-<b>If you wish to use this interpreter of BASIC in an entirely different project
-</b>, don't let the above description discourage you. The hardware dependent
+<b>If you wish to use this interpreter of BASIC in an entirely different project,</b>
+don't let the above description discourage you. The hardware dependent
 code is conveniently isolated from the interpreter code. All relevant functions
-reside in \c io.c. Some other functions that you may have to check out, are
-those controlling the IO pins in \c cmd_pinctl.c. In most cases, in order to
+reside in @c io.c. Some other functions that you may have to check out, are
+those controlling the IO pins in @c cmd_pinctl.c. In most cases, in order to
 use the interpreter in a different hardware setup, you'll only have to hack
 those two files. This convenient separation of functionality could be seen as
 a by-product of refactoring the interpreter, although in reality, it was a
@@ -102,9 +102,14 @@ In my case, the arguments for burning with AVRDUDE were as follows:\n
 
 \section sec_6 Useful links
 
-- My homemade computer <a target="_blank" href="https://">hardware schematics</a>.
-- TinyBasicPlus <a target="_blank" href="https://github.com/BleuLlama/TinyBasicPlus">project repository</a>.
-- All about keyboard interfacing in an <a target="_blank" href="http://www.atmel.com/Images/doc1235.pdf">ATMEL application note</a>.
-- Engbedded ATMEL AVR® <a target="_blank" href="http://www.engbedded.com/fusecalc/">fuse calculator</a>.
+- My homemade computer hardware [board][dhpc].
+- TinyBasicPlus [repository][tbasic].
+- All about keyboard interfacing in an ATMEL [application note][appnote].
+- Engbedded ATMEL AVR® [fuse calculator][fuses].
+
+[dhpc]:    http://google.com                          "schematics and PCB"
+[fuses]:   http://www.engbedded.com/fusecalc          "web application"
+[tbasic]:  https://github.com/BleuLlama/TinyBasicPlus "source code repository"
+[appnote]: http://www.atmel.com/Images/doc1235.pdf    "application note [PDF]"
 */
 

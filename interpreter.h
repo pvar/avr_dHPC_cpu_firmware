@@ -50,7 +50,7 @@ void interpreter (void);
 typedef uint16_t LINE_NUMBER;
 typedef uint8_t LINE_LENGTH;
 
-enum {
+enum EXECUTION_STATUS {
 	POST_CMD_NOTHING = 0,
 	POST_CMD_EXEC_LINE = 1,
 	POST_CMD_NEXT_LINE = 2,
