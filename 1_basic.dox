@@ -1,5 +1,5 @@
 /**
-\page page2 nstBASIC command reference
+\page page2 Language command reference
 
 @brief All supported commands along with a short description.
 
@@ -8,7 +8,10 @@ Things to keep in mind:
 - There are only 24 variables available in nstBASIC (a to z).
 - A colon (:) can be used to separate subsequent commands on the same line.
 
-<br><h2 id="cmd_basic">All the classic commands -- almost!</h2>
+
+
+###All the classic commands -- almost!
+
 <table>
 <tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION
 <tr><td>RST                     <td>command     <td>Reset display
@@ -81,7 +84,8 @@ Things to keep in mind:
 
 
 
-<br><h2 id="cmd_music">Music related commands</h2>
+### Music related commands
+
 <table>
 <tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION
 <tr><td>MPLAY                   <td>command     <td>Play stored music
@@ -103,7 +107,9 @@ Things to keep in mind:
 </table>
 
 
-<br><h2 id="cmd_gpio">GPIO related commands</h2>
+
+###GPIO related commands
+
 <table>
 <tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION
 <tr><td>PINDIR p,d              <td>command     <td>Set direction of specified pin<br>
@@ -122,8 +128,8 @@ Things to keep in mind:
 
 
 
+### To be implemented...
 
-<br><h2 id="cmd_gpio">To be implemented...</h2>
 <table>
 <tr><td>SYMBOL b1, b2, .., b8   <td>command     <td>create new symbol<br>
                                                     b1-b8: character bitmap
