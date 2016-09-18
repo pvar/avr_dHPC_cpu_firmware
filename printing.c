@@ -120,20 +120,22 @@ void printmsg (const uint8_t *message, FILE *stream)
 /** ***************************************************************************
  * @brief Print a program line
  *****************************************************************************/
-void printline (FILE *stream)
+void printline (uint8_t **line, FILE *stream)
 {
-        LINE_NUMBER line_num;
-        line_num = *((LINE_NUMBER *)(list_line));
-        list_line += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-        // print line number
+        LINE_NUMBER line_num = *((LINE_NUMBER *)(*line));
+
+        *line += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+
+        // print line number and a space
         printnum (line_num, stream);
         fputc (' ', stream);
+
         // print line content
-        while (*list_line != LF) {
-                fputc (*list_line, stream);
-                list_line++;
+        while (**line != LF) {
+                fputc (**line, stream);
+                line++;
         }
-        list_line++;
+        line++;
         newline (stream);
 }
 

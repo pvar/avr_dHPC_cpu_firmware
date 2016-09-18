@@ -50,9 +50,9 @@ void interpreter (void);
 #define STACK_GOSUB_FLAG 'G'
 #define STACK_FOR_FLAG 'F'
 
-
-typedef uint16_t LINE_NUMBER;
-typedef uint8_t LINE_LENGTH;
+// ------------------------------------------------------------------------------
+// ENUMERATORS
+// ------------------------------------------------------------------------------
 
 enum EXECUTION_STATUS {
         POST_CMD_NOTHING = 0,
@@ -63,6 +63,14 @@ enum EXECUTION_STATUS {
         POST_CMD_PROMPT = 5,
         POST_CMD_LOOP = 6
 };
+
+
+// ------------------------------------------------------------------------------
+// DATA TYPES
+// ------------------------------------------------------------------------------
+
+typedef uint16_t LINE_NUMBER;
+typedef uint8_t LINE_LENGTH;
 
 struct stack_for_frame {
         uint8_t frame_type;
@@ -128,18 +136,20 @@ extern const uint8_t to_tab[3];
 extern const uint8_t step_tab[5];
 extern const uint8_t highlow_tab[12];
 
-uint8_t program[MEMORY_SIZE];
-uint8_t input_buffer[INPUT_BUFFER_SIZE];
-uint8_t *txtpos, *list_line;
-
-uint8_t error_code;
-uint8_t *program_start, *program_end;
-uint8_t *stack_limit;
-uint8_t *variables_begin;
-uint8_t *current_line;
-uint8_t *stack_ptr;
-
 LINE_LENGTH linelen;
 LINE_NUMBER linenum;
+
+uint8_t program[MEMORY_SIZE];
+uint8_t input_buffer[INPUT_BUFFER_SIZE];
+
+uint8_t *program_start;
+uint8_t *program_end;
+uint8_t *stack_limit;
+uint8_t *stack_ptr;
+uint8_t *current_line;
+uint8_t *txtpos;
+uint8_t *variables_begin;
+
+uint8_t error_code;
 
 #endif

@@ -7,12 +7,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * nstBASIC is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
@@ -90,7 +90,7 @@ int8_t input (void)
     newline (stdout);
     // parse and store user value
     *var = str_to_num (input_buffer);
-	return POST_CMD_NEXT_STATEMENT;
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 int8_t assignment (void)
@@ -136,7 +136,7 @@ int8_t assignment (void)
         return POST_CMD_WARM_RESET;
     }
     *var = value;
-	return POST_CMD_NEXT_STATEMENT;
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 int8_t poke (void)
@@ -175,22 +175,23 @@ int8_t poke (void)
     }
     // assign value to specified location in memory
     program[address] = value;
-	return POST_CMD_NEXT_STATEMENT;
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 int8_t list (void)
 {
-	linenum = get_linenumber(); // returns 0 if no line found
-	// should be EOL
-	if (txtpos[0] != LF) {
-		error_code = 0x4;
+        linenum = get_linenumber();
+
+        if (txtpos[0] != LF) {
+                error_code = 0x4;
+                return POST_CMD_WARM_RESET;
+        }
+
+        // find line
+        uint8_t *line = find_line();
+        while (line != program_end)
+                printline (&line, stdout);
         return POST_CMD_WARM_RESET;
-	}
-	// find the line
-	list_line = find_line();
-	while (list_line != program_end)
-        printline (stdout);
-    return POST_CMD_WARM_RESET;
 }
 
 int8_t mem (void)
@@ -208,13 +209,13 @@ int8_t mem (void)
     //    val = eeprom_read_byte( (uint8_t *)i );
     //printnum( ( E2END + 1 ) - ( i - 1 ), stdout );
     //printmsg( msg_available, stdout );
-	return POST_CMD_NEXT_STATEMENT;
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 int8_t randomize (void)
 {
-	srand (TCNT2);
-	return POST_CMD_NEXT_STATEMENT;
+        srand (TCNT2);
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 int8_t rndseed (void)
@@ -227,7 +228,7 @@ int8_t rndseed (void)
         return POST_CMD_WARM_RESET;
     }
     srand (param);
-	return POST_CMD_NEXT_STATEMENT;
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 int8_t prog_run (void)

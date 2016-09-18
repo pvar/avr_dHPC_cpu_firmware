@@ -22,7 +22,7 @@
 void printnum (int16_t num, FILE *stream);
 void printmsg_noNL (const uint8_t *msg, FILE *stream);
 void printmsg (const uint8_t *msg, FILE *stream);
-void printline (FILE *stream);
+void printline (uint8_t **line, FILE *stream);
 void newline (FILE *stream);
 uint8_t print_string (void);
 

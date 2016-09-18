@@ -107,9 +107,9 @@ void interpreter (void)
         while(1) {
             error_code = 0;
             /* check if autorun is enabled */
-            if ((main_config & cfg_auto_run) || (main_config & cfg_run_after_load)) {
-                main_config &= ~cfg_auto_run;
-                main_config &= ~cfg_run_after_load;
+            if ((sys_config & cfg_auto_run) || (sys_config & cfg_run_after_load)) {
+                sys_config &= ~cfg_auto_run;
+                sys_config &= ~cfg_run_after_load;
                 current_line = program_start;
                 txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
                 break;
@@ -289,7 +289,7 @@ static uint8_t execution (void)
                 cmd_status = eformat();
                 break;
             case CMD_ECHAIN:
-                main_config |= cfg_run_after_load;
+                sys_config |= cfg_run_after_load;
                 cmd_status = eload();
                 break;
             case CMD_ESAVE:
@@ -401,25 +401,24 @@ static void warm_reset (void)
  *****************************************************************************/
 static void insert_line (void)
 {
-    uint8_t *new_end;
+        uint8_t *source, *dest, *new_end;
+        uint16_t tomove, room_to_make;
+
         while (linelen > 0) {
-                uint8_t *from, *dest;
-                uint16_t tomove;
-                uint16_t room_to_make;
-        // determine memory space to reserve
+                // determine memory space to reserve
                 room_to_make = txtpos - program_end;
                 if (room_to_make > linelen)
-            room_to_make = linelen;
+                        room_to_make = linelen;
                 new_end = program_end + room_to_make;
                 tomove = program_end - start;
 
-                // move existing cod to make room
-                from = program_end;
+                // move existing code to make room
+                source = program_end;
                 dest = new_end;
                 while (tomove > 0) {
-                        from--;
+                        source--;
                         dest--;
-                        *dest = *from;
+                        *dest = *source;
                         tomove--;
                 }
 
@@ -536,8 +535,9 @@ static void error_message (void)
                 uint8_t tmp = *txtpos;
                 if (*txtpos != LF)
                     *txtpos = '^';
-                list_line = current_line;
-                printline (stdout);
+
+                uint8_t *list = current_line;
+                printline (&list, stdout);
                 *txtpos = tmp;
             }
             newline (stdout);
