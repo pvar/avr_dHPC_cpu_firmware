@@ -174,7 +174,7 @@ int8_t poke (void)
         return POST_CMD_WARM_RESET;
     }
     // assign value to specified location in memory
-    program[address] = value;
+    program_space[address] = value;
         return POST_CMD_NEXT_STATEMENT;
 }
 
@@ -239,7 +239,7 @@ int8_t prog_run (void)
     putchar (vid_cursor_off);
     // disable auto scroll
     putchar (vid_scroll_off);
-    current_line = program_start;
+    current_line = program_space;
     return POST_CMD_EXEC_LINE;
 }
 
@@ -261,6 +261,6 @@ int8_t prog_new (void)
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
-    program_end = program_start;
+    program_end = program_space;
     return POST_CMD_PROMPT;
 }

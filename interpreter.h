@@ -139,10 +139,10 @@ extern const uint8_t highlow_tab[12];
 LINE_LENGTH linelen;
 LINE_NUMBER linenum;
 
-uint8_t program[MEMORY_SIZE];
+uint8_t program_space[MEMORY_SIZE];
+
 uint8_t input_buffer[INPUT_BUFFER_SIZE];
 
-uint8_t *program_start;
 uint8_t *program_end;
 uint8_t *stack_limit;
 uint8_t *stack_ptr;

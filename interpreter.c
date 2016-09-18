@@ -66,10 +66,9 @@ uint16_t get_linenumber (void)
  *****************************************************************************/
 void basic_init (void)
 {
-        program_start = program;
-        program_end = program_start;
-        stack_ptr = program + MEMORY_SIZE;
-        stack_limit = program + MEMORY_SIZE - STACK_SIZE;
+        program_end = program_space;
+        stack_ptr = program_space + MEMORY_SIZE;
+        stack_limit = program_space + MEMORY_SIZE - STACK_SIZE;
         variables_begin = stack_limit - 27 * VAR_SIZE;
 
         // print (available) SRAM size
@@ -110,7 +109,7 @@ void interpreter (void)
             if ((sys_config & cfg_auto_run) || (sys_config & cfg_run_after_load)) {
                 sys_config &= ~cfg_auto_run;
                 sys_config &= ~cfg_run_after_load;
-                current_line = program_start;
+                current_line = program_space;
                 txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
                 break;
             }
@@ -386,7 +385,7 @@ static void warm_reset (void)
     putchar (vid_scroll_on);
     // reset program-memory pointer
     current_line = 0;
-    stack_ptr = program + MEMORY_SIZE;
+    stack_ptr = program_space + MEMORY_SIZE;
     printmsg (msg_ok, stdout);
 }
 

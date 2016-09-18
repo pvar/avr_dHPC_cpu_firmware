@@ -179,7 +179,7 @@ uint8_t pop_byte (void)
  *****************************************************************************/
 uint8_t *find_line (void)
 {
-        uint8_t *line = program_start;
+        uint8_t *line = program_space;
         while (1) {
                 if (line == program_end)
                         return line;

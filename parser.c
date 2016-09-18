@@ -7,12 +7,12 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * nstBASIC is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
@@ -134,34 +134,34 @@ const uint8_t highlow_tab[12] PROGMEM = {
 int8_t scantable (const uint8_t *table)
 {
     int8_t position = 0;
-	uint16_t i = 0;
-	while (1) {
-		// check if at the end of table...
-		if (pgm_read_byte (table) == 0)
+        uint16_t i = 0;
+        while (1) {
+                // check if at the end of table...
+                if (pgm_read_byte (table) == 0)
             return position;
 
-		// check for character match...
-		if (txtpos[i] == pgm_read_byte (table)) {
-			i++;
-			table++;
-		} else {
-			// check if this is the last character of a keyword (add 0x80)
-			if (txtpos[i] + 0x80 == pgm_read_byte (table)) {
-				txtpos += i + 1; // points after the detected keyword
-				ignorespace();
-				return position;
-			}
-			// move to the end of this keyword
-			while ((pgm_read_byte (table) & 0x80) == 0)
+                // check for character match...
+                if (txtpos[i] == pgm_read_byte (table)) {
+                        i++;
+                        table++;
+                } else {
+                        // check if this is the last character of a keyword (add 0x80)
+                        if (txtpos[i] + 0x80 == pgm_read_byte (table)) {
+                                txtpos += i + 1; // points after the detected keyword
+                                ignorespace();
+                                return position;
+                        }
+                        // move to the end of this keyword
+                        while ((pgm_read_byte (table) & 0x80) == 0)
                 table++;
-			// move to first character of next keyword
-			table++;
+                        // move to first character of next keyword
+                        table++;
             // increase pointer
-			position++;
-			ignorespace(); // <------------ THIS SHOULDN'T BE HERE!!!
-			i = 0;
-		}
-	}
+                        position++;
+                        ignorespace(); // <------------ THIS SHOULDN'T BE HERE!!!
+                        i = 0;
+                }
+        }
     return position;
 }
 
@@ -175,27 +175,27 @@ int8_t scantable (const uint8_t *table)
  *****************************************************************************/
 static uint8_t get_effect (void)
 {
-	// EFFECT			RETURN VALUE
-	//	none				0
-	//	bend up				1
-	//	bend down			2
-	//	vibrato				3
-	txtpos++;
-	switch (*txtpos) {
-        case '=':	// vibrato
+        // EFFECT                       RETURN VALUE
+        //      none                            0
+        //      bend up                         1
+        //      bend down                       2
+        //      vibrato                         3
+        txtpos++;
+        switch (*txtpos) {
+        case '=':       // vibrato
             return 3;
             break;
-        case '-':	// bend down
+        case '-':       // bend down
             return 2;
             break;
-        case '+':	// bend up
+        case '+':       // bend up
             return 1;
             break;
-        default:	// no effect
+        default:        // no effect
             txtpos--;
             return 0;
             break;
-	}
+        }
 }
 
 /** ***************************************************************************
@@ -207,14 +207,14 @@ static uint8_t get_effect (void)
  *****************************************************************************/
 void parse_channel (void)
 {
-	txtpos++;
-	if (*txtpos >= '1' && *txtpos <= '4') {
-		send_to_apu (*txtpos - '0');
-		return;
-	} else {
-		error_code = 0x4;
-		return;
-	}
+        txtpos++;
+        if (*txtpos >= '1' && *txtpos <= '4') {
+                send_to_apu (*txtpos - '0');
+                return;
+        } else {
+                error_code = 0x4;
+                return;
+        }
 }
 
 /** ***************************************************************************
@@ -226,28 +226,28 @@ void parse_channel (void)
  *****************************************************************************/
 void parse_notes (void)
 {
-	uint8_t tmp1, tmp2, tmp3, tmp4;
-	uint8_t params, note;
-	while (1) {
-		//txtpos++;
-		tmp1 = get_octave();
-		// check separately -- exit if no other notes
-		if (tmp1 == 0)
-			return;
-		tmp2 = get_note();
-		tmp3 = get_duration();
-		tmp4 = get_effect();
-		// check separately -- exit on errors
-		if ((tmp2 | tmp3 | tmp4) == 0)
-			return;
-		if (tmp2 == 13)
-			note = 144;
-		else
-			note = (24 * (tmp1 - 2)) + 2 * (tmp2 - 1);
-		params = (tmp3 - 1) + (tmp4 * 64);
-		send_to_apu (params);
-		send_to_apu (note);
-	}
+        uint8_t tmp1, tmp2, tmp3, tmp4;
+        uint8_t params, note;
+        while (1) {
+                //txtpos++;
+                tmp1 = get_octave();
+                // check separately -- exit if no other notes
+                if (tmp1 == 0)
+                        return;
+                tmp2 = get_note();
+                tmp3 = get_duration();
+                tmp4 = get_effect();
+                // check separately -- exit on errors
+                if ((tmp2 | tmp3 | tmp4) == 0)
+                        return;
+                if (tmp2 == 13)
+                        note = 144;
+                else
+                        note = (24 * (tmp1 - 2)) + 2 * (tmp2 - 1);
+                params = (tmp3 - 1) + (tmp4 * 64);
+                send_to_apu (params);
+                send_to_apu (note);
+        }
 }
 
 /** ***************************************************************************
@@ -260,16 +260,16 @@ void parse_notes (void)
  *****************************************************************************/
 int16_t parse_expr_s1 (void)
 {
-	int16_t value1, value2;
+        int16_t value1, value2;
     uint8_t index;
-	value1 = parse_expr_s2();
-	// check for error
-	if (error_code)
+        value1 = parse_expr_s2();
+        // check for error
+        if (error_code)
         return value1;
-	index = scantable (relop_table);
-	if (index == RELOP_UNKNOWN)
+        index = scantable (relop_table);
+        if (index == RELOP_UNKNOWN)
         return value1;
-	switch (index) {
+        switch (index) {
         case RELOP_GE:
             value2 = parse_expr_s2();
             if (value1 >= value2)
@@ -301,8 +301,8 @@ int16_t parse_expr_s1 (void)
             if (value1 < value2)
                 return 1;
             break;
-	}
-	return 0;
+        }
+        return 0;
 }
 
 /** ***************************************************************************
@@ -316,23 +316,23 @@ int16_t parse_expr_s1 (void)
  *****************************************************************************/
 static int16_t parse_expr_s2 (void)
 {
-	int16_t value1, value2;
-	if (*txtpos == '-' || *txtpos == '+')
-		value1 = 0;
-	else
-		value1 = parse_expr_s3();
-	while (1) {
-		if (*txtpos == '-') {
-			txtpos++;
-			value2 = parse_expr_s3();
-			value1 -= value2;
-		} else if (*txtpos == '+') {
-			txtpos++;
-			value2 = parse_expr_s3();
-			value1 += value2;
-		} else
+        int16_t value1, value2;
+        if (*txtpos == '-' || *txtpos == '+')
+                value1 = 0;
+        else
+                value1 = parse_expr_s3();
+        while (1) {
+                if (*txtpos == '-') {
+                        txtpos++;
+                        value2 = parse_expr_s3();
+                        value1 -= value2;
+                } else if (*txtpos == '+') {
+                        txtpos++;
+                        value2 = parse_expr_s3();
+                        value1 += value2;
+                } else
             return value1;
-	}
+        }
 }
 
 /** ***************************************************************************
@@ -346,24 +346,24 @@ static int16_t parse_expr_s2 (void)
  *****************************************************************************/
 static int16_t parse_expr_s3 (void)
 {
-	int16_t value1, value2;
-	value1 = parse_expr_s4();
-	ignorespace();
-	while (1) {
-		if (*txtpos == '*') {
-			txtpos++;
-			value2 = parse_expr_s4();
-			value1 *= value2;
-		} else if (*txtpos == '/') {
-			txtpos++;
-			value2 = parse_expr_s4();
-			if (value2 != 0)
-				value1 /= value2;
-			else
-				error_code = 0xB;
-		} else
+        int16_t value1, value2;
+        value1 = parse_expr_s4();
+        ignorespace();
+        while (1) {
+                if (*txtpos == '*') {
+                        txtpos++;
+                        value2 = parse_expr_s4();
+                        value1 *= value2;
+                } else if (*txtpos == '/') {
+                        txtpos++;
+                        value2 = parse_expr_s4();
+                        if (value2 != 0)
+                                value1 /= value2;
+                        else
+                                error_code = 0xB;
+                } else
             return value1;
-	}
+        }
 }
 
 /** ***************************************************************************
@@ -378,131 +378,131 @@ static int16_t parse_expr_s3 (void)
 static int16_t parse_expr_s4 (void)
 {
     uint8_t index;
-	int16_t value1 = 0;
-	int16_t value2 = 0;
-	/////////////////////////////////////////////////////////////////////////// numbers
-	ignorespace();
-	// check for minus sign
-	if (*txtpos == '-') {
-		txtpos++;
-		return -parse_expr_s4();
-	}
-	// leading zeros are not allowed
-	if (*txtpos == '0') {
-		txtpos++;
-		return 0;
-	}
-	// calculate value of given number
-	if (*txtpos >= '1' && *txtpos <= '9') {
-		do {
-			value1 = value1 * 10 + *txtpos - '0';
-			txtpos++;
-		} while (*txtpos >= '0' && *txtpos <= '9');
-		return value1;
-	}
-	/////////////////////////////////////////////////////////////////////////// variables
-	// check if we have letters
-	if (txtpos[0] >= 'A' && txtpos[0] <= 'Z') {
-		// check next character -- variable names are single letters
-		if (txtpos[1] < 'A' || txtpos[1] > 'Z') {
-			// return a pointer to the referenced variable
-			value2 = ((int16_t *)variables_begin)[*txtpos - 'A'];
-			txtpos++;
-			return value2;
-		}
-		/////////////////////////////////////////////////////////////////////////// functions
-		// search table with function names
-		index = scantable (functions);
-		if (index == FN_UNKNOWN) {
-			error_code = 0xE;
-			return 0;
-		}
-		// check for left parenthesis
-		if (*txtpos != '(') {
-			error_code = 0x5;
-			return 0;
-		}
-		txtpos++;
-		// get parameter
-		value1 = parse_expr_s1();
-		// check for right parenthesis
-		if (*txtpos != ')') {
-			error_code = 0x6;
-			return 0;
-		}
-		txtpos++;
-		switch (index) {
-		//-----------------------------------------------------------------
-		case FN_PEEK:
-			if (value1 > MEMORY_SIZE) {
-				error_code = 0x13;
-				return 0;
-			}
-			return program[value1];
-		//-----------------------------------------------------------------
-		case FN_ABS:
-			if (value1 < 0)
+        int16_t value1 = 0;
+        int16_t value2 = 0;
+        /////////////////////////////////////////////////////////////////////////// numbers
+        ignorespace();
+        // check for minus sign
+        if (*txtpos == '-') {
+                txtpos++;
+                return -parse_expr_s4();
+        }
+        // leading zeros are not allowed
+        if (*txtpos == '0') {
+                txtpos++;
+                return 0;
+        }
+        // calculate value of given number
+        if (*txtpos >= '1' && *txtpos <= '9') {
+                do {
+                        value1 = value1 * 10 + *txtpos - '0';
+                        txtpos++;
+                } while (*txtpos >= '0' && *txtpos <= '9');
+                return value1;
+        }
+        /////////////////////////////////////////////////////////////////////////// variables
+        // check if we have letters
+        if (txtpos[0] >= 'A' && txtpos[0] <= 'Z') {
+                // check next character -- variable names are single letters
+                if (txtpos[1] < 'A' || txtpos[1] > 'Z') {
+                        // return a pointer to the referenced variable
+                        value2 = ((int16_t *)variables_begin)[*txtpos - 'A'];
+                        txtpos++;
+                        return value2;
+                }
+                /////////////////////////////////////////////////////////////////////////// functions
+                // search table with function names
+                index = scantable (functions);
+                if (index == FN_UNKNOWN) {
+                        error_code = 0xE;
+                        return 0;
+                }
+                // check for left parenthesis
+                if (*txtpos != '(') {
+                        error_code = 0x5;
+                        return 0;
+                }
+                txtpos++;
+                // get parameter
+                value1 = parse_expr_s1();
+                // check for right parenthesis
+                if (*txtpos != ')') {
+                        error_code = 0x6;
+                        return 0;
+                }
+                txtpos++;
+                switch (index) {
+                //-----------------------------------------------------------------
+                case FN_PEEK:
+                        if (value1 > MEMORY_SIZE) {
+                                error_code = 0x13;
+                                return 0;
+                        }
+                        return program_space[value1];
+                //-----------------------------------------------------------------
+                case FN_ABS:
+                        if (value1 < 0)
                 return -value1;
-			return value1;
-		//-----------------------------------------------------------------
-		case FN_RND:
-			return rand() % value1;
-		//-----------------------------------------------------------------
-		case FN_PINDREAD:
-			// expected a pin number (0..7)
-			if (value1 < 0 || value1 > 7) {
-				error_code = 0xC;
-				return 0;
-			}
-			// create bit mask for following checks
-			value1 = 1 << value1;
-			// selected pin should be configured as input
-			if (sec_data_bus_dir & value1) {
-				error_code = 0xD;
-				return 0;
-			}
-			// get the digital value
-			if (sec_data_bus_in & value1)
+                        return value1;
+                //-----------------------------------------------------------------
+                case FN_RND:
+                        return rand() % value1;
+                //-----------------------------------------------------------------
+                case FN_PINDREAD:
+                        // expected a pin number (0..7)
+                        if (value1 < 0 || value1 > 7) {
+                                error_code = 0xC;
+                                return 0;
+                        }
+                        // create bit mask for following checks
+                        value1 = 1 << value1;
+                        // selected pin should be configured as input
+                        if (sec_data_bus_dir & value1) {
+                                error_code = 0xD;
+                                return 0;
+                        }
+                        // get the digital value
+                        if (sec_data_bus_in & value1)
                 return 1;
-			return 0;
-		//-----------------------------------------------------------------
-		case FN_PINAREAD:
-			// expected a pin number (0..7)
-			if (value1 < 0 || value1 > 7) {
-				error_code = 0xC;
-				return 0;
-			}
-			// enable specified input channel
-			ADMUX = value1;
-			// create bit mask for following checks
-			value1 = 1 << value1;
-			// disable pull-up on selected pin
-			value2 = sec_data_bus_out;
-			sec_data_bus_out &= ~value1;
-			// selected pin should be configured as input
-			if (sec_data_bus_dir & value1) {
-				error_code = 0xD;
-				return 0;
-			}
-			// get the analog value
-			ADCSRA |= _BV (ADSC);
-			while (ADCSRA & _BV (ADSC));
-			// restore state of pull-up
-			sec_data_bus_out = value2;
-			return ADCW >> 1;
-		}
-	}
+                        return 0;
+                //-----------------------------------------------------------------
+                case FN_PINAREAD:
+                        // expected a pin number (0..7)
+                        if (value1 < 0 || value1 > 7) {
+                                error_code = 0xC;
+                                return 0;
+                        }
+                        // enable specified input channel
+                        ADMUX = value1;
+                        // create bit mask for following checks
+                        value1 = 1 << value1;
+                        // disable pull-up on selected pin
+                        value2 = sec_data_bus_out;
+                        sec_data_bus_out &= ~value1;
+                        // selected pin should be configured as input
+                        if (sec_data_bus_dir & value1) {
+                                error_code = 0xD;
+                                return 0;
+                        }
+                        // get the analog value
+                        ADCSRA |= _BV (ADSC);
+                        while (ADCSRA & _BV (ADSC));
+                        // restore state of pull-up
+                        sec_data_bus_out = value2;
+                        return ADCW >> 1;
+                }
+        }
 // ------------------------------------------------------------------- expression in parenthesis
-	if (*txtpos == '(') {
-		txtpos++;
-		value1 = parse_expr_s1();
-		if (*txtpos != ')') {
-			error_code = 0x6;
-			return 0;
-		}
-		txtpos++;
-		return value1;
-	}
+        if (*txtpos == '(') {
+                txtpos++;
+                value1 = parse_expr_s1();
+                if (*txtpos != ')') {
+                        error_code = 0x6;
+                        return 0;
+                }
+                txtpos++;
+                return value1;
+        }
     /* SOME APPROPRIATE ERROR CODE */
     error_code = 0x6;
     return 0;
@@ -519,22 +519,22 @@ static int16_t parse_expr_s4 (void)
  *****************************************************************************/
 static uint8_t get_note (void)
 {
-	// NOTE		RETURN VALUE
-	//	C			01
-	//	C#			02
-	//	D			03
-	//	Eb			04
-	//	E			05
-	//	F			06
-	//	F#			07
-	//	G			08
-	//	G#			09
-	//	A			10
-	//	Bb			11
-	//	B			12
-	//	PAUSE		13
-	txtpos++;
-	switch (*txtpos) {
+        // NOTE         RETURN VALUE
+        //      C                       01
+        //      C#                      02
+        //      D                       03
+        //      Eb                      04
+        //      E                       05
+        //      F                       06
+        //      F#                      07
+        //      G                       08
+        //      G#                      09
+        //      A                       10
+        //      Bb                      11
+        //      B                       12
+        //      PAUSE           13
+        txtpos++;
+        switch (*txtpos) {
         case 'C':
         case 'c':
             txtpos++;
@@ -600,7 +600,7 @@ static uint8_t get_note (void)
         default:
             error_code = 0x4;
             break;
-	}
+        }
     return 0;
 }
 
@@ -615,20 +615,20 @@ static uint8_t get_note (void)
  *****************************************************************************/
 static uint8_t get_octave (void)
 {
-	// OCTAVE		RETURN VALUE
-	//	2				2
-	//	...				...
-	//	7				7
-	txtpos++;
-	if (*txtpos >= '2' && *txtpos <= '7')
-		return *txtpos - '0';
-	else if (*txtpos == '"' || *txtpos == '\'') {
-		txtpos--;
-		return 0;
-	} else {
-		error_code = 0x4;
-		return 0;
-	}
+        // OCTAVE               RETURN VALUE
+        //      2                               2
+        //      ...                             ...
+        //      7                               7
+        txtpos++;
+        if (*txtpos >= '2' && *txtpos <= '7')
+                return *txtpos - '0';
+        else if (*txtpos == '"' || *txtpos == '\'') {
+                txtpos--;
+                return 0;
+        } else {
+                error_code = 0x4;
+                return 0;
+        }
 }
 
 /** ***************************************************************************
@@ -642,19 +642,19 @@ static uint8_t get_octave (void)
  *****************************************************************************/
 static uint8_t get_duration (void)
 {
-	// DURATION			RETURN VALUE
-	//	1/32				1
-	//	1/16				2
-	//	1/16* (3/32)		3
-	//	1/8					4
-	//	1/8*  (3/16)		5
-	//	1/4					6
-	//	1/4*  (3/8)			7
-	//	1/2					8
-	txtpos++;
-	if (*txtpos >= '1' && *txtpos <= '8')
-		return *txtpos - '0';
+        // DURATION                     RETURN VALUE
+        //      1/32                            1
+        //      1/16                            2
+        //      1/16* (3/32)            3
+        //      1/8                                     4
+        //      1/8*  (3/16)            5
+        //      1/4                                     6
+        //      1/4*  (3/8)                     7
+        //      1/2                                     8
+        txtpos++;
+        if (*txtpos >= '1' && *txtpos <= '8')
+                return *txtpos - '0';
 
-	error_code = 0x4;
-	return 0;
+        error_code = 0x4;
+        return 0;
 }
