@@ -7,31 +7,20 @@
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 3 of the License, or
  * (at your option) any later version.
- * 
+ *
  * nstBASIC is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
- * 
+ *
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
 /**
  * @file interpreter.c
- * @brief Get user input, search for commands and executre them.
- *
- * The functions in this file form the core of the interprter, which processes user input
- * and/or programs. Every line entered by the user, that starts with a valid line-number,
- * is considered part of the currently active program and is stored at the appropriate
- * position in program memory. If the newly entered line does not start with a line-number,
- * it is executed immediately.
- * @note Although the functions in this file perform some kind of parsing (syntactic analysis),
- * they are kept separately from the main parser functions. The interpreter functions determine
- * the state of the whole system, they run programs and call other functions, that execute single
- * commands. They do not evaluate expressions or check the syntax of given commands. In other
- * words, the interpreter could be seen as a manager/supervisor and the parser as one of those
- * who do the dirty work. :)
+ * @brief Functions that scan user-input for commands and take steps
+ * to execute a program or a single command (direct mode).
 */
 
 #include "interpreter.h"
@@ -44,35 +33,6 @@ static void move_line (void);
 static void prep_line (void);
 static void error_message (void);
 
-const uint8_t msg_welcome[25]      PROGMEM = "Welcome to nstBASIC v0.2\0";
-const uint8_t msg_ram_bytes[11]	   PROGMEM = " bytes RAM\0";
-const uint8_t msg_rom_bytes[11]    PROGMEM = " bytes ROM\0";
-const uint8_t msg_available[17]    PROGMEM = " bytes available\0";
-const uint8_t msg_break[7]         PROGMEM = "Break!\0";
-const uint8_t msg_ok[3]            PROGMEM = "OK\0";
-
-static const uint8_t err_msgxl[6]  PROGMEM = "Left \0";
-static const uint8_t err_msgxr[7]  PROGMEM = "Right \0";
-static const uint8_t err_msg01[20] PROGMEM = "Not yet implemented\0";
-static const uint8_t err_msg02[13] PROGMEM = "Syntax error\0";
-static const uint8_t err_msg03[15] PROGMEM = "Stack overflow\0";
-static const uint8_t err_msg04[21] PROGMEM = "Unexpected character\0";
-static const uint8_t err_msg05[20] PROGMEM = "parenthesis missing\0";
-static const uint8_t err_msg07[18] PROGMEM = "Variable expected\0";
-static const uint8_t err_msg08[21] PROGMEM = "Jump point not found\0";
-static const uint8_t err_msg09[20] PROGMEM = "Invalid line number\0";
-static const uint8_t err_msg0A[18] PROGMEM = "Operator expected\0";
-static const uint8_t err_msg0B[17] PROGMEM = "Division by zero\0";
-static const uint8_t err_msg0C[19] PROGMEM = "Invalid pin [0..7]\0";
-static const uint8_t err_msg0D[14] PROGMEM = "Pin I/O error\0";
-static const uint8_t err_msg0E[17] PROGMEM = "Unknown function\0";
-static const uint8_t err_msg0F[16] PROGMEM = "Unknown command\0";
-static const uint8_t err_msg10[20] PROGMEM = "Invalid coordinates\0";
-static const uint8_t err_msg11[22] PROGMEM = "Invalid variable name\0";
-static const uint8_t err_msg12[23] PROGMEM = "Expected byte [0..255]\0";
-static const uint8_t err_msg13[13] PROGMEM = "Out of range\0";
-static const uint8_t err_msg14[24] PROGMEM = "Expected color [0..127]\0";
-
 static uint8_t *start;
 
 /** ***************************************************************************
@@ -84,47 +44,47 @@ static uint8_t *start;
  *****************************************************************************/
 uint16_t get_linenumber (void)
 {
-	uint16_t num = 0;
-	ignorespace();
-	while (*txtpos >= '0' && *txtpos <= '9') {
-		// check for overflow...
-		if (num >= 0xFFFF / 10) {
-			num = 0xFFFF;
-			break;
-		}
-		num = num * 10 + *txtpos - '0';
-		txtpos++;
-	}
-	return	num;
+        uint16_t num = 0;
+        ignorespace();
+        while (*txtpos >= '0' && *txtpos <= '9') {
+                // check for overflow...
+                if (num >= 0xFFFF / 10) {
+                        num = 0xFFFF;
+                        break;
+                }
+                num = num * 10 + *txtpos - '0';
+                txtpos++;
+        }
+        return  num;
 }
 
 /** ***************************************************************************
  * @brief Initialization of language interpreter.
- * 
+ *
  * This function initializes pointers used by the interpreter
  * and prints a welcome message along with the memory size.
  *****************************************************************************/
 void basic_init (void)
 {
-	program_start = program;
-	program_end = program_start;
-	stack_ptr = program + MEMORY_SIZE;
-	stack_limit = program + MEMORY_SIZE - STACK_SIZE;
-	variables_begin = stack_limit - 27 * VAR_SIZE;
+        program_start = program;
+        program_end = program_start;
+        stack_ptr = program + MEMORY_SIZE;
+        stack_limit = program + MEMORY_SIZE - STACK_SIZE;
+        variables_begin = stack_limit - 27 * VAR_SIZE;
 
-	// print (available) SRAM size
-	printnum (variables_begin - program_end, stdout);
-	printmsg (msg_ram_bytes, stdout);
+        // print (available) SRAM size
+        printnum (variables_begin - program_end, stdout);
+        printmsg (msg_ram_bytes, stdout);
 
-	// print EEPROM size
-	printnum (E2END + 1, stdout);
-	printmsg (msg_rom_bytes , stdout);
-	newline (stdout);
+        // print EEPROM size
+        printnum (E2END + 1, stdout);
+        printmsg (msg_rom_bytes , stdout);
+        newline (stdout);
 }
 
 /** ***************************************************************************
  * @brief The interpreter main loop.
- * 
+ *
  * This function examines user input and determines if the last line entered
  * was a command or a program line. In the first case, the command is executed
  * immediately. In the second case, the line read is merged with the rest of
@@ -213,7 +173,7 @@ void interpreter (void)
 
 /** ***************************************************************************
  * @brief Execute specified line.
- * 
+ *
  * This function executes the current line. A helper function (scantable())
  * looks for the presence of any command and the huge switch block executes
  * the said command. When a program is running, this function loops over
@@ -413,8 +373,8 @@ static uint8_t execution (void)
 }
 
 /** ***************************************************************************
- * @brief Reset computer state.
- * 
+ * @brief Perform a warm-reset.
+ *
  * This function resets program-memory pointer
  * and enables cursor and scrolling.
  *****************************************************************************/
@@ -432,7 +392,7 @@ static void warm_reset (void)
 
 /** ***************************************************************************
  * @brief Insert new line in the program.
- * 
+ *
  * This function calculates the space needed by the new line and
  * moves existing code accordingly, so that the new line will fit.
  *
@@ -442,41 +402,41 @@ static void warm_reset (void)
 static void insert_line (void)
 {
     uint8_t *new_end;
-	while (linelen > 0) {
-		uint8_t *from, *dest;
-		uint16_t tomove;
-		uint16_t room_to_make;
+        while (linelen > 0) {
+                uint8_t *from, *dest;
+                uint16_t tomove;
+                uint16_t room_to_make;
         // determine memory space to reserve
-		room_to_make = txtpos - program_end;
-		if (room_to_make > linelen)
+                room_to_make = txtpos - program_end;
+                if (room_to_make > linelen)
             room_to_make = linelen;
-		new_end = program_end + room_to_make;
-		tomove = program_end - start;
+                new_end = program_end + room_to_make;
+                tomove = program_end - start;
 
-		// move existing cod to make room
-		from = program_end;
-		dest = new_end;
-		while (tomove > 0) {
-			from--;
-			dest--;
-			*dest = *from;
-			tomove--;
-		}
+                // move existing cod to make room
+                from = program_end;
+                dest = new_end;
+                while (tomove > 0) {
+                        from--;
+                        dest--;
+                        *dest = *from;
+                        tomove--;
+                }
 
-		// copy content of new line
-		for (tomove = 0; tomove < room_to_make; tomove++) {
-			*start = *txtpos;
-			txtpos++;
-			start++;
-			linelen--;
-		}
-		program_end = new_end;
-	}
+                // copy content of new line
+                for (tomove = 0; tomove < room_to_make; tomove++) {
+                        *start = *txtpos;
+                        txtpos++;
+                        start++;
+                        linelen--;
+                }
+                program_end = new_end;
+        }
 }
 
 /** ***************************************************************************
  * @brief Remove line from program.
- * 
+ *
  * This function removes a line from the programm and moves over
  * the remaining code.
  *
@@ -486,52 +446,52 @@ static void remove_line (void)
 {
     if (start != program_end && * ((uint16_t *)start) == linenum) {
         // calculate the space taken by the line to be deleted
-		uint8_t *dest, *from;
-		uint16_t tomove;
-		from = start + start[sizeof (uint16_t)];
-		dest = start;
+                uint8_t *dest, *from;
+                uint16_t tomove;
+                from = start + start[sizeof (uint16_t)];
+                dest = start;
         // copy onver remaing code
-		tomove = program_end - from;
-		while (tomove > 0) {
-			*dest = *from;
-			from++;
-			dest++;
-			tomove--;
-		}
-		program_end = dest;
-	}
+                tomove = program_end - from;
+                while (tomove > 0) {
+                        *dest = *from;
+                        from++;
+                        dest++;
+                        tomove--;
+                }
+                program_end = dest;
+        }
 }
 
 /** ***************************************************************************
  * @brief Move line at the end of program memory.
- * 
+ *
  * This function moves the newly entered line to the end of program memory.
- * It is executed whenever the user enters a new line and prior to the 
+ * It is executed whenever the user enters a new line and prior to the
  * interpretation / execution.
  *****************************************************************************/
 static void move_line (void)
 {
-	/* find end of new line */
-	txtpos = program_end + sizeof (uint16_t);
-	while (*txtpos != LF)
+        /* find end of new line */
+        txtpos = program_end + sizeof (uint16_t);
+        while (*txtpos != LF)
         txtpos++;
 
-	/* move line to the end of program_memory */
-	uint8_t *dest;
-	dest = variables_begin - 1;
-	while (1) {
-		*dest = *txtpos;
-		if (txtpos == program_end + sizeof (uint16_t))
+        /* move line to the end of program_memory */
+        uint8_t *dest;
+        dest = variables_begin - 1;
+        while (1) {
+                *dest = *txtpos;
+                if (txtpos == program_end + sizeof (uint16_t))
             break;
-		dest--;
-		txtpos--;
-	}
-	txtpos = dest;
+                dest--;
+                txtpos--;
+        }
+        txtpos = dest;
 }
 
 /** ***************************************************************************
  * @brief Prepare line for merging with the program.
- * 
+ *
  * This function calculates the memory space needed for the storing of line,
  * accounting fot the line number as well.
  *****************************************************************************/
@@ -556,20 +516,20 @@ static void prep_line (void)
 
 /** ***************************************************************************
  * @brief Print appropriate error mesage.
- * 
+ *
  * This function resets text and background color and prints an error message.
- * 
+ *
  * @note The message is indicated by the global variable @c error_code.
  *****************************************************************************/
 static void error_message (void)
 {
-	text_color (TXT_COL_ERROR);
-	paper_color (0);
-	switch (error_code) {
-        case 0x1:	// not yet implemented
+        text_color (TXT_COL_ERROR);
+        paper_color (0);
+        switch (error_code) {
+        case 0x1:       // not yet implemented
             printmsg (err_msg01, stdout);
             break;
-        case 0x2:	// syntax error
+        case 0x2:       // syntax error
             printmsg_noNL (err_msg02, stdout);
             if (current_line != NULL) {
                 printf (" -- ");
@@ -582,63 +542,63 @@ static void error_message (void)
             }
             newline (stdout);
             break;
-        case 0x3:	// stack overflow
+        case 0x3:       // stack overflow
             printmsg (err_msg03, stdout);
             break;
-        case 0x4:	// unexpected character
+        case 0x4:       // unexpected character
             printmsg (err_msg04, stdout);
             break;
-        case 0x5:	// left parenthesis missing
+        case 0x5:       // left parenthesis missing
             printmsg (err_msgxl, stdout);
             printmsg (err_msg05, stdout);
             break;
-        case 0x6:	// right parenthesis missing
+        case 0x6:       // right parenthesis missing
             printmsg (err_msgxr, stdout);
             printmsg (err_msg05, stdout);
             break;
-        case 0x7:	// variable expected
+        case 0x7:       // variable expected
             printmsg (err_msg07, stdout);
             break;
-        case 0x8:	// jump point not found
+        case 0x8:       // jump point not found
             printmsg (err_msg08, stdout);
             break;
-        case 0x9:	// invalid line number
+        case 0x9:       // invalid line number
             printmsg (err_msg09, stdout);
             break;
-        case 0xA:	// operator expected
+        case 0xA:       // operator expected
             printmsg (err_msg0A, stdout);
             break;
-        case 0xB:	// division by zero
+        case 0xB:       // division by zero
             printmsg (err_msg0B, stdout);
             break;
-        case 0xC:	// invalid pin
+        case 0xC:       // invalid pin
             printmsg (err_msg0C, stdout);
             break;
-        case 0xD:	// pin io error
+        case 0xD:       // pin io error
             printmsg (err_msg0D, stdout);
             break;
-        case 0xE:	// unknown function
+        case 0xE:       // unknown function
             printmsg (err_msg0E, stdout);
             break;
-        case 0xF:	// unknown command
+        case 0xF:       // unknown command
             printmsg (err_msg0F, stdout);
             break;
-        case 0x10:	// invalid coordinates
+        case 0x10:      // invalid coordinates
             printmsg (err_msg10, stdout);
             break;
-        case 0x11:	// invalid variable name
+        case 0x11:      // invalid variable name
             printmsg (err_msg11, stdout);
             break;
-        case 0x12:	// expected byte
+        case 0x12:      // expected byte
             printmsg (err_msg12, stdout);
             break;
-        case 0x13:	// out of range
+        case 0x13:      // out of range
             printmsg (err_msg13, stdout);
             break;
-        case 0x14:	// expected color value
+        case 0x14:      // expected color value
             printmsg (err_msg14, stdout);
             break;
-	}
-	text_color (TXT_COL_DEFAULT);
-	paper_color (0);
+        }
+        text_color (TXT_COL_DEFAULT);
+        paper_color (0);
 }
