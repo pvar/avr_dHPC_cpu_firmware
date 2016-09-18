@@ -19,8 +19,7 @@
 
 /**
  * @file main.c
- * @brief Functions that perform data preprocessing and simple sanity checks,
- * insert busy-delays and print messages.
+ * @brief Functions that would fit in no other file :)
  */
 
 #include "main.h"

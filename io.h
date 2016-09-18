@@ -1,6 +1,6 @@
 /**
  * @file io.h
- * @brief Prototypes for low-level comunication functions.
+ * @brief Prototypes, macros, enumerators and global variables...
  */
 
 #ifndef IO_H

@@ -18,7 +18,7 @@ and constant supplied by avr-libc (sei, cli, pgm_read_byte and so on).
 ### Is there already a port for some other microcontroller?
 None that I know of! If you just created one, or you happen to know somebody who did, drop me a line, so that I can update this answer.
 
-### Ok, but whatr exactly should I change
+### I there an easy way to extend the language by adding my own commands?
 Answer...
 
 */

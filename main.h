@@ -1,7 +1,6 @@
 /**
  * @file main.h
- * @brief Prototypes for fundamental functions.
-
+ * @brief Prototypes, macros, enumerators and global variables...
  */
 
 #ifndef MAIN_H

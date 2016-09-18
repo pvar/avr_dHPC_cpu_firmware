@@ -19,7 +19,14 @@
 
 /**
  * @file io.c
- * @brief Functions that handle communication with peripherals.
+ * @brief Exchange data with sub-systems and peripherals.
+ *
+ * The functions in this file handle all IO transactions with EEPROM and serial port,
+ * decode data received from keyboard and transmit commands or raw data to the VGA
+ * controller and / or the sound synthesizer.
+ * @note In order to port nstBASIC to some other platform, this file will probably
+ * have to be rewritten from scratch!
+ *
 */
 
 #include "io.h"

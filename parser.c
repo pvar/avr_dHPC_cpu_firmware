@@ -20,8 +20,16 @@
 
 /**
  * @file parser.c
- * @brief Functions that parse and assess the value of arithmetic
- * expressions.
+ * @brief Syntactic analysis and expression evaluation.
+ *
+ * The functions @c parse_expr_s# call each other recursivelly, until the given expression is
+ * evaluated. The first of them handles relational operators, the second one handles additions
+ * and sutractions, the third handles multiplications and divisions, while the fourth substitutes
+ * variables with the respective values, calls other arithmetic functions, or could even start
+ * the whole 'chain' of parsing from the beginning, in order to evaluate a sub-expression. The
+ * representation of a mathematical expression in the form of a tree could help understand why
+ * this works and how the operator precedence is honored. The rest functions parse the special
+ * strings used for describing sequences of notes and in essence, complete melodies.
  */
 
 #include "parser.h"
@@ -257,7 +265,7 @@ void parse_notes (void)
 /** ***************************************************************************
  * @brief Search for relational operators.
  *
- * This function examines current line and searches for any relation operator.
+ * This function examines current line and searches for any relational operator.
  *
  * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return The result from the evaluation of the whole expression.

@@ -1,6 +1,11 @@
 /**
  * @file parser.h
- * @brief Prototypes for parsing and arithmetic evaluation functions.
+ * @brief Prototypes, macros, enumerators and global variables...
+ * The @c COMMANDS enumerator contains an entry for each command supported by the language.
+ * The memebers of the enumerator appear in the same order as the corresponding commands, in the
+ * @c commands table (see parser.c). In order to add a new command, a relevant entry should be
+ * added in both the enumerator and the table, in exactly the same position. The same applies
+ * for the rest of the enumerators and the respective tables.
  */
 
 #ifndef PARSER_H
@@ -29,7 +34,7 @@ int16_t parse_expr_s1 (void);
 // ENUMERATORS
 // ------------------------------------------------------------------------------
 
-enum {
+enum COMMANDS {
         CMD_LIST = 0,
         CMD_NEW,
         CMD_RUN,
@@ -86,7 +91,7 @@ enum {
         FN_PINAREAD,
         FN_UNKNOWN
 };
-enum {
+enum OPERATORS {
         RELOP_GE = 0,
         RELOP_NE,
         RELOP_GT,

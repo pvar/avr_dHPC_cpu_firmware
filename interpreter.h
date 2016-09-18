@@ -1,6 +1,9 @@
 /**
  * @file interpreter.h
- * @brief Prototypes for interpreting and execution functions.
+ * @brief Prototypes, macros, enumerators and global variables...
+ * Most of the macros in this file play a decisive role in what this system can achieve.
+ * The program memory size determines the maximum size of the programs, while the stack size
+ * determines the maximum number of nested function calls.
  */
 
 #ifndef INTERPRETER_H
@@ -38,13 +41,13 @@ void interpreter (void);
  * 1200 is the approximate footprint of CPU stack and variables used by the firmware
  */
 
-#define MEMORY_SIZE (RAMEND - 1200)
-
 #define HIGHLOW_HIGH    1
 #define HIGHLOW_UNKNOWN 4
 
+#define MEMORY_SIZE (RAMEND - 1200)
 #define INPUT_BUFFER_SIZE 6
-#define STACK_SIZE ( sizeof( struct stack_for_frame ) * 5 )
+#define MAX_FRAME_COUNT 5
+#define STACK_SIZE ( sizeof( struct stack_for_frame ) * MAX_FRAME_COUNT )
 #define VAR_SIZE sizeof( int16_t )
 
 #define STACK_GOSUB_FLAG 'G'

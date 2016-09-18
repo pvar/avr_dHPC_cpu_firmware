@@ -19,7 +19,13 @@
 
 /**
  * @file printing.c
- * @brief Functions that handle communication with peripherals.
+ * @brief Message and other data printing.
+ *
+ * The functions in this file can print messages, numbers, program listings or arbitrary (user
+ * defined) strings on the screen, on some terminal through the serial port or on the EEPROM.
+ * This flexibility is achieved with the use of relevant streams, defined in io.c. Each of
+ * these streams is accompanied by functions that handle low-level IO cimmunication with
+ * the corresponding device.
 */
 
 #include "printing.h"
