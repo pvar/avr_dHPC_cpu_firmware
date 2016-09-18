@@ -20,7 +20,7 @@ clear manner. It's not-so-tiny anymore and the name nstBASIC sprang from
 exactly this realisation. Besides, keeping the word tiny in the name, helps
 denote the heritage of the code.
 
-\section sec_2 More than an interpter
+\section sec_2 More than an interpreter
 
 nstBASIC is written for an 8bit microcontroller, just like TinyBasicPlus,
 but the code has been expanded in many ways, refactored and spread across
