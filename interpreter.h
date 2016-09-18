@@ -30,7 +30,7 @@ void basic_init (void);
 void interpreter (void);
 
 // ------------------------------------------------------------------------------
-// CONSTANTS
+// MACROS
 // ------------------------------------------------------------------------------
 
 /*
@@ -144,11 +144,13 @@ uint8_t program_space[MEMORY_SIZE];
 uint8_t input_buffer[INPUT_BUFFER_SIZE];
 
 uint8_t *program_end;
-uint8_t *stack_limit;
 uint8_t *stack_ptr;
 uint8_t *current_line;
 uint8_t *txtpos;
-uint8_t *variables_begin;
+uint8_t *stack_ptr;
+
+const uint8_t *stack_limit;
+const uint8_t *variables_begin;
 
 uint8_t error_code;
 

@@ -66,10 +66,11 @@ uint16_t get_linenumber (void)
  *****************************************************************************/
 void basic_init (void)
 {
+        const uint8_t *stack_limit = program_space + MEMORY_SIZE - STACK_SIZE;
+        const uint8_t *variables_begin = stack_limit - 27 * VAR_SIZE;
+
         program_end = program_space;
         stack_ptr = program_space + MEMORY_SIZE;
-        stack_limit = program_space + MEMORY_SIZE - STACK_SIZE;
-        variables_begin = stack_limit - 27 * VAR_SIZE;
 
         // print (available) SRAM size
         printnum (variables_begin - program_end, stdout);
@@ -476,7 +477,7 @@ static void move_line (void)
 
         /* move line to the end of program_memory */
         uint8_t *dest;
-        dest = variables_begin - 1;
+        dest = (uint8_t *)variables_begin - 1;
         while (1) {
                 *dest = *txtpos;
                 if (txtpos == program_end + sizeof (uint16_t))
