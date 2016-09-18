@@ -55,19 +55,19 @@ code is conveniently isolated from the interpreter code. All relevant functions
 reside in @c io.c. Some other functions that you may have to check out, are
 those controlling the IO pins in @c cmd_pinctl.c. In most cases, in order to
 use the interpreter in a different hardware setup, you'll only have to hack
-those two files. This convenient separation of functionality could be seen as
-a by-product of refactoring the interpreter, although in reality, it was a
-prerequisite. In TinyBasicPlus, the interpreter was implemented in a huge
-function and the control flow was achieved by the abundant use of goto command.
-The code was super-fast but almost impossible to study, extend or improve. In
-order to remedy this situation, I created a bundle of functions and a simple
-mechanism, that would allow the traversal of some signals -- previously hosted
-in global variables. What better way to do this, other than partitioning the
-code?
+those two files and a few constants in interpreter.h and printing.h. This
+convenient separation of functionality could be seen as a by-product of refactoring
+the interpreter, although in reality, it was a prerequisite. In TinyBasicPlus,
+the interpreter was implemented in a huge function and the control flow was achieved
+by the abundant use of goto command. The code was super-fast but almost impossible
+to study, extend or improve. In order to remedy this situation, I created a bundle
+of functions and a simple mechanism, that would allow the propagation of some signals
+-- previously hosted in global variables. What better way to do this, other than
+partitioning the code?
 
 \section sec_4 License
 
-As described above, nstBASIC derived from the extensive modifications of 
+As described above, nstBASIC derived from the extensive modifications of
 TinyBasicPlus' core. The interpreter was practically written from scratch
 and the general structure of the code was altered significantly. Some other
 functions though, like those of the parser, were only tweaked on a

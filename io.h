@@ -6,14 +6,18 @@
 #ifndef IO_H
 #define IO_H
 
+// ------------------------------------------------------------------------------
+// INCLUDES
+// ------------------------------------------------------------------------------
+
 #include <stdio.h>
 #include <stdlib.h>
 
 #include "main.h"
 
-// =============================================================================
-// PROTOTYPES OF NON-STATIC FUNCTIONS
-// =============================================================================
+// ------------------------------------------------------------------------------
+// PROTOTYPES
+// ------------------------------------------------------------------------------
 
 void kb_decode (uint8_t sc);
 void put_kb_buffer (uint8_t chr);
@@ -40,9 +44,9 @@ int getchar_phy (FILE *stream);
 int putchar_rom (char c, FILE *stream);
 int getchar_rom (FILE *stream);
 
-// =============================================================================
-// CONSTANTS AND CUSTOM DATA TYPES
-// =============================================================================
+// ------------------------------------------------------------------------------
+// CONSTANTS
+// ------------------------------------------------------------------------------
 
 #define pri_data_bus_dir    DDRC
 #define pri_data_bus_out    PORTC
@@ -128,9 +132,9 @@ int getchar_rom (FILE *stream);
 #define snd_ena         201
 #define snd_abort       200
 
-// ============================================================================
-// GLOBAL VARIABLES
-// ============================================================================
+// ------------------------------------------------------------------------------
+// GLOBALS
+// ------------------------------------------------------------------------------
 
 // streams of data to and from IO devices
 FILE stream_physical, stream_pseudo, stream_eeprom;
@@ -139,13 +143,13 @@ FILE stream_physical, stream_pseudo, stream_eeprom;
 uint16_t eeprom_ptr;
 uint8_t break_flow;
 
-// keyboard connectivity messages (definitions reside in printing.c)
+// keyboard connectivity messages (definitions in printing.c)
 extern const uint8_t kb_fail_msg[26];
 extern const uint8_t kb_success_msg[32];
 
-// ============================================================================
+// ------------------------------------------------------------------------------
 // ASSEMBLER MACROS
-// ============================================================================
+// ------------------------------------------------------------------------------
 
 #define tovga() asm volatile \
         ( \

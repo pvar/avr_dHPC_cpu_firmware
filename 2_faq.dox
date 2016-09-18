@@ -4,15 +4,21 @@
 @brief Hopefully, this is where you'll have your questions answered ;)
 
 ### I like nstBASIC! Can I use it in projects of mine?
-I'm glad you like it and since you are so kind, of course you can use it. No, really! You can use nstBASIC in any project, as long as you respect the terms of the licence (GLP v3).
+I'm glad you like it and since you are so kind, of course you can use it. No, really!
+You can use nstBASIC in any project, as long as you respect the terms of the licence (GLP v3).
 
 ### ...But is it possible?
-Definetelly yes! On the one hand, if your project is based on some AVR microcontroller, your job will be very easy. Chances are that you'll only have to tweak some pin definitions and / or a few memory addresses. On the other hand, if you intend to port nstBASIC to some other microcontroller or to an altogether different platform, be prepared for a lot of work! You'll have to rewrite every function in io.c. You'll also have to replace every function and macro supplied by avr-libc (sei, cli, pgm_read_byte and so on)...
+Definetelly yes! It might not be easy though. On the one hand, if your project is based on some
+AVR microcontroller, your job will be very easy. Chances are that you'll only have to tweak some
+pin definitions and / or a few memory addresses. On the other hand, if you intend to port nstBASIC
+to some other microcontroller or to an altogether different platform, be prepared for a lot of work!
+You'll have to rewrite every function in io.c. You'll also have to replace every function, macro
+and constant supplied by avr-libc (sei, cli, pgm_read_byte and so on).
 
 ### Is there already a port for some other microcontroller?
 None that I know of! If you just created one, or you happen to know somebody who did, drop me a line, so that I can update this answer.
 
-### Question k
+### Ok, but whatr exactly should I change
 Answer...
 
 */

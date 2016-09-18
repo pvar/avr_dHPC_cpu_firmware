@@ -6,6 +6,10 @@
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
 
+// ------------------------------------------------------------------------------
+// INCLUDES
+// ------------------------------------------------------------------------------
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -17,17 +21,17 @@
 #include "cmd_pinctl.h"
 #include "cmd_other.h"
 
-// =============================================================================
-// PROTOTYPES OF NON-STATIC FUNCTIONS
-// =============================================================================
+// ------------------------------------------------------------------------------
+// PROTOTYPES
+// ------------------------------------------------------------------------------
 
 uint16_t get_linenumber (void);
 void basic_init (void);
 void interpreter (void);
 
-// =============================================================================
-// CONSTANTS AND CUSTOM DATA TYPES
-// =============================================================================
+// ------------------------------------------------------------------------------
+// CONSTANTS
+// ------------------------------------------------------------------------------
 
 /*
  * MEMORY_SIZE = PROGRAM_SPACE + VAR_SIZE + STACK_SIZE
@@ -75,11 +79,11 @@ struct stack_gosub_frame {
         uint8_t *txtpos;
 };
 
-// =============================================================================
-// GLOBAL VARIABLES
-// =============================================================================
+// ------------------------------------------------------------------------------
+// GLOBALS
+// ------------------------------------------------------------------------------
 
-// general messages (definitions reside in printing.c)
+// general messages (definitions in printing.c)
 extern const uint8_t msg_welcome[25];
 extern const uint8_t msg_ram_bytes[11];
 extern const uint8_t msg_rom_bytes[11];
@@ -87,7 +91,7 @@ extern const uint8_t msg_available[17];
 extern const uint8_t msg_break[7];
 extern const uint8_t msg_ok[3];
 
-// error messages (definitions reside in printing.c)
+// error messages (definitions in printing.c)
 extern const uint8_t err_msgxl[6];
 extern const uint8_t err_msgxr[7];
 extern const uint8_t err_msg01[20];
@@ -110,16 +114,16 @@ extern const uint8_t err_msg12[23];
 extern const uint8_t err_msg13[13];
 extern const uint8_t err_msg14[24];
 
-// functions that return nothing / might print a value (definitions reside in parser.c)
+// functions that return nothing / might print a value (definition in parser.c)
 extern const uint8_t commands[208];
 
-// functions that return a value / print nothing (definitions reside in parser.c)
+// functions that return a value / print nothing (definition in parser.c)
 extern const uint8_t functions[27];
 
-// relational operators (definitions reside in parser.c)
+// relational operators (definition in parser.c)
 extern const uint8_t relop_table[12];
 
-// other keywords (definitions reside in parser.c)
+// other keywords (definitions in parser.c)
 extern const uint8_t to_tab[3];
 extern const uint8_t step_tab[5];
 extern const uint8_t highlow_tab[12];
