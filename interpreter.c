@@ -19,8 +19,19 @@
 
 /**
  * @file interpreter.c
- * @brief Functions that scan user-input for commands and take steps
- * to execute a program or a single command (direct mode).
+ * @brief Get user input, search for commands and executre them.
+ *
+ * The functions in this file form the core of the interprter, which processes user input
+ * and/or programs. Every line entered by the user, that starts with a valid line-number,
+ * is considered part of the currently active program and is stored at the appropriate
+ * position in program memory. If the newly entered line does not start with a line-number,
+ * it is executed immediately.
+ * @note Although the functions in this file perform some kind of parsing (syntactic analysis),
+ * they are kept separately from the main parser functions. The interpreter functions determine
+ * the state of the whole system, they run programs and call other functions, that execute single
+ * commands. They do not evaluate expressions or check the syntax of given commands. In other
+ * words, the interpreter could be seen as a manager/supervisor and the parser as one of those
+ * who do the dirty work. :)
 */
 
 #include "interpreter.h"
@@ -402,7 +413,7 @@ static uint8_t execution (void)
 }
 
 /** ***************************************************************************
- * @brief Perform a warm-reset.
+ * @brief Reset computer state.
  * 
  * This function resets program-memory pointer
  * and enables cursor and scrolling.
