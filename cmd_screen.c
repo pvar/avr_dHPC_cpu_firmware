@@ -24,7 +24,7 @@ uint8_t reset_display (void)
         putchar (vid_reset);
         uart_ansi_rst_clr();
         printmsg (msg_welcome, stdout);
-        program_end = program_space;
+        prog_end_ptr = program_space;
         return POST_CMD_PROMPT;
 }
 
@@ -80,11 +80,11 @@ uint8_t locate (void)
         return POST_CMD_WARM_RESET;
     }
     // check for comma
-    if (*txtpos != ',') {
+    if (*text_ptr != ',') {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
-    txtpos++;
+    text_ptr++;
     // get target line
     column = parse_expr_s1();
     if (error_code) {
@@ -101,18 +101,18 @@ uint8_t locate (void)
 uint8_t print (void)
 {
         // If we have an empty list then just put out a LF
-        if (*txtpos == ':') {
+        if (*text_ptr == ':') {
                 newline (stdout);
-                txtpos++;
+                text_ptr++;
         return POST_CMD_NEXT_STATEMENT;
         }
-        if (*txtpos == LF)
+        if (*text_ptr == LF)
         return POST_CMD_NEXT_LINE;
         while (1) {
                 ignorespace();
                 if (print_string())
                         ;
-                else if (*txtpos == '"' || *txtpos == '\'') {
+                else if (*text_ptr == '"' || *text_ptr == '\'') {
                         error_code = 0x4;
             return POST_CMD_WARM_RESET;
                 } else {
@@ -125,12 +125,12 @@ uint8_t print (void)
                         printnum (e, stdout);
                 }
                 // at this point we have three options, a comma or a new line
-                if (*txtpos == ',')
-            txtpos++;   // skip the comma and move on
-                else if (txtpos[0] == ';' && (txtpos[1] == LF || txtpos[1] == ':')) {
-                        txtpos++; // end of print without newline
+                if (*text_ptr == ',')
+            text_ptr++;   // skip the comma and move on
+                else if (text_ptr[0] == ';' && (text_ptr[1] == LF || text_ptr[1] == ':')) {
+                        text_ptr++; // end of print without newline
                         break;
-                } else if (*txtpos == LF || *txtpos == ':') {
+                } else if (*text_ptr == LF || *text_ptr == ':') {
                         newline (stdout);
                         break;
                 } else {
@@ -154,11 +154,11 @@ uint8_t pset (void)
         return POST_CMD_WARM_RESET;
     }
     // check for comma
-    if (*txtpos != ',') {
+    if (*text_ptr != ',') {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
-    txtpos++;
+    text_ptr++;
     // get y-coordinate
     y = parse_expr_s1();
     if (error_code) {
@@ -169,11 +169,11 @@ uint8_t pset (void)
         return POST_CMD_WARM_RESET;
     }
     // check for comma
-    if (*txtpos != ',') {
+    if (*text_ptr != ',') {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
-    txtpos++;
+    text_ptr++;
     // get color
     col = parse_expr_s1();
     if (error_code) {

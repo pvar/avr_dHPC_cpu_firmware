@@ -22,11 +22,11 @@
 uint8_t gotoline (void)
 {
     linenum = parse_expr_s1();
-    if (error_code || *txtpos != LF) {
+    if (error_code || *text_ptr != LF) {
         error_code = 0x4;
         return POST_CMD_WARM_RESET;
     }
-    current_line = find_line();
+    line_ptr = find_line();
     return POST_CMD_EXEC_LINE;
 }
 
@@ -34,7 +34,7 @@ uint8_t check (void)
 {
     uint16_t value;
     value = parse_expr_s1();
-    if (error_code || *txtpos == LF) {
+    if (error_code || *text_ptr == LF) {
         error_code = 0x4;
         return POST_CMD_WARM_RESET;
     }
@@ -50,18 +50,18 @@ uint8_t loopfor (void)
                 uint8_t var;
                 uint16_t initial, step, terminal;
                 ignorespace();
-                if (*txtpos < 'A' || *txtpos > 'Z') {
+                if (*text_ptr < 'A' || *text_ptr > 'Z') {
                         error_code = 0x7;
             return POST_CMD_WARM_RESET;
                 }
-                var = *txtpos;
-                txtpos++;
+                var = *text_ptr;
+                text_ptr++;
                 ignorespace();
-                if (*txtpos != '=') {
+                if (*text_ptr != '=') {
                         error_code = 0xA;
             return POST_CMD_WARM_RESET;
                 }
-                txtpos++;
+                text_ptr++;
                 ignorespace();
                 error_code = 0;
                 initial = parse_expr_s1();
@@ -85,11 +85,11 @@ uint8_t loopfor (void)
             }
                 } else step = 1;
                 ignorespace();
-                if (*txtpos != LF && *txtpos != ':') {
+                if (*text_ptr != LF && *text_ptr != ':') {
                         error_code = 0x2;
             return POST_CMD_WARM_RESET;
                 }
-                if (!error_code && *txtpos == LF) {
+                if (!error_code && *text_ptr == LF) {
                         struct stack_for_frame *f;
                         if (stack_ptr + sizeof (struct stack_for_frame) < stack_limit) {
                                 error_code = 0x3;
@@ -102,8 +102,8 @@ uint8_t loopfor (void)
                         f->for_var = var;
                         f->terminal = terminal;
                         f->step = step;
-                        f->txtpos = txtpos;
-                        f->current_line = current_line;
+                        f->text_ptr = text_ptr;
+                        f->line_ptr = line_ptr;
                         return POST_CMD_NEXT_STATEMENT;
                 }
         error_code = 0x4;
@@ -114,7 +114,7 @@ uint8_t gosub (void)
 {
         error_code = 0;
         linenum = parse_expr_s1();
-        if (!error_code && *txtpos == LF) {
+        if (!error_code && *text_ptr == LF) {
                 struct stack_gosub_frame *f;
                 if (stack_ptr + sizeof (struct stack_gosub_frame) < stack_limit) {
                         error_code = 0x3;
@@ -123,9 +123,9 @@ uint8_t gosub (void)
                 stack_ptr -= sizeof (struct stack_gosub_frame);
                 f = (struct stack_gosub_frame *)stack_ptr;
                 f->frame_type = STACK_GOSUB_FLAG;
-                f->txtpos = txtpos;
-                f->current_line = current_line;
-                current_line = find_line();
+                f->text_ptr = text_ptr;
+                f->line_ptr = line_ptr;
+                line_ptr = find_line();
                 return POST_CMD_EXEC_LINE;
         }
         error_code = 0x4;
@@ -136,13 +136,13 @@ uint8_t next (void)
 {
         // find the variable name
         ignorespace();
-        if (*txtpos < 'A' || *txtpos > 'Z') {
+        if (*text_ptr < 'A' || *text_ptr > 'Z') {
                 error_code = 0x7;
         return POST_CMD_WARM_RESET;
         }
-        txtpos++;
+        text_ptr++;
         ignorespace();
-        if (*txtpos != ':' && *txtpos != LF) {
+        if (*text_ptr != ':' && *text_ptr != LF) {
                 error_code = 0x2;
         return POST_CMD_WARM_RESET;
         }
@@ -160,8 +160,8 @@ uint8_t gosub_return (uint8_t cmd)
                 case STACK_GOSUB_FLAG:
                         if (cmd == CMD_RETURN) {
                                 struct stack_gosub_frame *f = (struct stack_gosub_frame *)tmp_stack_ptr;
-                                current_line    = f->current_line;
-                                txtpos                  = f->txtpos;
+                                line_ptr    = f->line_ptr;
+                                text_ptr                  = f->text_ptr;
                                 stack_ptr += sizeof (struct stack_gosub_frame);
                                 return POST_CMD_NEXT_STATEMENT;
                         }
@@ -173,14 +173,14 @@ uint8_t gosub_return (uint8_t cmd)
                         if (cmd == CMD_NEXT) {
                                 struct stack_for_frame *f = (struct stack_for_frame *)tmp_stack_ptr;
                                 // Is the variable we are looking for?
-                                if (txtpos[-1] == f->for_var) {
-                                        uint16_t *varaddr = ((uint16_t *)variables_begin) + txtpos[-1] - 'A';
+                                if (text_ptr[-1] == f->for_var) {
+                                        uint16_t *varaddr = ((uint16_t *)variables_begin) + text_ptr[-1] - 'A';
                                         *varaddr = *varaddr + f->step;
                                         // Use a different test depending on the sign of the step increment
                                         if ((f->step > 0 && *varaddr <= f->terminal) || (f->step < 0 && *varaddr >= f->terminal)) {
                                                 // We have to loop so don't pop the stack
-                                                txtpos = f->txtpos;
-                                                current_line = f->current_line;
+                                                text_ptr = f->text_ptr;
+                                                line_ptr = f->line_ptr;
                                                 return POST_CMD_NEXT_STATEMENT;
                                         }
                                         // We've run to the end of the loop. drop out of the loop, popping the stack

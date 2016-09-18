@@ -54,8 +54,8 @@ void get_line (void)
 {
         uint8_t *maxpos;
 
-        txtpos = program_end + sizeof (uint16_t);
-    maxpos = txtpos;
+        text_ptr = prog_end_ptr + sizeof (uint16_t);
+    maxpos = text_ptr;
         uint8_t incoming_char;
         uint8_t temp1, temp2;
     // READ FROM EEPROM
@@ -68,11 +68,11 @@ void get_line (void)
                                 return;
                         case LF:
                         case CR:
-                                txtpos[0] = LF;
+                                text_ptr[0] = LF;
                                 return;
                         default:
-                                txtpos[0] = incoming_char;
-                                txtpos++;
+                                text_ptr[0] = incoming_char;
+                                text_ptr++;
                         }
                 }
     // READ FROM STANDARD INPUT
@@ -86,38 +86,38 @@ void get_line (void)
                         case FF:                // FORM-FEED or NEW-PAGE (CTRL+L)
                                 break;
                         case HOME:              // HOME
-                                if (txtpos > program_end + 2) {
+                                if (text_ptr > prog_end_ptr + 2) {
                                         putchar (vid_tosol);
                                         // how many lines the cursor has to go up
-                                        temp1 = txtpos - program_end - 2;
+                                        temp1 = text_ptr - prog_end_ptr - 2;
                                         putchar (temp1 / MAXCPL + 1);
-                                        txtpos = program_end + 2;
+                                        text_ptr = prog_end_ptr + 2;
                                 }
                                 break;
                         case END:               // END
-                                if (txtpos < maxpos) {
+                                if (text_ptr < maxpos) {
                                         putchar (vid_toeol);
                                         // how many lines the cursor has to go down
-                                        temp1 = maxpos - program_end - 2;       // characters to last position
-                                        temp2 = txtpos - program_end - 2;       // characters to current position
+                                        temp1 = maxpos - prog_end_ptr - 2;       // characters to last position
+                                        temp2 = text_ptr - prog_end_ptr - 2;       // characters to current position
                                         temp2 = temp1 / MAXCPL - temp2 / MAXCPL;
                                         putchar (temp2 + 1);
                                         // ending column
                                         temp2 = temp1 - (temp1 / MAXCPL) * MAXCPL;
                                         putchar (temp2);
-                                        txtpos = maxpos;
+                                        text_ptr = maxpos;
                                 }
                                 break;
                         case ARLT:              // ARROW LEFT
-                                if (txtpos <= program_end + 2) do_beep();
+                                if (text_ptr <= prog_end_ptr + 2) do_beep();
                                 else {
                                         putchar (vid_tolft);
-                                        txtpos--;
+                                        text_ptr--;
                                 }
                                 break;
                         case ARRT:              // ARROW RIGHT
-                                if (txtpos < maxpos) {
-                                        txtpos++;
+                                if (text_ptr < maxpos) {
+                                        text_ptr++;
                                         putchar (vid_torgt);
                                 } else do_beep();
                                 break;
@@ -129,25 +129,25 @@ void get_line (void)
                         case LF:
                         case CR:
                                 // lines are always terminated with LF
-                                txtpos = maxpos;
-                                txtpos[0] = LF;
+                                text_ptr = maxpos;
+                                text_ptr[0] = LF;
                                 newline (stdout);
                                 return;
                         case BS:
-                                if (txtpos <= program_end + 2) do_beep();
+                                if (text_ptr <= prog_end_ptr + 2) do_beep();
                                 else {
                                         putchar (BS);
-                                        txtpos--;
+                                        text_ptr--;
                                 }
                                 break;
                         default:
                                 // need at least one space to allow shuffling the lines
-                                if (txtpos == variables_begin - 2) do_beep();
+                                if (text_ptr == variables_begin - 2) do_beep();
                                 else {
                                         putchar (incoming_char);
-                                        txtpos[0] = incoming_char;
-                                        txtpos++;
-                                        if (txtpos > maxpos) maxpos = txtpos;
+                                        text_ptr[0] = incoming_char;
+                                        text_ptr++;
+                                        if (text_ptr > maxpos) maxpos = text_ptr;
                                 }
                         }
                 }
@@ -181,7 +181,7 @@ uint8_t *find_line (void)
 {
         uint8_t *line = program_space;
         while (1) {
-                if (line == program_end)
+                if (line == prog_end_ptr)
                         return line;
                 if ( ((uint16_t *)line)[0] >= linenum)
                         return line;
@@ -196,13 +196,13 @@ uint8_t *find_line (void)
  *****************************************************************************/
 void ignorespace (void)
 {
-        while (*txtpos == SPACE || *txtpos == TAB)
-                txtpos++;
+        while (*text_ptr == SPACE || *text_ptr == TAB)
+                text_ptr++;
 }
 
 void uppercase (void)
 {
-        uint8_t *c = program_end + sizeof (uint16_t);
+        uint8_t *c = prog_end_ptr + sizeof (uint16_t);
         uint8_t quote = 0;
         while (*c != LF) {
                 // are we in a quoted string?

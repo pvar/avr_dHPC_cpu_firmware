@@ -77,14 +77,14 @@ struct stack_for_frame {
         uint8_t for_var;
         uint16_t terminal;
         uint16_t step;
-        uint8_t *current_line;
-        uint8_t *txtpos;
+        uint8_t *line_ptr;
+        uint8_t *text_ptr;
 };
 
 struct stack_gosub_frame {
         uint16_t frame_type;
-        uint8_t *current_line;
-        uint8_t *txtpos;
+        uint8_t *line_ptr;
+        uint8_t *text_ptr;
 };
 
 // ------------------------------------------------------------------------------
@@ -140,18 +140,16 @@ LINE_LENGTH linelen;
 LINE_NUMBER linenum;
 
 uint8_t program_space[MEMORY_SIZE];
-
 uint8_t input_buffer[INPUT_BUFFER_SIZE];
 
-uint8_t *program_end;
 uint8_t *stack_ptr;
-uint8_t *current_line;
-uint8_t *txtpos;
-uint8_t *stack_ptr;
+uint8_t *line_ptr;
+uint8_t *text_ptr;
+uint8_t *prog_end_ptr;
+
+uint8_t error_code;
 
 const uint8_t *stack_limit;
 const uint8_t *variables_begin;
-
-uint8_t error_code;
 
 #endif

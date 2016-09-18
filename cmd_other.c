@@ -28,15 +28,15 @@ int8_t input (void)
 
     // variable to store user value
     ignorespace();
-    if (*txtpos < 'A' || *txtpos > 'Z') {
+    if (*text_ptr < 'A' || *text_ptr > 'Z') {
         error_code = 0x7;
         return POST_CMD_WARM_RESET;
     }
-    var = (int16_t *)variables_begin + *txtpos - 'A';
+    var = (int16_t *)variables_begin + *text_ptr - 'A';
     // check for proper statement termination
-    txtpos++;
+    text_ptr++;
     ignorespace();
-    if (*txtpos != LF && *txtpos != ':') {
+    if (*text_ptr != LF && *text_ptr != ':') {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
@@ -97,24 +97,24 @@ int8_t assignment (void)
 {
     int16_t value, *var;
     // check if invalid character (non-letter)
-    if (*txtpos < 'A' || *txtpos > 'Z') {
+    if (*text_ptr < 'A' || *text_ptr > 'Z') {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
-    var = (int16_t *)variables_begin + *txtpos - 'A';
-    txtpos++;
+    var = (int16_t *)variables_begin + *text_ptr - 'A';
+    text_ptr++;
 
     // check for invalid variable name (more than one letters)
-    if (*txtpos >= 'A' && *txtpos <= 'Z') {
+    if (*text_ptr >= 'A' && *text_ptr <= 'Z') {
         error_code = 0xFF;
-        txtpos++;
+        text_ptr++;
         /* quick fix -- does it work? */
         return POST_CMD_WARM_RESET;
     }
 
     // check for missing assignment operator
     ignorespace();
-    if (*txtpos != '=') {
+    if (*text_ptr != '=') {
         error_code = 0xF;
         return POST_CMD_WARM_RESET;
     } else {
@@ -124,14 +124,14 @@ int8_t assignment (void)
             return POST_CMD_WARM_RESET;
         }
     }
-    txtpos++;
+    text_ptr++;
     ignorespace();
     value = parse_expr_s1();
     if (error_code) {
         return POST_CMD_WARM_RESET;
     }
     // Check that we are at the end of the statement
-    if (*txtpos != LF && *txtpos != ':') {
+    if (*text_ptr != LF && *text_ptr != ':') {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
@@ -153,11 +153,11 @@ int8_t poke (void)
     }
     // check for comma
     ignorespace();
-    if (*txtpos != ',') {
+    if (*text_ptr != ',') {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
-    txtpos++;
+    text_ptr++;
     // get the value to assign
     ignorespace();
     value = parse_expr_s1();
@@ -169,7 +169,7 @@ int8_t poke (void)
         return POST_CMD_WARM_RESET;
     }
     // check for proper statement termination
-    if (*txtpos != LF && *txtpos != ':') {
+    if (*text_ptr != LF && *text_ptr != ':') {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
@@ -182,14 +182,14 @@ int8_t list (void)
 {
         linenum = get_linenumber();
 
-        if (txtpos[0] != LF) {
+        if (text_ptr[0] != LF) {
                 error_code = 0x4;
                 return POST_CMD_WARM_RESET;
         }
 
         // find line
         uint8_t *line = find_line();
-        while (line != program_end)
+        while (line != prog_end_ptr)
                 printline (&line, stdout);
         return POST_CMD_WARM_RESET;
 }
@@ -197,7 +197,7 @@ int8_t list (void)
 int8_t mem (void)
 {
     // SRAM size
-    printnum (variables_begin - program_end, stdout);
+    printnum (variables_begin - prog_end_ptr, stdout);
     printmsg (msg_ram_bytes, stdout);
     // EEPROM size
     printnum (E2END + 1, stdout);
@@ -239,28 +239,28 @@ int8_t prog_run (void)
     putchar (vid_cursor_off);
     // disable auto scroll
     putchar (vid_scroll_off);
-    current_line = program_space;
+    line_ptr = program_space;
     return POST_CMD_EXEC_LINE;
 }
 
 int8_t prog_end (void)
 {
     // should be at end of line
-    if (txtpos[0] != LF) {
+    if (text_ptr[0] != LF) {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
     // set current line at the end of program
-    current_line = program_end;
+    line_ptr = prog_end_ptr;
     return POST_CMD_EXEC_LINE;
 }
 
 int8_t prog_new (void)
 {
-    if (txtpos[0] != LF) {
+    if (text_ptr[0] != LF) {
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
-    program_end = program_space;
+    prog_end_ptr = program_space;
     return POST_CMD_PROMPT;
 }

@@ -39,21 +39,21 @@ static uint8_t *start;
  * @brief Get current line number.
  *
  * This function scans current line and looks for a valid line number.
- * @note Scanning of current line begins at the character pointed by @c txtpos.
+ * @note Scanning of current line begins at the character pointed by @c text_ptr.
  * @return The current line number.
  *****************************************************************************/
 uint16_t get_linenumber (void)
 {
         uint16_t num = 0;
         ignorespace();
-        while (*txtpos >= '0' && *txtpos <= '9') {
+        while (*text_ptr >= '0' && *text_ptr <= '9') {
                 // check for overflow...
                 if (num >= 0xFFFF / 10) {
                         num = 0xFFFF;
                         break;
                 }
-                num = num * 10 + *txtpos - '0';
-                txtpos++;
+                num = num * 10 + *text_ptr - '0';
+                text_ptr++;
         }
         return  num;
 }
@@ -69,11 +69,11 @@ void basic_init (void)
         const uint8_t *stack_limit = program_space + MEMORY_SIZE - STACK_SIZE;
         const uint8_t *variables_begin = stack_limit - 27 * VAR_SIZE;
 
-        program_end = program_space;
+        prog_end_ptr = program_space;
         stack_ptr = program_space + MEMORY_SIZE;
 
         // print (available) SRAM size
-        printnum (variables_begin - program_end, stdout);
+        printnum (variables_begin - prog_end_ptr, stdout);
         printmsg (msg_ram_bytes, stdout);
 
         // print EEPROM size
@@ -110,8 +110,8 @@ void interpreter (void)
             if ((sys_config & cfg_auto_run) || (sys_config & cfg_run_after_load)) {
                 sys_config &= ~cfg_auto_run;
                 sys_config &= ~cfg_run_after_load;
-                current_line = program_space;
-                txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+                line_ptr = program_space;
+                text_ptr = line_ptr + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
                 break;
             }
 
@@ -140,7 +140,7 @@ void interpreter (void)
                     start = find_line();
                     remove_line();
                     /* new line is empty --> get another one */
-                    if (txtpos[sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH)] == LF)
+                    if (text_ptr[sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH)] == LF)
                         continue;
                     /* append new line to program */
                     insert_line();
@@ -150,8 +150,8 @@ void interpreter (void)
             /* no line number --> execute it immediately */
             else {
                 break_flow = 0;
-                txtpos = program_end + sizeof (uint16_t);
-                if (*txtpos == LF)
+                text_ptr = prog_end_ptr + sizeof (uint16_t);
+                if (*text_ptr == LF)
                     continue;
                 else
                     break;
@@ -179,8 +179,8 @@ void interpreter (void)
  * the said command. When a program is running, this function loops over
  * and keeps executing one line after the other.
  *
- * @note The current line begins at the character pointed by @c txtpos.
- * When running a program, @c txtpos is advanced automatically.
+ * @note The current line begins at the character pointed by @c text_ptr.
+ * When running a program, @c text_ptr is advanced automatically.
  * @return The post-execution status. See EXECUTION_STATUS enumerator.
  *****************************************************************************/
 static uint8_t execution (void)
@@ -345,9 +345,9 @@ static uint8_t execution (void)
 
         if (cmd_status == POST_CMD_NEXT_STATEMENT) {
             ignorespace();
-            if (*txtpos == ':') {
-                while (*txtpos == ':')
-                    txtpos++;
+            if (*text_ptr == ':') {
+                while (*text_ptr == ':')
+                    text_ptr++;
                 ignorespace();
                 continue;
             } else
@@ -357,18 +357,18 @@ static uint8_t execution (void)
         // check if should proceed to next line
         if (cmd_status == POST_CMD_NEXT_LINE) {
             // check if in direct mode (no line number)
-            if (current_line == NULL)
+            if (line_ptr == NULL)
                 return POST_CMD_WARM_RESET;
             // proceed to next line
-            current_line += current_line[sizeof (uint16_t)];
+            line_ptr += line_ptr[sizeof (uint16_t)];
         }
 
         // warm reset if reached end of program
-        if (current_line == program_end)
+        if (line_ptr == prog_end_ptr)
             return POST_CMD_WARM_RESET;
 
         // if reached here, start execution of next line
-        txtpos = current_line + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+        text_ptr = line_ptr + sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
     }
 }
 
@@ -385,7 +385,7 @@ static void warm_reset (void)
     // turn-on scroll
     putchar (vid_scroll_on);
     // reset program-memory pointer
-    current_line = 0;
+    line_ptr = 0;
     stack_ptr = program_space + MEMORY_SIZE;
     printmsg (msg_ok, stdout);
 }
@@ -397,7 +397,7 @@ static void warm_reset (void)
  * moves existing code accordingly, so that the new line will fit.
  *
  * @note The position at which the new line should be inserted,
- * is specified by the @c txtpos pointer.
+ * is specified by the @c text_ptr pointer.
  *****************************************************************************/
 static void insert_line (void)
 {
@@ -406,14 +406,14 @@ static void insert_line (void)
 
         while (linelen > 0) {
                 // determine memory space to reserve
-                room_to_make = txtpos - program_end;
+                room_to_make = text_ptr - prog_end_ptr;
                 if (room_to_make > linelen)
                         room_to_make = linelen;
-                new_end = program_end + room_to_make;
-                tomove = program_end - start;
+                new_end = prog_end_ptr + room_to_make;
+                tomove = prog_end_ptr - start;
 
                 // move existing code to make room
-                source = program_end;
+                source = prog_end_ptr;
                 dest = new_end;
                 while (tomove > 0) {
                         source--;
@@ -424,12 +424,12 @@ static void insert_line (void)
 
                 // copy content of new line
                 for (tomove = 0; tomove < room_to_make; tomove++) {
-                        *start = *txtpos;
-                        txtpos++;
+                        *start = *text_ptr;
+                        text_ptr++;
                         start++;
                         linelen--;
                 }
-                program_end = new_end;
+                prog_end_ptr = new_end;
         }
 }
 
@@ -439,25 +439,25 @@ static void insert_line (void)
  * This function removes a line from the programm and moves over
  * the remaining code.
  *
- * @note The line to be deleted is determined by the @c txtpos pointer.
+ * @note The line to be deleted is determined by the @c text_ptr pointer.
  *****************************************************************************/
 static void remove_line (void)
 {
-    if (start != program_end && * ((uint16_t *)start) == linenum) {
+    if (start != prog_end_ptr && * ((uint16_t *)start) == linenum) {
         // calculate the space taken by the line to be deleted
                 uint8_t *dest, *from;
                 uint16_t tomove;
                 from = start + start[sizeof (uint16_t)];
                 dest = start;
         // copy onver remaing code
-                tomove = program_end - from;
+                tomove = prog_end_ptr - from;
                 while (tomove > 0) {
                         *dest = *from;
                         from++;
                         dest++;
                         tomove--;
                 }
-                program_end = dest;
+                prog_end_ptr = dest;
         }
 }
 
@@ -471,21 +471,21 @@ static void remove_line (void)
 static void move_line (void)
 {
         /* find end of new line */
-        txtpos = program_end + sizeof (uint16_t);
-        while (*txtpos != LF)
-        txtpos++;
+        text_ptr = prog_end_ptr + sizeof (uint16_t);
+        while (*text_ptr != LF)
+        text_ptr++;
 
         /* move line to the end of program_memory */
         uint8_t *dest;
         dest = (uint8_t *)variables_begin - 1;
         while (1) {
-                *dest = *txtpos;
-                if (txtpos == program_end + sizeof (uint16_t))
+                *dest = *text_ptr;
+                if (text_ptr == prog_end_ptr + sizeof (uint16_t))
             break;
                 dest--;
-                txtpos--;
+                text_ptr--;
         }
-        txtpos = dest;
+        text_ptr = dest;
 }
 
 /** ***************************************************************************
@@ -498,19 +498,19 @@ static void prep_line (void)
 {
     /* find length of line */
     linelen = 0;
-    while (txtpos[linelen] != LF)
+    while (text_ptr[linelen] != LF)
         linelen++;
     /* increase to account for LF */
     linelen++;
     /* increase even more for line-header */
     linelen += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
     /* move pointer to the beginning of line header */
-    txtpos -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+    text_ptr -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
     /* add line number and length*/
-    * ((LINE_NUMBER *)txtpos) = linenum;
+    * ((LINE_NUMBER *)text_ptr) = linenum;
 
-    txtpos[sizeof (LINE_NUMBER)] = linelen;
-    //* ((LINE_LENGTH *)(txtpos + sizeof(LINE_NUMBER))) = linelen;
+    text_ptr[sizeof (LINE_NUMBER)] = linelen;
+    //* ((LINE_LENGTH *)(text_ptr + sizeof(LINE_NUMBER))) = linelen;
 }
 
 /** ***************************************************************************
@@ -530,15 +530,15 @@ static void error_message (void)
             break;
         case 0x2:       // syntax error
             printmsg_noNL (err_msg02, stdout);
-            if (current_line != NULL) {
+            if (line_ptr != NULL) {
                 printf (" -- ");
-                uint8_t tmp = *txtpos;
-                if (*txtpos != LF)
-                    *txtpos = '^';
+                uint8_t tmp = *text_ptr;
+                if (*text_ptr != LF)
+                    *text_ptr = '^';
 
-                uint8_t *list = current_line;
+                uint8_t *list = line_ptr;
                 printline (&list, stdout);
-                *txtpos = tmp;
+                *text_ptr = tmp;
             }
             newline (stdout);
             break;

@@ -58,7 +58,7 @@ uint8_t eload (void)
         value = fgetc (&stream_eeprom);
         if (value >= '0' && value <= '9') {
                 eeprom_ptr = 0;
-                program_end = program_space; // point to beginning of program space
+                prog_end_ptr = program_space;
                 sys_config |= cfg_from_eeprom;
         } else
                 error_code = 0x9;
@@ -69,7 +69,7 @@ uint8_t esave (void)
 {
         eeprom_ptr = 0;
         uint8_t *line = find_line();
-        while (line != program_end) {
+        while (line != prog_end_ptr) {
                 printline (&line, &stream_eeprom);
         }
         fputc (0, &stream_eeprom);

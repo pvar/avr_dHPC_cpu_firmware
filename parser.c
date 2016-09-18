@@ -131,7 +131,7 @@ static uint8_t get_octave (void);
  * This function scans current line and looks for any string contained in the
  * specified array.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @param table A pointer to an array of strings, located in FLASH.
  * @return The position (index) of the detected string in array.
  *****************************************************************************/
@@ -145,13 +145,13 @@ int8_t scantable (const uint8_t *table)
             return position;
 
                 // check for character match...
-                if (txtpos[i] == pgm_read_byte (table)) {
+                if (text_ptr[i] == pgm_read_byte (table)) {
                         i++;
                         table++;
                 } else {
                         // check if this is the last character of a keyword (add 0x80)
-                        if (txtpos[i] + 0x80 == pgm_read_byte (table)) {
-                                txtpos += i + 1; // points after the detected keyword
+                        if (text_ptr[i] + 0x80 == pgm_read_byte (table)) {
+                                text_ptr += i + 1; // points after the detected keyword
                                 ignorespace();
                                 return position;
                         }
@@ -174,7 +174,7 @@ int8_t scantable (const uint8_t *table)
  *
  * This function examines current line and searches for a valid effect mark.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return A number indicating the defined effect.
  *****************************************************************************/
 static uint8_t get_effect (void)
@@ -184,8 +184,8 @@ static uint8_t get_effect (void)
         //      bend up                         1
         //      bend down                       2
         //      vibrato                         3
-        txtpos++;
-        switch (*txtpos) {
+        text_ptr++;
+        switch (*text_ptr) {
         case '=':       // vibrato
             return 3;
             break;
@@ -196,7 +196,7 @@ static uint8_t get_effect (void)
             return 1;
             break;
         default:        // no effect
-            txtpos--;
+            text_ptr--;
             return 0;
             break;
         }
@@ -207,13 +207,13 @@ static uint8_t get_effect (void)
  *
  * This function examines current line and searches for sound-channel number.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  *****************************************************************************/
 void parse_channel (void)
 {
-        txtpos++;
-        if (*txtpos >= '1' && *txtpos <= '4') {
-                send_to_apu (*txtpos - '0');
+        text_ptr++;
+        if (*text_ptr >= '1' && *text_ptr <= '4') {
+                send_to_apu (*text_ptr - '0');
                 return;
         } else {
                 error_code = 0x4;
@@ -226,14 +226,14 @@ void parse_channel (void)
  *
  * This function examines current line and searches for notes.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  *****************************************************************************/
 void parse_notes (void)
 {
         uint8_t tmp1, tmp2, tmp3, tmp4;
         uint8_t params, note;
         while (1) {
-                //txtpos++;
+                //text_ptr++;
                 tmp1 = get_octave();
                 // check separately -- exit if no other notes
                 if (tmp1 == 0)
@@ -259,7 +259,7 @@ void parse_notes (void)
  *
  * This function examines current line and searches for any relation operator.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return The result from the evaluation of the whole expression.
  *****************************************************************************/
 int16_t parse_expr_s1 (void)
@@ -315,23 +315,23 @@ int16_t parse_expr_s1 (void)
  * This function examines current line and looks for a subtraction
  * or an addition operator.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return The result from the evaluation of the sub-expression.
  *****************************************************************************/
 static int16_t parse_expr_s2 (void)
 {
         int16_t value1, value2;
-        if (*txtpos == '-' || *txtpos == '+')
+        if (*text_ptr == '-' || *text_ptr == '+')
                 value1 = 0;
         else
                 value1 = parse_expr_s3();
         while (1) {
-                if (*txtpos == '-') {
-                        txtpos++;
+                if (*text_ptr == '-') {
+                        text_ptr++;
                         value2 = parse_expr_s3();
                         value1 -= value2;
-                } else if (*txtpos == '+') {
-                        txtpos++;
+                } else if (*text_ptr == '+') {
+                        text_ptr++;
                         value2 = parse_expr_s3();
                         value1 += value2;
                 } else
@@ -345,7 +345,7 @@ static int16_t parse_expr_s2 (void)
  * This function examines current line and looks for a multiplication
  * or a division operator.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return The result from the evaluation of the sub-expression.
  *****************************************************************************/
 static int16_t parse_expr_s3 (void)
@@ -354,12 +354,12 @@ static int16_t parse_expr_s3 (void)
         value1 = parse_expr_s4();
         ignorespace();
         while (1) {
-                if (*txtpos == '*') {
-                        txtpos++;
+                if (*text_ptr == '*') {
+                        text_ptr++;
                         value2 = parse_expr_s4();
                         value1 *= value2;
-                } else if (*txtpos == '/') {
-                        txtpos++;
+                } else if (*text_ptr == '/') {
+                        text_ptr++;
                         value2 = parse_expr_s4();
                         if (value2 != 0)
                                 value1 /= value2;
@@ -376,7 +376,7 @@ static int16_t parse_expr_s3 (void)
  * This function examines current line and looks for string representations
  * of numbers, variables and functions.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return The result from the evaluation of the sub-expression.
  *****************************************************************************/
 static int16_t parse_expr_s4 (void)
@@ -387,31 +387,31 @@ static int16_t parse_expr_s4 (void)
         /////////////////////////////////////////////////////////////////////////// numbers
         ignorespace();
         // check for minus sign
-        if (*txtpos == '-') {
-                txtpos++;
+        if (*text_ptr == '-') {
+                text_ptr++;
                 return -parse_expr_s4();
         }
         // leading zeros are not allowed
-        if (*txtpos == '0') {
-                txtpos++;
+        if (*text_ptr == '0') {
+                text_ptr++;
                 return 0;
         }
         // calculate value of given number
-        if (*txtpos >= '1' && *txtpos <= '9') {
+        if (*text_ptr >= '1' && *text_ptr <= '9') {
                 do {
-                        value1 = value1 * 10 + *txtpos - '0';
-                        txtpos++;
-                } while (*txtpos >= '0' && *txtpos <= '9');
+                        value1 = value1 * 10 + *text_ptr - '0';
+                        text_ptr++;
+                } while (*text_ptr >= '0' && *text_ptr <= '9');
                 return value1;
         }
         /////////////////////////////////////////////////////////////////////////// variables
         // check if we have letters
-        if (txtpos[0] >= 'A' && txtpos[0] <= 'Z') {
+        if (text_ptr[0] >= 'A' && text_ptr[0] <= 'Z') {
                 // check next character -- variable names are single letters
-                if (txtpos[1] < 'A' || txtpos[1] > 'Z') {
+                if (text_ptr[1] < 'A' || text_ptr[1] > 'Z') {
                         // return a pointer to the referenced variable
-                        value2 = ((int16_t *)variables_begin)[*txtpos - 'A'];
-                        txtpos++;
+                        value2 = ((int16_t *)variables_begin)[*text_ptr - 'A'];
+                        text_ptr++;
                         return value2;
                 }
                 /////////////////////////////////////////////////////////////////////////// functions
@@ -422,19 +422,19 @@ static int16_t parse_expr_s4 (void)
                         return 0;
                 }
                 // check for left parenthesis
-                if (*txtpos != '(') {
+                if (*text_ptr != '(') {
                         error_code = 0x5;
                         return 0;
                 }
-                txtpos++;
+                text_ptr++;
                 // get parameter
                 value1 = parse_expr_s1();
                 // check for right parenthesis
-                if (*txtpos != ')') {
+                if (*text_ptr != ')') {
                         error_code = 0x6;
                         return 0;
                 }
-                txtpos++;
+                text_ptr++;
                 switch (index) {
                 //-----------------------------------------------------------------
                 case FN_PEEK:
@@ -497,14 +497,14 @@ static int16_t parse_expr_s4 (void)
                 }
         }
 // ------------------------------------------------------------------- expression in parenthesis
-        if (*txtpos == '(') {
-                txtpos++;
+        if (*text_ptr == '(') {
+                text_ptr++;
                 value1 = parse_expr_s1();
-                if (*txtpos != ')') {
+                if (*text_ptr != ')') {
                         error_code = 0x6;
                         return 0;
                 }
-                txtpos++;
+                text_ptr++;
                 return value1;
         }
     /* SOME APPROPRIATE ERROR CODE */
@@ -518,7 +518,7 @@ static int16_t parse_expr_s4 (void)
  * This function examines current line and looks for the string representation
  * of a note.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return A number indicating the defined note.
  *****************************************************************************/
 static uint8_t get_note (void)
@@ -537,15 +537,15 @@ static uint8_t get_note (void)
         //      Bb                      11
         //      B                       12
         //      PAUSE           13
-        txtpos++;
-        switch (*txtpos) {
+        text_ptr++;
+        switch (*text_ptr) {
         case 'C':
         case 'c':
-            txtpos++;
-            if (*txtpos == '#')
+            text_ptr++;
+            if (*text_ptr == '#')
                 return 2;
             else {
-                txtpos--;
+                text_ptr--;
                 return 1;
             }
             break;
@@ -555,31 +555,31 @@ static uint8_t get_note (void)
             break;
         case 'E':
         case 'e':
-            txtpos++;
-            if (*txtpos == 'B' || *txtpos == 'b')
+            text_ptr++;
+            if (*text_ptr == 'B' || *text_ptr == 'b')
                 return 4;
             else {
-                txtpos--;
+                text_ptr--;
                 return 5;
             }
             break;
         case 'F':
         case 'f':
-            txtpos++;
-            if (*txtpos == '#')
+            text_ptr++;
+            if (*text_ptr == '#')
                 return 7;
             else {
-                txtpos--;
+                text_ptr--;
                 return 6;
             }
             break;
         case 'G':
         case 'g':
-            txtpos++;
-            if (*txtpos == '#')
+            text_ptr++;
+            if (*text_ptr == '#')
                 return 9;
             else {
-                txtpos--;
+                text_ptr--;
                 return 8;
             }
             break;
@@ -589,11 +589,11 @@ static uint8_t get_note (void)
             break;
         case 'B':
         case 'b':
-            txtpos++;
-            if (*txtpos == 'B' || *txtpos == 'b')
+            text_ptr++;
+            if (*text_ptr == 'B' || *text_ptr == 'b')
                 return 11;
             else {
-                txtpos--;
+                text_ptr--;
                 return 12;
             }
             break;
@@ -614,7 +614,7 @@ static uint8_t get_note (void)
  * This function examines current line and looks for the string representation
  * of an octave number.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return A number indicating the defined octave.
  *****************************************************************************/
 static uint8_t get_octave (void)
@@ -623,11 +623,11 @@ static uint8_t get_octave (void)
         //      2                               2
         //      ...                             ...
         //      7                               7
-        txtpos++;
-        if (*txtpos >= '2' && *txtpos <= '7')
-                return *txtpos - '0';
-        else if (*txtpos == '"' || *txtpos == '\'') {
-                txtpos--;
+        text_ptr++;
+        if (*text_ptr >= '2' && *text_ptr <= '7')
+                return *text_ptr - '0';
+        else if (*text_ptr == '"' || *text_ptr == '\'') {
+                text_ptr--;
                 return 0;
         } else {
                 error_code = 0x4;
@@ -641,7 +641,7 @@ static uint8_t get_octave (void)
  * This function examines current line and looks for the string representation
  * of a note duration.
  *
- * @note Scanning begins at the character pointed to by @c txtpos.
+ * @note Scanning begins at the character pointed to by @c text_ptr.
  * @return A number indicating the defined duration.
  *****************************************************************************/
 static uint8_t get_duration (void)
@@ -655,9 +655,9 @@ static uint8_t get_duration (void)
         //      1/4                                     6
         //      1/4*  (3/8)                     7
         //      1/2                                     8
-        txtpos++;
-        if (*txtpos >= '1' && *txtpos <= '8')
-                return *txtpos - '0';
+        text_ptr++;
+        if (*text_ptr >= '1' && *text_ptr <= '8')
+                return *text_ptr - '0';
 
         error_code = 0x4;
         return 0;

@@ -148,28 +148,28 @@ void newline (FILE *stream)
 
 /** ***************************************************************************
  * @brief Print a user defined string (enclosed in quotes)
- * @note The opening delimiter of the string is pointed to by @c txtpos.
+ * @note The opening delimiter of the string is pointed to by @c text_ptr.
  *****************************************************************************/
 uint8_t print_string (void)
 {
         uint16_t i = 0;
-        uint8_t delim = *txtpos;
+        uint8_t delim = *text_ptr;
         // check for opening delimiter
         if (delim != '"' && delim != '\'')
         return 0;
-        txtpos++;
+        text_ptr++;
         // check for closing delimiter
-        while (txtpos[i] != delim) {
-                if (txtpos[i] == LF)
+        while (text_ptr[i] != delim) {
+                if (text_ptr[i] == LF)
             return 0;
                 i++;
         }
         // print characters
-        while (*txtpos != delim) {
-                fputc (*txtpos, stdout);
-                txtpos++;
+        while (*text_ptr != delim) {
+                fputc (*text_ptr, stdout);
+                text_ptr++;
         }
-        txtpos++; // skip closing
+        text_ptr++; // skip closing
         return 1;
 }
 
