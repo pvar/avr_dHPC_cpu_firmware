@@ -35,7 +35,7 @@ void interpreter (void);
 
 /*
  * MEMORY_SIZE = PROGRAM_SPACE + VAR_SIZE + STACK_SIZE
- * 1200 is the approximate footprint of all variables and CPU stack
+ * 1200 is the approximate footprint of CPU stack and variables used by the firmware
  */
 
 #define MEMORY_SIZE (RAMEND - 1200)

@@ -48,6 +48,8 @@ int getchar_rom (FILE *stream);
 // CONSTANTS
 // ------------------------------------------------------------------------------
 
+#define KB_BUFFER_SIZE  16
+
 #define pri_data_bus_dir    DDRC
 #define pri_data_bus_out    PORTC
 #define pri_data_bus_in     PINC
@@ -74,8 +76,6 @@ int getchar_rom (FILE *stream);
 #define KEYBOARD_INT    1   // INT0
 #define BREAK_INT       4   // INT2
 
-#define KB_BUFFER_SIZE  16
-
 // keyboard status bits
 #define BREAKCODE       1
 #define EXTENDEDKEY     2
@@ -83,6 +83,7 @@ int getchar_rom (FILE *stream);
 #define NUMLOCK         8
 #define SHIFT           16
 #define CAPSLOCK        32
+
 // ASCII special characters
 #define LF              0x0A    // ENTER
 #define FF              0x0C    // CTRL+L
@@ -95,6 +96,7 @@ int getchar_rom (FILE *stream);
 #define ETX             0x03    // CTRL+C
 #define DQUOTE          0x22    //
 #define SQUOTE          0x27    //
+
 // other special characters (arbitrarily defined)
 #define HOME            0x01    // HOME
 #define END             0x02    // END
@@ -102,6 +104,7 @@ int getchar_rom (FILE *stream);
 #define ARDN            0x05    // ARROW DOWN
 #define ARLT            0x10    // ARROW LEFT
 #define ARRT            0x11    // ARROW RIGHT
+
 // GPU special characters
 #define vid_tosol       1
 #define vid_toeol       2
@@ -109,6 +112,7 @@ int getchar_rom (FILE *stream);
 #define vid_torgt       17
 #define vid_toup        19
 #define vid_todn        20
+
 // GPU directives
 #define vid_reset       200
 #define vid_clear       201
@@ -122,6 +126,7 @@ int getchar_rom (FILE *stream);
 #define vid_cursor_on   209
 #define vid_scroll_off  210
 #define vid_scroll_on   211
+
 // APU directives
 #define snd_play        207
 #define snd_stop        206

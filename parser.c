@@ -26,13 +26,7 @@
 
 #include "parser.h"
 
-static int16_t parse_expr_s2 (void);
-static int16_t parse_expr_s3 (void);
-static int16_t parse_expr_s4 (void);
-static uint8_t get_note (void);
-static uint8_t get_effect (void);
-static uint8_t get_duration (void);
-static uint8_t get_octave (void);
+/// @cond BASIC_KEYWORDS
 
 // functions which cannot be part of a larger expression  (return nothing / might print a value)
 const uint8_t commands[208] PROGMEM = {
@@ -120,6 +114,16 @@ const uint8_t highlow_tab[12] PROGMEM = {
             'L', 'O' + 0x80,
             0
     };
+
+/// @endcond
+
+static int16_t parse_expr_s2 (void);
+static int16_t parse_expr_s3 (void);
+static int16_t parse_expr_s4 (void);
+static uint8_t get_note (void);
+static uint8_t get_effect (void);
+static uint8_t get_duration (void);
+static uint8_t get_octave (void);
 
 /** ***************************************************************************
  * @brief Search for any string in specified table.

@@ -24,7 +24,6 @@
 
 #include "printing.h"
 
-
 /// @cond CONST_MESSAGES
 
 // general messages
@@ -63,7 +62,6 @@ const uint8_t kb_fail_msg[26] PROGMEM = "Keyboard self-test failed\0";
 const uint8_t kb_success_msg[32] PROGMEM = "Keyboard connected successfully\0";
 
 /// @endcond
-
 
 /** ***************************************************************************
  * @brief Print specified string
