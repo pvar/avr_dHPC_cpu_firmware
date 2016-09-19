@@ -97,7 +97,7 @@ uint8_t loopfor (void)
                         }
                         stack_ptr -= sizeof (struct stack_for_frame);
                         f = (struct stack_for_frame *)stack_ptr;
-                        ((uint16_t *)variables_begin)[var - 'A'] = initial;
+                        ((uint16_t *)variables_ptr)[var - 'A'] = initial;
                         f->frame_type = STACK_FOR_FLAG;
                         f->for_var = var;
                         f->terminal = terminal;
@@ -174,7 +174,7 @@ uint8_t gosub_return (uint8_t cmd)
                                 struct stack_for_frame *f = (struct stack_for_frame *)tmp_stack_ptr;
                                 // Is the variable we are looking for?
                                 if (text_ptr[-1] == f->for_var) {
-                                        uint16_t *varaddr = ((uint16_t *)variables_begin) + text_ptr[-1] - 'A';
+                                        uint16_t *varaddr = ((uint16_t *)variables_ptr) + text_ptr[-1] - 'A';
                                         *varaddr = *varaddr + f->step;
                                         // Use a different test depending on the sign of the step increment
                                         if ((f->step > 0 && *varaddr <= f->terminal) || (f->step < 0 && *varaddr >= f->terminal)) {

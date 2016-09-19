@@ -48,7 +48,7 @@ void interpreter (void);
 #define MEMORY_SIZE (RAMEND - 1200)
 #define INPUT_BUFFER_SIZE 6
 #define MAX_FRAME_COUNT 5
-#define STACK_SIZE ( sizeof( struct stack_for_frame ) * MAX_FRAME_COUNT )
+#define STACK_SIZE (sizeof( struct stack_for_frame ) * MAX_FRAME_COUNT)
 #define VAR_SIZE sizeof( int16_t )
 
 #define STACK_GOSUB_FLAG 'G'
@@ -146,14 +146,13 @@ LINE_NUMBER linenum;
 uint8_t program_space[MEMORY_SIZE];
 uint8_t input_buffer[INPUT_BUFFER_SIZE];
 
+uint8_t *variables_ptr;
 uint8_t *stack_ptr;
 uint8_t *line_ptr;
 uint8_t *text_ptr;
 uint8_t *prog_end_ptr;
-
+uint8_t *stack_limit;
 uint8_t error_code;
 
-const uint8_t *stack_limit;
-const uint8_t *variables_begin;
 
 #endif

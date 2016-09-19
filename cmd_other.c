@@ -32,7 +32,7 @@ int8_t input (void)
         error_code = 0x7;
         return POST_CMD_WARM_RESET;
     }
-    var = (int16_t *)variables_begin + *text_ptr - 'A';
+    var = (int16_t *)variables_ptr + *text_ptr - 'A';
     // check for proper statement termination
     text_ptr++;
     ignorespace();
@@ -101,7 +101,7 @@ int8_t assignment (void)
         error_code = 0x2;
         return POST_CMD_WARM_RESET;
     }
-    var = (int16_t *)variables_begin + *text_ptr - 'A';
+    var = (int16_t *)variables_ptr + *text_ptr - 'A';
     text_ptr++;
 
     // check for invalid variable name (more than one letters)
@@ -201,7 +201,7 @@ int8_t list (void)
 int8_t mem (void)
 {
     // SRAM size
-    printnum (variables_begin - prog_end_ptr, stdout);
+    printnum (variables_ptr - prog_end_ptr, stdout);
     printmsg (msg_ram_bytes, stdout);
     // EEPROM size
     printnum (E2END + 1, stdout);

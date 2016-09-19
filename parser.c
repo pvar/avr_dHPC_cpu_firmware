@@ -418,7 +418,7 @@ static int16_t parse_expr_s4 (void)
                 // check next character -- variable names are single letters
                 if (text_ptr[1] < 'A' || text_ptr[1] > 'Z') {
                         // return a pointer to the referenced variable
-                        value2 = ((int16_t *)variables_begin)[*text_ptr - 'A'];
+                        value2 = ((int16_t *)variables_ptr)[*text_ptr - 'A'];
                         text_ptr++;
                         return value2;
                 }

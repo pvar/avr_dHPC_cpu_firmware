@@ -141,7 +141,7 @@ void get_line (void)
                                 break;
                         default:
                                 // need at least one space to allow shuffling the lines
-                                if (text_ptr == variables_begin - 2) do_beep();
+                                if (text_ptr == variables_ptr - 2) do_beep();
                                 else {
                                         putchar (incoming_char);
                                         text_ptr[0] = incoming_char;
