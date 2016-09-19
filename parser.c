@@ -170,7 +170,7 @@ int8_t scantable (const uint8_t *table)
                         table++;
             // increase pointer
                         position++;
-                        ignorespace(); // <------------ THIS SHOULDN'T BE HERE!!!
+                        ignorespace(); // <--------------------------------------------------------- THIS SHOULDN'T BE HERE!!!
                         i = 0;
                 }
         }

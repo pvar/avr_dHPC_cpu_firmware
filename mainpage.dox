@@ -65,7 +65,7 @@ of functions and a simple mechanism, that would allow the propagation of some si
 -- previously hosted in global variables. What better way to do this, other than
 partitioning the code?
 
-\section sec_4 License
+\section sec_4 Licensing
 
 As described above, nstBASIC derived from the extensive modifications of
 TinyBasicPlus' core. The interpreter was practically written from scratch
@@ -75,9 +75,8 @@ cosmetic level. I wrote all other functions, with the needs of my computer
 in mind.
 
 TinyBasicPlus is distributed under MIT license. The code I wrote, as well as
-the modified/extended interpreter, is distributed under the <a target="_blank"
-href="www.gnu.org/licenses/gpl-3.0.html">GPLv3 license</a>. The same applies
-for nstBASIC as a whole.
+the modified/extended interpreter, is distributed under the [GPLv3 licence].
+The same applies for nstBASIC as a whole.
 
 \section sec_5 Notes
 
@@ -100,16 +99,17 @@ disabled. Other than that, there is nothing special to keep in mind.
 In my case, the arguments for burning with AVRDUDE were as follows:\n
 "-U lfuse:w:0xe0:m -U hfuse:w:0xdf:m -U efuse:w:0xfc:m"
 
-\section sec_6 Useful links
+\section sec_6 Related links
 
 - My homemade computer hardware [board][dhpc].
 - TinyBasicPlus [repository][tbasic].
 - All about keyboard interfacing in an ATMEL [application note][appnote].
 - Engbedded ATMEL AVR® [fuse calculator][fuses].
 
-[dhpc]:    http://google.com                          "schematics and PCB"
-[fuses]:   http://www.engbedded.com/fusecalc          "web application"
-[tbasic]:  https://github.com/BleuLlama/TinyBasicPlus "source code repository"
-[appnote]: http://www.atmel.com/Images/doc1235.pdf    "application note [PDF]"
+[dhpc]:          http://google.com                          "schematics and PCB"
+[fuses]:         http://www.engbedded.com/fusecalc          "web application"
+[tbasic]:        https://github.com/BleuLlama/TinyBasicPlus "source code repository"
+[appnote]:       http://www.atmel.com/Images/doc1235.pdf    "application note [PDF]"
+[GPLv3 licence]: www.gnu.org/licenses/gpl-3.0.html          "official license text"
 */
 

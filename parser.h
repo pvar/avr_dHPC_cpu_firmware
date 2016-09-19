@@ -1,7 +1,8 @@
 /**
  * @file parser.h
  * @brief Prototypes, macros, enumerators and global variables...
- * The @c COMMANDS enumerator contains an entry for each command supported by the language.
+ *
+ * The @c COMMANDS enumerator contains a member for each command supported by the language.
  * The memebers of the enumerator appear in the same order as the corresponding commands, in the
  * @c commands table (see parser.c). In order to add a new command, a relevant entry should be
  * added in both the enumerator and the table, in exactly the same position. The same applies

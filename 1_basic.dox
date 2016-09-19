@@ -3,14 +3,13 @@
 
 @brief All supported commands along with a short description.
 
-Things to keep in mind:
+### Things to keep in mind:
 - BASIC language is case insensitive. So is nstBASIC.
-- There are only 24 variables available in nstBASIC (a to z).
+- There are only 26 variables available in nstBASIC (a to z).
 - A colon (:) can be used to separate subsequent commands on the same line.
+- A print statement ending with a semicolon (;) will not append a new line to the output string.
 
-
-
-###All the classic commands -- almost!
+### The classics!
 
 <table>
 <tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION
@@ -108,7 +107,7 @@ Things to keep in mind:
 
 
 
-###GPIO related commands
+### GPIO related commands
 
 <table>
 <tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION
