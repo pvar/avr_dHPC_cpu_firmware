@@ -356,8 +356,7 @@ static uint8_t execution (void)
         if (cmd_status == POST_CMD_NEXT_STATEMENT) {
             ignorespace();
             if (*text_ptr == ':') {
-                while (*text_ptr == ':')
-                    text_ptr++;
+                text_ptr++;
                 ignorespace();
                 continue;
             } else

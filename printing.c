@@ -179,3 +179,12 @@ uint8_t print_string (void)
         return 1;
 }
 
+/** ***************************************************************************
+ * @brief Print a hash and the specified character for debug purposes
+ *****************************************************************************/
+void debug_print (uint8_t chr)
+{
+        fputc ('#', stdout);
+        fputc (chr, stdout);
+        fputc (' ', stdout);
+}

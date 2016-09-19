@@ -28,6 +28,7 @@ void printmsg (const uint8_t *msg, FILE *stream);
 void printline (uint8_t *line, FILE *stream);
 void newline (FILE *stream);
 uint8_t print_string (void);
+void debug_print (uint8_t chr);
 
 // ------------------------------------------------------------------------------
 // MACROS

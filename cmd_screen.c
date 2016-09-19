@@ -114,31 +114,35 @@ uint8_t print (void)
                         ;
                 else if (*text_ptr == '"' || *text_ptr == '\'') {
                         error_code = 0x4;
-            return POST_CMD_WARM_RESET;
+                        return POST_CMD_WARM_RESET;
                 } else {
                         uint16_t e;
                         error_code = 0;
                         e = parse_expr_s1();
                         if (error_code) {
-                return POST_CMD_WARM_RESET;
-            }
+                                return POST_CMD_WARM_RESET;
+                        }
                         printnum (e, stdout);
                 }
-                // at this point we have three options, a comma or a new line
+                ignorespace();
+                // skip comma and continue printing
                 if (*text_ptr == ',')
-            text_ptr++;   // skip the comma and move on
+                        text_ptr++;
+                // stop printing without newline
                 else if (text_ptr[0] == ';' && (text_ptr[1] == LF || text_ptr[1] == ':')) {
-                        text_ptr++; // end of print without newline
+                        text_ptr++;
                         break;
+                // stop printing with newline
                 } else if (*text_ptr == LF || *text_ptr == ':') {
                         newline (stdout);
                         break;
+                // unexpected character...
                 } else {
                         error_code = 0x2;
-            return POST_CMD_WARM_RESET;
+                        return POST_CMD_WARM_RESET;
                 }
-    }
-    return POST_CMD_NEXT_STATEMENT;
+        }
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 uint8_t pset (void)

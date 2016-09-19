@@ -145,12 +145,14 @@ static uint8_t get_octave (void);
  *****************************************************************************/
 int8_t scantable (const uint8_t *table)
 {
-    int8_t position = 0;
+        int8_t position = 0;
         uint16_t i = 0;
+
+//        ignorespace(); /* xm... */
         while (1) {
                 // check if at the end of table...
                 if (pgm_read_byte (table) == 0)
-            return position;
+                        return position;
 
                 // check for character match...
                 if (text_ptr[i] == pgm_read_byte (table)) {
@@ -165,16 +167,16 @@ int8_t scantable (const uint8_t *table)
                         }
                         // move to the end of this keyword
                         while ((pgm_read_byte (table) & 0x80) == 0)
-                table++;
+                                table++;
                         // move to first character of next keyword
                         table++;
-            // increase pointer
+                        // increase pointer
                         position++;
                         ignorespace(); // <--------------------------------------------------------- THIS SHOULDN'T BE HERE!!!
                         i = 0;
                 }
         }
-    return position;
+        return position;
 }
 
 /** ***************************************************************************
