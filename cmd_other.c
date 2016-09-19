@@ -200,19 +200,19 @@ int8_t list (void)
 
 int8_t mem (void)
 {
-    // SRAM size
-    printnum (variables_ptr - prog_end_ptr, stdout);
-    printmsg (msg_ram_bytes, stdout);
-    // EEPROM size
-    printnum (E2END + 1, stdout);
-    printmsg (msg_rom_bytes, stdout);
-    // EEPROM usage
-    //uint8_t val = 127;
-    //uint16_t i;
-    //for( i = 0; ( i < ( E2END + 1 ) ) && ( val != '\0' ); i++ )
-    //    val = eeprom_read_byte( (uint8_t *)i );
-    //printnum( ( E2END + 1 ) - ( i - 1 ), stdout );
-    //printmsg( msg_available, stdout );
+        // SRAM size
+        printnum (variables_ptr - prog_end_ptr, stdout);
+        printmsg (msg_ram_bytes, stdout);
+        // EEPROM size
+        printnum (E2END + 1, stdout);
+        printmsg (msg_rom_bytes, stdout);
+        // EEPROM usage
+        //uint8_t val = 127;
+        //uint16_t i;
+        //for( i = 0; ( i < ( E2END + 1 ) ) && ( val != '\0' ); i++ )
+                //val = eeprom_read_byte( (uint8_t *)i );
+        //printnum( ( E2END + 1 ) - ( i - 1 ), stdout );
+        //printmsg( msg_available, stdout );
         return POST_CMD_NEXT_STATEMENT;
 }
 
@@ -224,47 +224,46 @@ int8_t randomize (void)
 
 int8_t rndseed (void)
 {
-    uint16_t param;
-    error_code = 0;
-    // get seed for PRNG
-    param = (uint16_t)parse_expr_s1();
-    if (error_code) {
-        return POST_CMD_WARM_RESET;
-    }
-    srand (param);
+        uint16_t param;
+        error_code = 0;
+        // get seed for PRNG
+        param = (uint16_t)parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        srand (param);
         return POST_CMD_NEXT_STATEMENT;
 }
 
 int8_t prog_run (void)
 {
-    //enable emergency break key (INT2)
-    EIMSK |= BREAK_INT;
-    // disable cursor
-    putchar (vid_cursor_off);
-    // disable auto scroll
-    putchar (vid_scroll_off);
-    line_ptr = program_space;
-    return POST_CMD_EXEC_LINE;
+        //enable emergency break key (INT2)
+        EIMSK |= BREAK_INT;
+        // disable cursor
+        putchar (vid_cursor_off);
+        // disable auto scroll
+        putchar (vid_scroll_off);
+        line_ptr = program_space;
+        return POST_CMD_EXEC_LINE;
 }
 
 int8_t prog_end (void)
 {
-    // should be at end of line
-    if (text_ptr[0] != LF) {
-        error_code = 0x2;
-        return POST_CMD_WARM_RESET;
-    }
-    // set current line at the end of program
-    line_ptr = prog_end_ptr;
-    return POST_CMD_EXEC_LINE;
+        // should be at end of line
+        if (text_ptr[0] != LF) {
+                error_code = 0x2;
+                return POST_CMD_WARM_RESET;
+        }
+        // set current line at the end of program
+        line_ptr = prog_end_ptr;
+        return POST_CMD_EXEC_LINE;
 }
 
 int8_t prog_new (void)
 {
-    if (text_ptr[0] != LF) {
-        error_code = 0x2;
-        return POST_CMD_WARM_RESET;
-    }
-    prog_end_ptr = program_space;
-    return POST_CMD_PROMPT;
+        if (text_ptr[0] != LF) {
+                error_code = 0x2;
+                return POST_CMD_WARM_RESET;
+        }
+        prog_end_ptr = program_space;
+        return POST_CMD_PROMPT;
 }

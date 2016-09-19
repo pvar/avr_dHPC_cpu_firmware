@@ -37,65 +37,61 @@ uint8_t clear_screen (void)
 
 uint8_t pen (void)
 {
-                uint16_t col;
-                // get color value
-                col = parse_expr_s1();
-                if (error_code) {
-            return POST_CMD_WARM_RESET;
+        uint16_t col;
+        // get color value
+        col = parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        if (col < 0 || col > 127) {
+                error_code = 0x14;
+                return POST_CMD_WARM_RESET;
         }
-                if (col < 0 || col > 127) {
-                        error_code = 0x14;
-            return POST_CMD_WARM_RESET;
-                }
-                text_color ((uint8_t)col);
-        return POST_CMD_NEXT_LINE;
+        text_color ((uint8_t)col);
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 uint8_t paper (void)
 {
-    uint16_t col;
-    // get color value
-    col = parse_expr_s1();
-    if (error_code) {
-        return POST_CMD_WARM_RESET;
-    }
-    if (col < 0 || col > 127) {
-        error_code = 0x14;
-        return POST_CMD_WARM_RESET;
-    }
-    paper_color ((uint8_t)col);
-        return POST_CMD_NEXT_LINE;
+        uint16_t col;
+        // get color value
+        col = parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        if (col < 0 || col > 127) {
+                error_code = 0x14;
+                return POST_CMD_WARM_RESET;
+        }
+        paper_color ((uint8_t)col);
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 uint8_t locate (void)
 {
-    uint16_t line, column;
-    // get target line
-    line = parse_expr_s1();
-    if (error_code) {
-        return POST_CMD_WARM_RESET;
-    }
-    if (line < 0 || line > 23) {
-        error_code = 0x10;
-        return POST_CMD_WARM_RESET;
-    }
-    // check for comma
-    if (*text_ptr != ',') {
-        error_code = 0x2;
-        return POST_CMD_WARM_RESET;
-    }
-    text_ptr++;
-    // get target line
-    column = parse_expr_s1();
-    if (error_code) {
-        return POST_CMD_WARM_RESET;
-    }
-    if (column < 0 || column > 31) {
-        error_code = 0x10;
-        return POST_CMD_WARM_RESET;
-    }
-    locate_cursor (line, column);
-        return POST_CMD_NEXT_LINE;
+        uint16_t line, column;
+        // get target line
+        line = parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        if (line < 0 || line > 23) {
+                error_code = 0x10;
+                return POST_CMD_WARM_RESET;
+        }
+        // check for comma
+        if (*text_ptr != ',') {
+                error_code = 0x2;
+                return POST_CMD_WARM_RESET;
+        }
+        text_ptr++;
+        // get target line
+        column = parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        if (column < 0 || column > 31) {
+                error_code = 0x10;
+                return POST_CMD_WARM_RESET;
+        }
+        locate_cursor (line, column);
+        return POST_CMD_NEXT_STATEMENT;
 }
 
 uint8_t print (void)
@@ -147,46 +143,43 @@ uint8_t print (void)
 
 uint8_t pset (void)
 {
-    uint16_t x, y, col;
-    // get x-coordinate
-    x = parse_expr_s1();
-    if (error_code) {
-        return POST_CMD_WARM_RESET;
-    }
-    if (x < 0 || x > 255) {
-        error_code = 0x10;
-        return POST_CMD_WARM_RESET;
-    }
-    // check for comma
-    if (*text_ptr != ',') {
-        error_code = 0x2;
-        return POST_CMD_WARM_RESET;
-    }
-    text_ptr++;
-    // get y-coordinate
-    y = parse_expr_s1();
-    if (error_code) {
-        return POST_CMD_WARM_RESET;
-    }
-    if (y < 0 || y > 239) {
-        error_code = 0x10;
-        return POST_CMD_WARM_RESET;
-    }
-    // check for comma
-    if (*text_ptr != ',') {
-        error_code = 0x2;
-        return POST_CMD_WARM_RESET;
-    }
-    text_ptr++;
-    // get color
-    col = parse_expr_s1();
-    if (error_code) {
-        return POST_CMD_WARM_RESET;
-    }
-    if (col < 0 || col > 127) {
-        error_code = 0x14;
-        return POST_CMD_WARM_RESET;
-    }
-    put_pixel ((uint8_t)x, (uint8_t)y, (uint8_t)col);
-        return POST_CMD_NEXT_LINE;
+        uint16_t x, y, col;
+        // get x-coordinate
+        x = parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        if (x < 0 || x > 255) {
+                error_code = 0x10;
+                return POST_CMD_WARM_RESET;
+        }
+        // check for comma
+        if (*text_ptr != ',') {
+                error_code = 0x2;
+                return POST_CMD_WARM_RESET;
+        }
+        text_ptr++;
+        // get y-coordinate
+        y = parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        if (y < 0 || y > 239) {
+                error_code = 0x10;
+                return POST_CMD_WARM_RESET;
+        }
+        // check for comma
+        if (*text_ptr != ',') {
+                error_code = 0x2;
+                return POST_CMD_WARM_RESET;
+        }
+        text_ptr++;
+        // get color
+        col = parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        if (col < 0 || col > 127) {
+                error_code = 0x14;
+                return POST_CMD_WARM_RESET;
+        }
+        put_pixel ((uint8_t)x, (uint8_t)y, (uint8_t)col);
+        return POST_CMD_NEXT_STATEMENT;
 }
