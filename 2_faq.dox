@@ -33,6 +33,7 @@ Yes, there is! In general terms you have to take the following steps:
 
 Keep in mind that the new entry in the table (\c commands) and the new entry in the enumerator
 (\c COMMANDS) should be at exactly the same position. Since neither the table nor the enumarator
-is sorted, you can always add the new entries at the last position of both constructs.
-
+is sorted, you can always add the new entries at the beginning of both constructs. Do not put the
+new entries at the end of the table and the enumerator! The last member of the enumerator
+corresponds no keyword.
 */

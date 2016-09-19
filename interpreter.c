@@ -332,11 +332,11 @@ static uint8_t execution (void)
             case CMD_PINDWRITE:
                 cmd_status = pindwrite();
                 break;
-            case CMD_DEFAULT:
+            case CMD_ASSIGNMENT:
                 cmd_status = assignment();
                 break;
             default:
-                error_code = 16;
+                error_code = 0xf;
                 cmd_status = POST_CMD_WARM_RESET;
                 break;
         }
@@ -606,6 +606,9 @@ static void error_message (void)
             break;
         case 0x14:      // expected color value
             printmsg (err_msg14, stdout);
+            break;
+        case 0x15:      // expression expected
+            printmsg (err_msg15, stdout);
             break;
         }
         text_color (TXT_COL_DEFAULT);

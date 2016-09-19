@@ -4,9 +4,9 @@
  *
  * The @c COMMANDS enumerator contains a member for each command supported by the language.
  * The memebers of the enumerator appear in the same order as the corresponding commands, in the
- * @c commands table (see parser.c). In order to add a new command, a relevant entry should be
- * added in both the enumerator and the table, in exactly the same position. The same applies
- * for the rest of the enumerators and the respective tables.
+ * @c commands table (see parser.c). The last member of the enumerator is used for assignments
+ * (some_variable = some_value) which do not use some special command. I other words, CMD_ASSIGNMENT
+ * corresponds to no entry in the \c commands table!
  */
 
 #ifndef PARSER_H
@@ -82,7 +82,7 @@ enum COMMANDS {
         CMD_CLOAD,
         CMD_PINDIR,
         CMD_PINDWRITE,
-        CMD_DEFAULT
+        CMD_ASSIGNMENT
 };
 enum {
         FN_PEEK = 0,

@@ -146,22 +146,21 @@ static uint8_t get_octave (void);
 int8_t scantable (const uint8_t *table)
 {
         int8_t position = 0;
-        uint16_t i = 0;
+        uint16_t pos = 0;
 
-//        ignorespace(); /* xm... */
         while (1) {
                 // check if at the end of table...
                 if (pgm_read_byte (table) == 0)
                         return position;
 
                 // check for character match...
-                if (text_ptr[i] == pgm_read_byte (table)) {
-                        i++;
+                if (text_ptr[pos] == pgm_read_byte (table)) {
+                        pos++;
                         table++;
                 } else {
                         // check if this is the last character of a keyword (add 0x80)
-                        if (text_ptr[i] + 0x80 == pgm_read_byte (table)) {
-                                text_ptr += i + 1; // points after the detected keyword
+                        if (text_ptr[pos] + 0x80 == pgm_read_byte (table)) {
+                                text_ptr += pos + 1; // points after the detected keyword
                                 ignorespace();
                                 return position;
                         }
@@ -172,11 +171,11 @@ int8_t scantable (const uint8_t *table)
                         table++;
                         // increase pointer
                         position++;
-                        ignorespace(); // <--------------------------------------------------------- THIS SHOULDN'T BE HERE!!!
-                        i = 0;
+                        ignorespace();
+                        pos = 0;
                 }
         }
-        return position;
+        return -1;
 }
 
 /** ***************************************************************************
@@ -275,46 +274,48 @@ void parse_notes (void)
 int16_t parse_expr_s1 (void)
 {
         int16_t value1, value2;
-    uint8_t index;
+        uint8_t index;
+
         value1 = parse_expr_s2();
+
         // check for error
         if (error_code)
-        return value1;
+                return value1;
         index = scantable (relop_table);
         if (index == RELOP_UNKNOWN)
-        return value1;
+                return value1;
         switch (index) {
-        case RELOP_GE:
-            value2 = parse_expr_s2();
-            if (value1 >= value2)
-                return 1;
-            break;
-        case RELOP_NE:
-        case RELOP_NE_BANG:
-            value2 = parse_expr_s2();
-            if (value1 != value2)
-                return 1;
-            break;
-        case RELOP_GT:
-            value2 = parse_expr_s2();
-            if (value1 > value2)
-                return 1;
-            break;
-        case RELOP_EQ:
-            value2 = parse_expr_s2();
-            if (value1 == value2)
-                return 1;
-            break;
-        case RELOP_LE:
-            value2 = parse_expr_s2();
-            if (value1 <= value2)
-                return 1;
-            break;
-        case RELOP_LT:
-            value2 = parse_expr_s2();
-            if (value1 < value2)
-                return 1;
-            break;
+                case RELOP_GE:
+                        value2 = parse_expr_s2();
+                        if (value1 >= value2)
+                                return 1;
+                        break;
+                case RELOP_NE:
+                case RELOP_NE_BANG:
+                        value2 = parse_expr_s2();
+                        if (value1 != value2)
+                                return 1;
+                        break;
+                case RELOP_GT:
+                        value2 = parse_expr_s2();
+                        if (value1 > value2)
+                                return 1;
+                        break;
+                case RELOP_EQ:
+                        value2 = parse_expr_s2();
+                        if (value1 == value2)
+                                return 1;
+                        break;
+                case RELOP_LE:
+                        value2 = parse_expr_s2();
+                        if (value1 <= value2)
+                                return 1;
+                        break;
+                case RELOP_LT:
+                        value2 = parse_expr_s2();
+                        if (value1 < value2)
+                                return 1;
+                        break;
         }
         return 0;
 }
@@ -331,6 +332,7 @@ int16_t parse_expr_s1 (void)
 static int16_t parse_expr_s2 (void)
 {
         int16_t value1, value2;
+
         if (*text_ptr == '-' || *text_ptr == '+')
                 value1 = 0;
         else
@@ -345,7 +347,7 @@ static int16_t parse_expr_s2 (void)
                         value2 = parse_expr_s3();
                         value1 += value2;
                 } else
-            return value1;
+                        return value1;
         }
 }
 
@@ -361,7 +363,9 @@ static int16_t parse_expr_s2 (void)
 static int16_t parse_expr_s3 (void)
 {
         int16_t value1, value2;
+
         value1 = parse_expr_s4();
+
         ignorespace();
         while (1) {
                 if (*text_ptr == '*') {
@@ -376,7 +380,7 @@ static int16_t parse_expr_s3 (void)
                         else
                                 error_code = 0xB;
                 } else
-            return value1;
+                        return value1;
         }
 }
 
@@ -391,9 +395,10 @@ static int16_t parse_expr_s3 (void)
  *****************************************************************************/
 static int16_t parse_expr_s4 (void)
 {
-    uint8_t index;
+        uint8_t index;
         int16_t value1 = 0;
         int16_t value2 = 0;
+
         /////////////////////////////////////////////////////////////////////////// numbers
         ignorespace();
         // check for minus sign
@@ -414,8 +419,8 @@ static int16_t parse_expr_s4 (void)
                 } while (*text_ptr >= '0' && *text_ptr <= '9');
                 return value1;
         }
+
         /////////////////////////////////////////////////////////////////////////// variables
-        // check if we have letters
         if (text_ptr[0] >= 'A' && text_ptr[0] <= 'Z') {
                 // check next character -- variable names are single letters
                 if (text_ptr[1] < 'A' || text_ptr[1] > 'Z') {
@@ -518,7 +523,7 @@ static int16_t parse_expr_s4 (void)
                 return value1;
         }
     /* SOME APPROPRIATE ERROR CODE */
-    error_code = 0x6;
+    error_code = 0x15;
     return 0;
 }
 

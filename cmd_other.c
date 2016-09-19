@@ -95,47 +95,39 @@ int8_t input (void)
 
 int8_t assignment (void)
 {
-    int16_t value, *var;
-    // check if invalid character (non-letter)
-    if (*text_ptr < 'A' || *text_ptr > 'Z') {
-        error_code = 0x2;
-        return POST_CMD_WARM_RESET;
-    }
-    var = (int16_t *)variables_ptr + *text_ptr - 'A';
-    text_ptr++;
-
-    // check for invalid variable name (more than one letters)
-    if (*text_ptr >= 'A' && *text_ptr <= 'Z') {
-        error_code = 0xFF;
-        text_ptr++;
-        /* quick fix -- does it work? */
-        return POST_CMD_WARM_RESET;
-    }
-
-    // check for missing assignment operator
-    ignorespace();
-    if (*text_ptr != '=') {
-        error_code = 0xF;
-        return POST_CMD_WARM_RESET;
-    } else {
-        // check if variable name is rendered invalid
-        if (error_code == 0xFF) {
-            error_code = 0x11;
-            return POST_CMD_WARM_RESET;
+        int16_t value, *var;
+        // check if invalid character (non-letter)
+        if (*text_ptr < 'A' || *text_ptr > 'Z') {
+                error_code = 0xf;
+                return POST_CMD_WARM_RESET;
         }
-    }
-    text_ptr++;
-    ignorespace();
-    value = parse_expr_s1();
-    if (error_code) {
-        return POST_CMD_WARM_RESET;
-    }
-    // Check that we are at the end of the statement
-    if (*text_ptr != LF && *text_ptr != ':') {
-        error_code = 0x2;
-        return POST_CMD_WARM_RESET;
-    }
-    *var = value;
+        var = (int16_t *)variables_ptr + *text_ptr - 'A';
+        text_ptr++;
+
+        // check for invalid variable name (a second letter!)
+        if (*text_ptr >= 'A' && *text_ptr <= 'Z') {
+                text_ptr++;
+                error_code = 0xf;
+                return POST_CMD_WARM_RESET;
+        }
+
+        // check for missing assignment operator
+        ignorespace();
+        if (*text_ptr != '=') {
+                error_code = 0xf;
+                return POST_CMD_WARM_RESET;
+        }
+        text_ptr++;
+        ignorespace();
+        value = parse_expr_s1();
+        if (error_code)
+                return POST_CMD_WARM_RESET;
+        // check if at the end of the statement
+        if (*text_ptr != LF && *text_ptr != ':') {
+                error_code = 0x2;
+                return POST_CMD_WARM_RESET;
+        }
+        *var = value;
         return POST_CMD_NEXT_STATEMENT;
 }
 

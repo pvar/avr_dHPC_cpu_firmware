@@ -62,6 +62,7 @@ const uint8_t err_msg11[22] PROGMEM = "Invalid variable name\0";
 const uint8_t err_msg12[23] PROGMEM = "Expected byte [0..255]\0";
 const uint8_t err_msg13[13] PROGMEM = "Out of range\0";
 const uint8_t err_msg14[24] PROGMEM = "Expected color [0..127]\0";
+const uint8_t err_msg15[21] PROGMEM = "Expression expected!\0";
 
 // keyboard connectivity messages
 const uint8_t kb_fail_msg[26] PROGMEM = "Keyboard self-test failed\0";
