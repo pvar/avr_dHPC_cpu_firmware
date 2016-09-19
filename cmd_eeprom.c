@@ -69,8 +69,11 @@ uint8_t esave (void)
 {
         eeprom_ptr = 0;
         uint8_t *line = find_line();
+        LINE_LENGTH length = 0;
         while (line != prog_end_ptr) {
-                printline (&line, &stream_eeprom);
+                printline (line, &stream_eeprom);
+                length = (LINE_LENGTH) (*(line + sizeof (LINE_NUMBER)));
+                line += length;
         }
         fputc (0, &stream_eeprom);
         return POST_CMD_NEXT_LINE;

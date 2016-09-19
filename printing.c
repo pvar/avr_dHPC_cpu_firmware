@@ -124,19 +124,19 @@ void printmsg (const uint8_t *message, FILE *stream)
 /** ***************************************************************************
  * @brief Print a program line
  *****************************************************************************/
-void printline (uint8_t **line, FILE *stream)
+void printline (uint8_t *line, FILE *stream)
 {
-        LINE_NUMBER line_num = *((LINE_NUMBER *)(*line));
+        LINE_NUMBER line_num = *((LINE_NUMBER *)(line));
 
-        *line += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+        line += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
 
         // print line number and a space
         printnum (line_num, stream);
         fputc (' ', stream);
 
         // print line content
-        while (**line != LF) {
-                fputc (**line, stream);
+        while (*line != LF) {
+                fputc (*line, stream);
                 line++;
         }
         line++;

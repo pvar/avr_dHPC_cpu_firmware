@@ -548,7 +548,7 @@ static void error_message (void)
                     *text_ptr = '^';
 
                 uint8_t *list = line_ptr;
-                printline (&list, stdout);
+                printline (list, stdout);
                 *text_ptr = tmp;
             }
             newline (stdout);

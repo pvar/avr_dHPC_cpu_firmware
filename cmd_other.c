@@ -189,8 +189,12 @@ int8_t list (void)
 
         // find line
         uint8_t *line = find_line();
-        while (line != prog_end_ptr)
-                printline (&line, stdout);
+        LINE_LENGTH length = 0;
+        while (line != prog_end_ptr) {
+                printline (line, stdout);
+                length = (LINE_LENGTH) (*(line + sizeof (LINE_NUMBER)));
+                line += length;
+        }
         return POST_CMD_WARM_RESET;
 }
 
