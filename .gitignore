@@ -1,8 +1,8 @@
 old
-doc
 asm
 *.o
 *.map
 *.out
 *.elf
 *.eeprom
+doc/latex/

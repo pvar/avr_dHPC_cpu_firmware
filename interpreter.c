@@ -445,7 +445,7 @@ static void insert_line (void)
 /** ***************************************************************************
  * @brief Remove line from program.
  *
- * This function removes a line from the programm and moves over
+ * This function removes a line from the program and moves over
  * the remaining code.
  *
  * @note The line to be deleted is determined by the @c text_ptr pointer.

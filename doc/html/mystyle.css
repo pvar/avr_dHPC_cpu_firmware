@@ -1,0 +1,253 @@
+/* TYPOGRAPHY
+------------------------------------------------------------------------------*/
+body, table, div, p, dl {
+        font-family: 'Open sans', sans-serif;
+        font-weight: 400;
+        font-size: 19px;
+        color: #484848;
+        line-height: 1.6;
+        letter-spacing: -0.00em;
+}
+
+p { margin: 0 0 12px 0; }
+
+.title, h1, .h1, h2, .h2, h3, .h3, h2.groupheader {
+        font-family: 'Roboto', sans-serif;
+        letter-spacing: -0.02em;
+        color: #808080;
+        margin: 20px 0 10px 0;
+        border: none !important;
+}
+
+.title {
+        margin: 10px 0;
+        font-weight: bold;
+        letter-spacing: 0.04em;
+        color: #a0a0a0;
+        font-size: 1.4em;
+}
+
+
+h1, .h1 { font-size: 2.0em; line-height: 1.20; font-weight: 300; }
+h2.groupheader,
+h2, .h2 { font-size: 1.8em; line-height: 1.20; font-weight: 300; }
+h3, .h3 { font-size: 1.6em; line-height: 1.15; font-weight: 400; }
+h4, .h5 { font-size: 1.4em; line-height: 1.10; font-weight: 400; }
+h4, .h5 { font-size: 1.2em; line-height: 1.00; font-weight: 400; }
+
+td { vertical-align:top; }
+
+a.el { font-weight: normal; }
+dd { margin: 0 0 10px 40px !important; }
+
+}
+
+/* STRUCTURE
+------------------------------------------------------------------------------*/
+html { height: 100%; }
+body { width: 850px; padding: 0 25px; margin: 0 auto; background: #fafafa; }
+
+#titlearea { border: none; }
+
+#navrow1 ul, #navrow2 ul { font-size: 15px; display: block; margin: 0; }
+
+#navrow1 ul { padding: 12px; background: #e8e8e8; position: relative; }
+#navrow1 ul li { display: inline-block; list-style-type: none; }
+#navrow1 ul li > a { display: inline-block; padding: 5px 11px; margin: 0 6px 0 0; background: #f8f8f8; border: 1px solid #c8c8c8; }
+#navrow1 ul li.current > a { border: 1px solid #000000; }
+
+#navrow2 ul { padding: 12px; }
+#navrow2 ul li { display: inline-block; list-style-type: none; }
+#navrow2 ul li > a { display: inline-block; padding: 0 11px; margin: 0 4px 2px 0; background: #e8e8e8; font-size: 15px; border: 1px solid #b8b8b8; }
+#navrow2 ul li.current > a { border: 1px solid #646464; }
+
+#wrap {
+        min-height: 100%;
+        height: auto;
+}
+
+hr {
+        height: 0;
+        border-top: 1px solid #beb8d0;
+}
+
+hr.footer {
+        height: 0;
+        margin: 64px 0 0 0;
+        border-top: 1px solid #beb8d0;
+}
+
+.directory td { vertical-align: initial; }
+.directory tr { heigth: 32px; }
+.directory tr.even { background-color: #f0f0e0; }
+.directory td.desc,
+.directory td.entry { padding-top: 10px; padding-bottom: 4px; }
+
+
+/* BOXES
+------------------------------------------------------------------------------*/
+
+div.contents { margin: 10px 0 0 0; }
+
+div.toc {
+        padding: 16px 24px;
+        margin: 0 0 10px 10px;
+        border-radius: 8px;
+        border: 1px solid #d0d0c8;
+        background-color: #f0f0e8;
+}
+
+div.toc h3 { font-size: 18px; }
+
+div.toc ul {
+    list-style: none;
+    border: none;
+    padding: 0;
+    margin: 5px;
+}
+
+div.toc li {
+    background: url("bdwn.png") no-repeat scroll 0 4px transparent;
+    font-size: 12px;
+    margin-top: 10px;
+    padding-left: 14px;
+    padding-top: 0px;
+}
+
+div.headertitle { padding: 3px 6px; }
+
+div.header {
+        background-image: none;
+        background-color: none;
+        margin: 48px 0 32px 0;
+        border-style: solid;
+        border-width: 1px 0;
+        border-color: #a0a0a0;
+}
+
+div.summary {
+    xxfloat: none;
+    xxdisplay: block;
+    font-size: 8pt;
+    padding: 10px 10px 0 10px;
+    text-align: right;
+}
+
+.memitem {
+        background: none;
+        margin: 24px 0 32px 0;
+}
+
+.memproto {
+        background-color: #dee9f6;
+        background-image: none;
+        border-width: 1px 1px 0 1px;
+        border-radius: 0 0 0 0;
+        padding: 10px 20px;
+        border-style: solid;
+        border-color: #b8b8b0;
+        box-shadow: none;
+}
+
+.memitem table { white-space: normal !important; }
+
+.memdoc {
+        background-color: #fafaff;
+        background-image: none;
+        border-width: 1px 1px 1px 1px;
+        border-radius: 0 0 0 0;
+        padding: 10px 20px;
+        border-style: solid;
+        border-color: #cacacf #b8b8b0 #b8b8b0 #b8b8b0;
+        box-shadow: none;
+}
+
+.memname {
+        margin: 4px 0;
+        font-weight: normal;
+}
+
+td.mlabels-right { vertical-align: middle; }
+
+div.summary a,
+.mlabels-right .mlabel {
+        background-color: #5c738c;
+        border: none;
+        text-shadow: none;
+        color: white;
+        margin: 0 5px 0 0;
+        padding: 4px 8px;
+        border-radius: 0;
+        font-size: 11px;
+        vertical-align: middle;
+        font-weight: bold;
+}
+
+/* SEARCH BAR
+------------------------------------------------------------------------------*/
+
+#MSearchSelectWindow { z-index: 256; }
+
+#MSearchBox {
+        right: 12px;
+        top: 12px;
+        position: absolute;
+        display: inline;
+        background-color: white;
+        border: 1px solid #d0d0d0;
+        margin: 0;
+        padding: 2px;
+}
+
+#MSearchBox .right,
+#MSearchBox .left {
+    position: initial !important;
+    background: none !important;
+    width: auto;
+    height: auto;
+    display: inline-block;
+    vertical-align: top;
+}
+
+#MSearchClose { position: initial !important; }
+
+#MSearchSelect {
+    display: inline-block;
+    vertical-align: middle;
+    position: initial;
+    padding: 0 2px 0 10px;
+    margin: 0 0 2px 0;
+}
+
+#MSearchField {
+    display: inline-block;
+    vertical-align: middle;
+    position: initial;
+    background-image: none;
+    color: #909090;
+    outline: none;
+    font-size: 14px;
+    margin: 0 0 2px 0;
+}
+
+/* MEDIA QUERIES
+------------------------------------------------------------------------------*/
+
+@media (min-width: 992px) {
+    .footer-row {
+        text-align: left;
+    }
+
+    .footer-icons {
+        text-align: right;
+    }
+}
+@media (max-width: 991px) {
+    .footer-row {
+        text-align: center;
+    }
+
+    .footer-icons {
+        text-align: center;
+    }
+}

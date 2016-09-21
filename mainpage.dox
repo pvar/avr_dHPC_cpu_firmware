@@ -32,25 +32,25 @@ of the project, would be misleading.
 TinyBasicPlus was written for the Arduino platform and the user can interact
 with the language interpreter through a serial connection, using a terminal
 emulator on his computer. nstBASIC is something totally different! It is only
-meant to run on the specific hardware of a <b>homemade computer</b>, which
+meant to run on the specific hardware of a <b>homemade</b> computer, which
 features a keyboard input, a sound card and a graphics card. Essentially,
 apart from being a language interpreter, nstBASIC acts as the BIOS of the
 aforementioned computer: It handles communication with the peripherals.
 
-\section sec_3 (In)separable part
+\section sec_3 (In)separable parts
 
 nstBASIC runs on the CPU of my homemade computer, which is not a real CPU.
-It's a humble 8bit AVR. The specifics of this computer will be discussed in the
-documentation of the relevant project. For now, keep in mind that both the sound
+It's a humble 8bit microcontroller. The specifics of this computer will be discussed
+in the documentation of the relevant project. For now, keep in mind that both the sound
 card and the graphics card are also implemented around 8bit microcontrollers.
-The main idea here, is that nstBASIC can be seen as a piece of firmware. It
-belongs to a set of programs that turn each microcontroller into
-a self-contained device. At the same time, these programs are designed to
-work together and along with some 'glue logic' form a complete system. In other
-words, nstBASIC is an integral part of this computer.
+The main idea here, is that nstBASIC can be seen as a piece of firmware. It belongs
+to a set of programs that turn each microcontroller into a self-contained device.
+At the same time, these programs are designed to work together and along with some
+"glue logic" form a complete system. In other words, nstBASIC is an integral part
+of this computer.
 
-<b>If you wish to use this interpreter of BASIC in an entirely different project,</b>
-don't let the above description discourage you. The hardware dependent
+Don't let the above description discourage you, if you wish to use this interpreter
+of BASIC in an entirely different project. The hardware dependent
 code is conveniently isolated from the interpreter code. All relevant functions
 reside in @c io.c. Some other functions that you may have to check out, are
 those controlling the IO pins in @c cmd_pinctl.c. In most cases, in order to
@@ -78,38 +78,17 @@ TinyBasicPlus is distributed under MIT license. The code I wrote, as well as
 the modified/extended interpreter, is distributed under the [GPLv3 licence].
 The same applies for nstBASIC as a whole.
 
-\section sec_5 Notes
+\section sec_5 Related links
 
-- nstBASIC was written with the specifications of ATMEGA644 in mind. It could
-easily be ported to other 8bit AVR microcontrollers, given that they have the
-necessary SRAM (and IO pins, if you really need GPIO controll).
-
-- The microcontroller that runs nstBASIC operates at 20MHz. If your
-application uses a different clock speed, you should update the relevant
-setting (CLOCK) in Makefile. This is mandatory for correct system operation.
-
-- Baud rate for the serial port is set to 57600bps. Once again, if you are
-using a different baud rate, you should update the relevant setting (BAUD) in
-Makefile.
-
-- Fuses for the ATMEGA644 were set with help from "Engbedded Atmel AVR® Fuse
-Calculator". The settings are very simple: Select the external clock source
-with the highest start-up time and make sure that clock-division-by-8 is
-disabled. Other than that, there is nothing special to keep in mind.
-In my case, the arguments for burning with AVRDUDE were as follows:\n
-"-U lfuse:w:0xe0:m -U hfuse:w:0xdf:m -U efuse:w:0xfc:m"
-
-\section sec_6 Related links
-
-- My homemade computer hardware [board][dhpc].
-- TinyBasicPlus [repository][tbasic].
-- All about keyboard interfacing in an ATMEL [application note][appnote].
-- Engbedded ATMEL AVR® [fuse calculator][fuses].
+- My homemade computer's [circuit][dhpc]. If you want to run nstBASIC on the real hardware
+it was written for, you have to make it yourself!
+- The [repository][tbasic] for TinyBasicPlus. This is where you'll find the mother-project,
+from which nstBASIC was born.
+- [deltaHacker][delta] is a great magazine. The homemade computer on which nstBASIC runs,
+was built as an excuse to write lots of cool articles, that the said magazine kindly hosted.
 
 [dhpc]:          http://google.com                          "schematics and PCB"
-[fuses]:         http://www.engbedded.com/fusecalc          "web application"
+[delta]:         http://deltahacker.gr                      "ethical hacking magazine"
 [tbasic]:        https://github.com/BleuLlama/TinyBasicPlus "source code repository"
-[appnote]:       http://www.atmel.com/Images/doc1235.pdf    "application note [PDF]"
 [GPLv3 licence]: www.gnu.org/licenses/gpl-3.0.html          "official license text"
 */
-
