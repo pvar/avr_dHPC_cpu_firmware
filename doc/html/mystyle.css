@@ -49,17 +49,27 @@ body { width: 850px; padding: 0 25px; margin: 0 auto; background: #fafafa; }
 
 #titlearea { border: none; }
 
-#navrow1 ul, #navrow2 ul { font-size: 15px; display: block; margin: 0; }
+#navrow1 ul, #navrow2 ul,
+#navrow3 ul, #navrow4 ul { font-size: 15px; display: block; margin: 0; }
+
+#navrow1 ul li, #navrow2 ul li,
+#navrow3 ul li, #navrow4 ul li { display: inline-block; list-style-type: none; }
 
 #navrow1 ul { padding: 12px; background: #e8e8e8; position: relative; }
-#navrow1 ul li { display: inline-block; list-style-type: none; }
+#navrow2 ul { padding: 12px; }
+#navrow3 ul { padding: 14px 12px 12px 12px; background: #f3f3f3; border-width: 1px; border-style: solid solid solid solid; border-color: #d0d0d0; }
+#navrow4 ul { padding: 10px 12px 8px 12px; background: #f3f3f3; border-width: 1px; border-style: none solid solid solid; border-color: #d0d0d0; }
+
 #navrow1 ul li > a { display: inline-block; padding: 5px 11px; margin: 0 6px 0 0; background: #f8f8f8; border: 1px solid #c8c8c8; }
 #navrow1 ul li.current > a { border: 1px solid #000000; }
 
-#navrow2 ul { padding: 12px; }
-#navrow2 ul li { display: inline-block; list-style-type: none; }
 #navrow2 ul li > a { display: inline-block; padding: 0 11px; margin: 0 4px 2px 0; background: #e8e8e8; font-size: 15px; border: 1px solid #b8b8b8; }
 #navrow2 ul li.current > a { border: 1px solid #646464; }
+
+#navrow3 ul li > a,
+#navrow4 ul li > a { display: inline-block; padding: 0 8px; margin: 0 4px 2px 0; background: #e8e8e8; font-size: 15px; border: 1px solid #b0b0b0; }
+
+
 
 #wrap {
         min-height: 100%;
