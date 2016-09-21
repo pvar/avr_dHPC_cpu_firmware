@@ -8,33 +8,32 @@
 ### 1. I like nstBASIC! Can I use it in projects of mine?
 
 I'm glad you like it and since you are so kind, of course you can use it. No, really!
-You can use nstBASIC in any project, as long as you respect the terms of the licence (GLP v3).
+You can use nstBASIC in any project, as long as you respect the terms of the [GLPv3 licence][GPL3].
 
 ### 2. On what microcontroller is nstBASIC meant to run?
 
-This interpreter was developed with the specifications of ATMEGA644 in mind. However, the
-specific chip is nothing more that an 8bit AVR microcontroller from ATMEL, very much like the
-"brain" of Arduino. In other words, nstBASIC has extremely low requirements and could be ported
-to almost every microcontroller or computer system.
+This interpreter was developed for the ATMEGA644. However, this nothing more that an 8bit AVR
+microcontroller, very much like the "brain" of Arduino. In other words, nstBASIC has extremely
+low requirements and could be ported to almost every microcontroller or computer system.
 
 ### 3. This sounds interesting, but is it really possible?
 
 Definetelly yes! It might not be easy though. On the one hand, if your project is based on some
 AVR microcontroller, your job will be very easy. Chances are that you'll only have to tweak some
-pin definitions and / or a few memory addresses. On the other hand, if you intend to port nstBASIC
-to some other microcontroller or to an altogether different platform, be prepared for a lot of work!
-You'll have to rewrite every function in io.c. You'll also have to replace every function, macro
-and constant supplied by avr-libc (sei, cli, pgm_read_byte and so on). You'll even have to hack
-the Makefile!
+functions in io.c, so that you won't be needing the hardware of the homemade computer. On the other
+hand, if you intend to port nstBASIC to some other microcontroller or to an altogether different
+platform, be prepared for a lot of work! You'll have to rewrite every function in io.c. You'll
+also have to replace every function, macro and constant supplied by avr-libc (sei, cli,
+pgm_read_byte and so on). You'll even have to hack the Makefile.
 
 ### 4. Is there already a port for some other microcontroller?
 
 None that I know of! If you just created one, or you happen to know somebody who did,
-drop me a line so that I can update this answer.
+let me know. I'd be glad to know and will I will include a link in this answer.
 
 ### 5. How did you manage to interface the microcontroller with a PC keyboard?
 
-There is an [application note][appnote] from ATMEL, that does a great job describing
+There is an [application note][appnote] from ATMEL, that does a great job at describing
 the data transmission scheme. The same document contains sample source code, which is
 a great starting point for your own implementation!
 
@@ -44,7 +43,7 @@ The microcontroller that runs nstBASIC on the homemade computer operates at 20MH
 is no such restriction though. You are free to select whichever clock speed suits your needs.
 However, if it's not going to be 20MHz, you'll have to recompile the code! Just remember to
 update the respective variable (\c CLOCK) in Makefile. This is mandatory for the correct operation
-of all time critical subsystems (serial communication, busy delays and so on).
+of time critical functions (serial communication, busy delays and so on).
 
 ### 7. Can I use a different BAUD rate as well?
 
@@ -54,10 +53,10 @@ you'll have to update another variable (\c BAUD) in Makefile.
 
 ### 8. Is there anything crucial regarding the fuse settings?
 
-Not really. In the case of the homemade computer, all I had to do was to select the external
-clock source and to make sure that clock-division-by-8 was disabled. The necessary arguments
-for setting the fuses with AVRDUDE were supplied by "Engbedded Atmel AVR [fuse calculator][fuses]".
-In case you're going to use the same microcontroller, here are the arguments I used:
+Not really. In the case of my hardware setup, all I had to do was to select the external clock
+source and to make sure that clock-division-by-8 was disabled. The necessary arguments for
+setting the fuses with AVRDUDE were supplied by "Engbedded Atmel AVR [fuse calculator][fuses]".
+In case you're going to use the same microcontroller (ATMEGA644), here are the arguments I used:
 
 <tt> -U lfuse:w:0xe0:m -U hfuse:w:0xdf:m -U efuse:w:0xfc:m </tt>
 
@@ -76,7 +75,7 @@ is sorted, you can always add the new entries at the beginning of both construct
 new entries at the end of the table and the enumerator! The last member of the enumerator
 corresponds to no keyword and represents the no-keyword-found state.
 
-
-[appnote]:       http://www.atmel.com/Images/doc1235.pdf    "application note [PDF]"
-[fuses]:         http://www.engbedded.com/fusecalc          "web application"
+[appnote]:  http://www.atmel.com/Images/doc1235.pdf    "application note [PDF]"
+[fuses]:    http://www.engbedded.com/fusecalc          "web application"
+[GPL3]:     www.gnu.org/licenses/gpl-3.0.html          "official license text"
 */

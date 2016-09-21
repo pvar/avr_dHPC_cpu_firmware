@@ -192,6 +192,9 @@ void interpreter (void)
  * @note The current line begins at the character pointed by @c text_ptr.
  * When running a program, @c text_ptr is advanced automatically.
  * @return The post-execution status. See EXECUTION_STATUS enumerator.
+ *
+ * @note CMD_UNKNOWN is initialy treated as an assignement and the case of
+ * just being some syntactic error / mispelling is examined later.
  *****************************************************************************/
 static uint8_t execution (void)
 {
@@ -332,7 +335,7 @@ static uint8_t execution (void)
             case CMD_PINDWRITE:
                 cmd_status = pindwrite();
                 break;
-            case CMD_ASSIGNMENT:
+            case CMD_UNKNOWN:
                 cmd_status = assignment();
                 break;
             default:

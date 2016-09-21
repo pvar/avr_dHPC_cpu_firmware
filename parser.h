@@ -1,12 +1,12 @@
 /**
  * @file parser.h
- * @brief Prototypes, macros, enumerators and global variables...
+ * @brief Enumerators for the supported commands and functions and some prototypes.
  *
  * The @c COMMANDS enumerator contains a member for each command supported by the language.
  * The memebers of the enumerator appear in the same order as the corresponding commands, in the
  * @c commands table (see parser.c). The last member of the enumerator is used for assignments
- * (some_variable = some_value) which do not use some special command. I other words, CMD_ASSIGNMENT
- * corresponds to no entry in the \c commands table!
+ * (some_variable = some_value) which do not use some special command. I other words, CMD_UNKNOWN
+ * corresponds to no entry in \c commands table.
  */
 
 #ifndef PARSER_H
@@ -15,9 +15,6 @@
 // ------------------------------------------------------------------------------
 // INCLUDES
 // ------------------------------------------------------------------------------
-
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "main.h"
 #include "interpreter.h"
@@ -82,7 +79,7 @@ enum COMMANDS {
         CMD_CLOAD,
         CMD_PINDIR,
         CMD_PINDWRITE,
-        CMD_ASSIGNMENT
+        CMD_UNKNOWN
 };
 enum {
         FN_PEEK = 0,

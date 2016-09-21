@@ -1,6 +1,9 @@
 /**
  * @file main.h
- * @brief Prototypes, macros, enumerators and global variables...
+ * @brief All the library inclusions for the mother of all header files.
+ *
+ * This file includes all the needed libraries, as it is included by every
+ * other source code file / unit. Other than that, there is nothing special here.
  */
 
 #ifndef MAIN_H

@@ -1,6 +1,10 @@
 /**
  * @file io.h
- * @brief Prototypes, macros, enumerators and global variables...
+ * @brief Peripheral communication commands and the expected prototypes.
+ *
+ * The macros in this file correspond to ASCII codes or other, special values,
+ * used for the communication with the peripherals. None of them should be tweaked,
+ * unless the firmware for the peripherals is also updated!
  */
 
 #ifndef IO_H

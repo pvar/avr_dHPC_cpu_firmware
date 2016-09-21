@@ -98,36 +98,33 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00013"></a><span class="lineno">   13</span>&#160;<span class="comment">// INCLUDES</span></div>
 <div class="line"><a name="l00014"></a><span class="lineno">   14</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
 <div class="line"><a name="l00015"></a><span class="lineno">   15</span>&#160;</div>
-<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &lt;stdio.h&gt;</span></div>
-<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;<span class="preprocessor">#include &lt;stdlib.h&gt;</span></div>
-<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;</div>
-<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="main_8h.html">main.h</a>&quot;</span></div>
-<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;</div>
-<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="comment">// PROTOTYPES</span></div>
-<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;</div>
-<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#a81474d704fbed814bd96dc6400387397">printnum</a> (int16_t num, FILE *stream);</div>
-<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#a657473f9e718c9cc45400343d63fff10">printmsg_noNL</a> (<span class="keyword">const</span> uint8_t *msg, FILE *stream);</div>
-<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#aa66328790b870e8b5b77352e26dc1fe9">printmsg</a> (<span class="keyword">const</span> uint8_t *msg, FILE *stream);</div>
-<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#a8788c3947bf9ede0778e41c57171473a">printline</a> (uint8_t *line, FILE *stream);</div>
-<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#aa893fecf81f3b8383deb48439b24a27d">newline</a> (FILE *stream);</div>
-<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;uint8_t <a class="code" href="printing_8h.html#abc27b0a6c811c40164e0d9b8a3abb432">print_string</a> (<span class="keywordtype">void</span>);</div>
-<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#a2f15e634e2ffd09f87999205adb22b60">debug_print</a> (uint8_t chr);</div>
-<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;</div>
-<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="comment">// MACROS</span></div>
-<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
-<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;</div>
-<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;<span class="preprocessor">#define MAXCPL 32</span></div>
-<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#define TXT_COL_DEFAULT 76</span></div>
-<div class="line"><a name="l00039"></a><span class="lineno">   39</span>&#160;<span class="preprocessor">#define TXT_COL_ERROR 3</span></div>
-<div class="line"><a name="l00040"></a><span class="lineno">   40</span>&#160;</div>
-<div class="line"><a name="l00041"></a><span class="lineno">   41</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00016"></a><span class="lineno">   16</span>&#160;<span class="preprocessor">#include &quot;<a class="code" href="main_8h.html">main.h</a>&quot;</span></div>
+<div class="line"><a name="l00017"></a><span class="lineno">   17</span>&#160;</div>
+<div class="line"><a name="l00018"></a><span class="lineno">   18</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00019"></a><span class="lineno">   19</span>&#160;<span class="comment">// PROTOTYPES</span></div>
+<div class="line"><a name="l00020"></a><span class="lineno">   20</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00021"></a><span class="lineno">   21</span>&#160;</div>
+<div class="line"><a name="l00022"></a><span class="lineno">   22</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#a81474d704fbed814bd96dc6400387397">printnum</a> (int16_t num, FILE *stream);</div>
+<div class="line"><a name="l00023"></a><span class="lineno">   23</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#a657473f9e718c9cc45400343d63fff10">printmsg_noNL</a> (<span class="keyword">const</span> uint8_t *msg, FILE *stream);</div>
+<div class="line"><a name="l00024"></a><span class="lineno">   24</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#aa66328790b870e8b5b77352e26dc1fe9">printmsg</a> (<span class="keyword">const</span> uint8_t *msg, FILE *stream);</div>
+<div class="line"><a name="l00025"></a><span class="lineno">   25</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#a8788c3947bf9ede0778e41c57171473a">printline</a> (uint8_t *line, FILE *stream);</div>
+<div class="line"><a name="l00026"></a><span class="lineno">   26</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#aa893fecf81f3b8383deb48439b24a27d">newline</a> (FILE *stream);</div>
+<div class="line"><a name="l00027"></a><span class="lineno">   27</span>&#160;uint8_t <a class="code" href="printing_8h.html#abc27b0a6c811c40164e0d9b8a3abb432">print_string</a> (<span class="keywordtype">void</span>);</div>
+<div class="line"><a name="l00028"></a><span class="lineno">   28</span>&#160;<span class="keywordtype">void</span> <a class="code" href="printing_8h.html#a2f15e634e2ffd09f87999205adb22b60">debug_print</a> (uint8_t chr);</div>
+<div class="line"><a name="l00029"></a><span class="lineno">   29</span>&#160;</div>
+<div class="line"><a name="l00030"></a><span class="lineno">   30</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00031"></a><span class="lineno">   31</span>&#160;<span class="comment">// MACROS</span></div>
+<div class="line"><a name="l00032"></a><span class="lineno">   32</span>&#160;<span class="comment">// ------------------------------------------------------------------------------</span></div>
+<div class="line"><a name="l00033"></a><span class="lineno">   33</span>&#160;</div>
+<div class="line"><a name="l00034"></a><span class="lineno">   34</span>&#160;<span class="preprocessor">#define TXT_COL_DEFAULT 76</span></div>
+<div class="line"><a name="l00035"></a><span class="lineno">   35</span>&#160;<span class="preprocessor">#define TXT_COL_ERROR 3</span></div>
+<div class="line"><a name="l00036"></a><span class="lineno">   36</span>&#160;<span class="preprocessor">#define MAXCPL 32</span></div>
+<div class="line"><a name="l00037"></a><span class="lineno">   37</span>&#160;</div>
+<div class="line"><a name="l00038"></a><span class="lineno">   38</span>&#160;<span class="preprocessor">#endif</span></div>
 <div class="ttc" id="printing_8h_html_aa893fecf81f3b8383deb48439b24a27d"><div class="ttname"><a href="printing_8h.html#aa893fecf81f3b8383deb48439b24a27d">newline</a></div><div class="ttdeci">void newline(FILE *stream)</div><div class="ttdoc">Print a NEW LINE character. </div><div class="ttdef"><b>Definition:</b> printing.c:150</div></div>
 <div class="ttc" id="printing_8h_html_a8788c3947bf9ede0778e41c57171473a"><div class="ttname"><a href="printing_8h.html#a8788c3947bf9ede0778e41c57171473a">printline</a></div><div class="ttdeci">void printline(uint8_t *line, FILE *stream)</div><div class="ttdoc">Print a program line. </div><div class="ttdef"><b>Definition:</b> printing.c:128</div></div>
 <div class="ttc" id="printing_8h_html_a81474d704fbed814bd96dc6400387397"><div class="ttname"><a href="printing_8h.html#a81474d704fbed814bd96dc6400387397">printnum</a></div><div class="ttdeci">void printnum(int16_t num, FILE *stream)</div><div class="ttdoc">Print specified integer number. </div><div class="ttdef"><b>Definition:</b> printing.c:88</div></div>
-<div class="ttc" id="main_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">Prototypes, macros, enumerators and global variables... </div></div>
+<div class="ttc" id="main_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">All the library inclusions for the mother of all header files. </div></div>
 <div class="ttc" id="printing_8h_html_a657473f9e718c9cc45400343d63fff10"><div class="ttname"><a href="printing_8h.html#a657473f9e718c9cc45400343d63fff10">printmsg_noNL</a></div><div class="ttdeci">void printmsg_noNL(const uint8_t *msg, FILE *stream)</div><div class="ttdoc">Print selected message from FLASH (without new-line) </div><div class="ttdef"><b>Definition:</b> printing.c:110</div></div>
 <div class="ttc" id="printing_8h_html_abc27b0a6c811c40164e0d9b8a3abb432"><div class="ttname"><a href="printing_8h.html#abc27b0a6c811c40164e0d9b8a3abb432">print_string</a></div><div class="ttdeci">uint8_t print_string(void)</div><div class="ttdoc">Print a user defined string (enclosed in quotes) </div><div class="ttdef"><b>Definition:</b> printing.c:160</div></div>
 <div class="ttc" id="printing_8h_html_a2f15e634e2ffd09f87999205adb22b60"><div class="ttname"><a href="printing_8h.html#a2f15e634e2ffd09f87999205adb22b60">debug_print</a></div><div class="ttdeci">void debug_print(uint8_t chr)</div><div class="ttdoc">Print a hash and the specified character for debug purposes. </div><div class="ttdef"><b>Definition:</b> printing.c:186</div></div>

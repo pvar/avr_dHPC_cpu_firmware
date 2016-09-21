@@ -9,7 +9,7 @@
 - A colon (:) can be used to separate subsequent commands on the same line.
 - A print statement ending with a semicolon (;) will not append a new line to the output string.
 
-### The classics!
+### The classic commands
 
 <table>
 <tr><th>SYNTAX                  <th>TYPE        <th>DESCRIPTION

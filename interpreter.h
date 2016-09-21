@@ -1,9 +1,9 @@
 /**
  * @file interpreter.h
- * @brief Prototypes, macros, enumerators and global variables...
+ * @brief System specifications, global variables and function prototypes.
  *
- * Most of the macros in this file play a decisive role in what this system can achieve.
- * The program memory size determines the maximum size of the programs, while the stack size
+ * Most of the macros in this file play a decisive role in what this system can achieve!
+ * The program memory size determines the maximum size of user programs, while the stack size
  * determines the maximum number of nested function calls.
  */
 
@@ -13,9 +13,6 @@
 // ------------------------------------------------------------------------------
 // INCLUDES
 // ------------------------------------------------------------------------------
-
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "main.h"
 #include "cmd_audio.h"

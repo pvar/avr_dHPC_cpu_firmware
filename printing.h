@@ -1,9 +1,9 @@
 /**
  * @file printing.h
- * @brief Prototypes, macros, enumerators and global variables...
+ * @brief Settings regardig printing and the necessary function prototypes.
+ *
  * The three macros defined in this file determine the text colour for 'normal' and 'error'
- * messages, as well as the length of a text line on the screen. When porting nstBASIC to
- * other platforms, they should probably have to be be updated.
+ * messages, as well as the length of a text line on the screen.
 */
 
 #ifndef PRINTING_H
@@ -12,9 +12,6 @@
 // ------------------------------------------------------------------------------
 // INCLUDES
 // ------------------------------------------------------------------------------
-
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "main.h"
 
@@ -34,8 +31,8 @@ void debug_print (uint8_t chr);
 // MACROS
 // ------------------------------------------------------------------------------
 
-#define MAXCPL 32
 #define TXT_COL_DEFAULT 76
 #define TXT_COL_ERROR 3
+#define MAXCPL 32
 
 #endif

@@ -252,7 +252,8 @@ Here is the caller graph for this function:</div>
 <hr/>
 <p> This function executes the current line. A helper function (<a class="el" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849" title="Search for any string in specified table. ">scantable()</a>) looks for the presence of any command and the huge switch block executes the said command. When a program is running, this function loops over and keeps executing one line after the other.</p>
 <dl class="section user"><dt>Note:</dt><dd>The current line begins at the character pointed by <code>text_ptr</code>. When running a program, <code>text_ptr</code> is advanced automatically. </dd></dl>
-<dl class="section return"><dt>Returns</dt><dd>The post-execution status. See EXECUTION_STATUS enumerator. </dd></dl>
+<dl class="section return"><dt>Returns</dt><dd>The post-execution status. See EXECUTION_STATUS enumerator.</dd></dl>
+<dl class="section user"><dt>Note:</dt><dd>CMD_UNKNOWN is initialy treated as an assignement and the case of just being some syntactic error / mispelling is examined later. </dd></dl>
 
 <p>References <a class="el" href="main_8c.html#acd9b94c6ca68bfcee93930f454e37b6b">break_test()</a>, <a class="el" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a">do_beep()</a>, <a class="el" href="main_8c.html#a77995f5f32cf02e2670d84114fa3c6b1">fx_delay_ms()</a>, <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, <a class="el" href="parser_8c.html#a4fe92c8d54d0ce4ec516d64f098ee056">parse_expr_s1()</a>, <a class="el" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f">printmsg()</a>, and <a class="el" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable()</a>.</p>
 

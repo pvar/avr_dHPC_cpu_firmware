@@ -1,3 +1,4 @@
+
 /* TYPOGRAPHY
 ------------------------------------------------------------------------------*/
 body, table, div, p, dl {
@@ -8,6 +9,8 @@ body, table, div, p, dl {
         line-height: 1.6;
         letter-spacing: -0.00em;
 }
+
+table { font-size: 15px; }
 
 p { margin: 0 0 12px 0; }
 
@@ -27,11 +30,10 @@ p { margin: 0 0 12px 0; }
         font-size: 1.4em;
 }
 
-
 h1, .h1 { font-size: 2.0em; line-height: 1.20; font-weight: 300; }
 h2.groupheader,
 h2, .h2 { font-size: 1.8em; line-height: 1.20; font-weight: 300; }
-h3, .h3 { font-size: 1.6em; line-height: 1.15; font-weight: 400; }
+h3, .h3 { font-size: 1.6em; line-height: 1.15; font-weight: 300; }
 h4, .h5 { font-size: 1.4em; line-height: 1.10; font-weight: 400; }
 h4, .h5 { font-size: 1.2em; line-height: 1.00; font-weight: 400; }
 
@@ -39,8 +41,6 @@ td { vertical-align:top; }
 
 a.el { font-weight: normal; }
 dd { margin: 0 0 10px 40px !important; }
-
-}
 
 /* STRUCTURE
 ------------------------------------------------------------------------------*/
@@ -82,7 +82,6 @@ hr.footer {
 .directory tr.even { background-color: #f0f0e0; }
 .directory td.desc,
 .directory td.entry { padding-top: 10px; padding-bottom: 4px; }
-
 
 /* BOXES
 ------------------------------------------------------------------------------*/
