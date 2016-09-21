@@ -75,6 +75,15 @@ is sorted, you can always add the new entries at the beginning of both construct
 new entries at the end of the table and the enumerator! The last member of the enumerator
 corresponds to no keyword and represents the no-keyword-found state.
 
+### 10. Some functions seem poorly written. They could have easily been very faster...
+
+nstBASIC runs on a microcontroller with only 4Kb of SRAM. This means that the interpreter
+should occupy the least amount of memory possible, so that the available memory --i.e. the
+memory space for user programs!-- would be maximized. Speed was far from being a priority!
+For example, scantable() function would have been very faster if it utilized binary search.
+There are a lot of ways one could speed nstBASIC up, but most of them would reduce the available
+memory for user programs and thusly, inhibit user's creativity ;-)
+
 [appnote]:  http://www.atmel.com/Images/doc1235.pdf    "application note [PDF]"
 [fuses]:    http://www.engbedded.com/fusecalc          "web application"
 [GPL3]:     www.gnu.org/licenses/gpl-3.0.html          "official license text"
