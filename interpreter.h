@@ -126,7 +126,7 @@ extern const uint8_t err_msg14[24];
 extern const uint8_t err_msg15[21];
 
 // functions that return nothing / might print a value (definition in parser.c)
-extern const uint8_t commands[208];
+extern const uint8_t commands[218];
 
 // functions that return a value / print nothing (definition in parser.c)
 extern const uint8_t functions[27];

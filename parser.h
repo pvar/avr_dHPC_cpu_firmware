@@ -83,6 +83,7 @@ enum COMMANDS {
         CMD_PINDWRITE,
         CMD_UNKNOWN
 };
+
 enum {
         FN_PEEK = 0,
         FN_ABS,
@@ -91,6 +92,7 @@ enum {
         FN_PINAREAD,
         FN_UNKNOWN
 };
+
 enum OPERATORS {
         RELOP_GE = 0,
         RELOP_NE,
