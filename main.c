@@ -91,7 +91,7 @@ void get_line (void)
 
         /* READ FROM SERIAL */
         } else if (sys_config & cfg_from_serial) {
-                read_serial_eeprom (stream_pseudo);
+                read_serial_eeprom (stream_serial);
 
         /* READ FROM STDIN */
         } else {

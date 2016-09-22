@@ -146,7 +146,7 @@ int getchar_rom (FILE *stream);
 // ------------------------------------------------------------------------------
 
 // streams of data to and from IO devices
-FILE stream_physical, stream_pseudo, stream_eeprom;
+FILE stream_physical, stream_serial, stream_eeprom;
 
 // global variables
 uint16_t eeprom_ptr;

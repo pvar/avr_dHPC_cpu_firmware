@@ -32,7 +32,7 @@
 #include "io.h"
 
 FILE stream_physical = FDEV_SETUP_STREAM (putchar_phy, getchar_phy, _FDEV_SETUP_RW);
-FILE stream_pseudo = FDEV_SETUP_STREAM (putchar_ser, getchar_ser, _FDEV_SETUP_RW);
+FILE stream_serial = FDEV_SETUP_STREAM (putchar_ser, getchar_ser, _FDEV_SETUP_RW);
 FILE stream_eeprom = FDEV_SETUP_STREAM (putchar_rom, getchar_rom, _FDEV_SETUP_RW);
 
 static uint8_t edge, kb_bit_cnt;
@@ -396,17 +396,17 @@ void do_beep (void)
 void uart_ansi_rst_clr (void)
 {
         // ANSI reset
-        fputc (27, &stream_pseudo);
-        fputc ('[', &stream_pseudo);
-        fputc ('0', &stream_pseudo);
-        fputc ('m', &stream_pseudo);
+        fputc (27, &stream_serial);
+        fputc ('[', &stream_serial);
+        fputc ('0', &stream_serial);
+        fputc ('m', &stream_serial);
         // ANSI clear
-        fputc (27, &stream_pseudo);
-        fputc ('[', &stream_pseudo);
-        fputc ('H', &stream_pseudo);
-        fputc (27, &stream_pseudo);
-        fputc ('[', &stream_pseudo);
-        fputc ('J', &stream_pseudo);
+        fputc (27, &stream_serial);
+        fputc ('[', &stream_serial);
+        fputc ('H', &stream_serial);
+        fputc (27, &stream_serial);
+        fputc ('[', &stream_serial);
+        fputc ('J', &stream_serial);
 }
 
 /** ***************************************************************************
@@ -417,12 +417,12 @@ void uart_ansi_rst_clr (void)
  *****************************************************************************/
 void uart_ansi_move_cursor (uint8_t row, uint8_t col)
 {
-        fputc (27, &stream_pseudo);
-        fputc ('[', &stream_pseudo);
-        fprintf (&stream_pseudo, "%d", row);
-        fputc (';', &stream_pseudo);
-        fprintf (&stream_pseudo, "%d", col);
-        fputc ('H', &stream_pseudo);
+        fputc (27, &stream_serial);
+        fputc ('[', &stream_serial);
+        fprintf (&stream_serial, "%d", row);
+        fputc (';', &stream_serial);
+        fprintf (&stream_serial, "%d", col);
+        fputc ('H', &stream_serial);
 }
 
 /** ***************************************************************************
@@ -463,11 +463,11 @@ int putchar_phy (char chr, FILE *stream)
         // send to UART
         if (chr < 128) {
                 if (chr == BS) {
-                        fputc (BS, &stream_pseudo);
-                        fputc (SPACE, &stream_pseudo);
-                        fputc (BS, &stream_pseudo);
+                        fputc (BS, &stream_serial);
+                        fputc (SPACE, &stream_serial);
+                        fputc (BS, &stream_serial);
                 } else
-            fputc (chr , &stream_pseudo);
+            fputc (chr , &stream_serial);
         }
         return 0;
 }
