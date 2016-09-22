@@ -45,7 +45,7 @@ static uint8_t kb_buffer[KB_BUFFER_SIZE];
 // 3rd col: ASCII code when: SHIFT = 0 & CAPS = 1
 // 4th col: ASCII code when: SHIFT = 1 & CAPS = 1
 static const uint8_t to_ascii[512] PROGMEM = {
-        0, 0, 0, 0,                     // 00
+        0, 0, 0, 0,             // 00
         0, 0, 0, 0,
         0, 0, 0, 0,
         0, 0, 0, 0,
@@ -53,7 +53,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         0, 0, 0, 0,
         '`', '~', '`', '~',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 08
+        0, 0, 0, 0,             // 08
         0, 0, 0, 0,
         0, 0, 0, 0,
         0, 0, 0, 0,
@@ -61,7 +61,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         TAB, TAB, TAB, TAB,
         '`', '~', '`', '~',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 10
+        0, 0, 0, 0,             // 10
         0, 0, 0, 0,
         0, 0, 0, 0,
         0, 0, 0, 0,
@@ -69,7 +69,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         'q', 'Q', 'Q', 'q',
         '1', '!', '1', '!',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 18
+        0, 0, 0, 0,             // 18
         0, 0, 0, 0,
         'z', 'Z', 'Z', 'z',
         's', 'S', 'S', 's',
@@ -77,7 +77,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         'w', 'W', 'W', 'w',
         '2', '@', '2', '@',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 20
+        0, 0, 0, 0,             // 20
         'c', 'C', 'C', 'c',
         'x', 'X', 'X', 'x',
         'd', 'D', 'D', 'd',
@@ -85,7 +85,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         '4', '$', '4', '$',
         '3', '#', '3', '#',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 28
+        0, 0, 0, 0,             // 28
         ' ', ' ', ' ', ' ',
         'v', 'V', 'V', 'v',
         'f', 'F', 'F', 'f',
@@ -93,7 +93,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         'r', 'R', 'R', 'r',
         '5', '%', '5', '%',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 30
+        0, 0, 0, 0,             // 30
         'n', 'N', 'N', 'n',
         'b', 'B', 'B', 'b',
         'h', 'H', 'H', 'h',
@@ -101,7 +101,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         'y', 'Y', 'Y', 'y',
         '6', '^', '6', '^',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 38
+        0, 0, 0, 0,             // 38
         ',', '<', ',', '<',
         'm', 'M', 'M', 'm',
         'j', 'J', 'J', 'j',
@@ -109,7 +109,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         '7', '&', '7', '&',
         '8', '*', '8', '*',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 40
+        0, 0, 0, 0,             // 40
         ',', '<', ',', '<',
         'k', 'K', 'K', 'k',
         'i', 'I', 'I', 'i',
@@ -117,7 +117,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         '0', ')', '0', ')',
         '9', '(', '9', '(',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 48
+        0, 0, 0, 0,             // 48
         '.', '>', '.', '>',
         '/', '?', '/', '?',
         'l', 'L', 'L', 'l',
@@ -125,7 +125,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         'p', 'P', 'P', 'p',
         '-', '_', '-', '_',
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 50
+        0, 0, 0, 0,             // 50
         0, 0, 0, 0,
         '\'', '"', '\'', '"',
         0, 0, 0, 0,
@@ -133,7 +133,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         '=', '+', '=', '+',
         0, 0, 0, 0,
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 58
+        0, 0, 0, 0,             // 58
         0, 0, 0, 0,
         CR, CR, CR, CR,
         ']', '}', ']', '}',
@@ -141,7 +141,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         '\\', '|', '\\', '|',
         0, 0, 0, 0,
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 60
+        0, 0, 0, 0,             // 60
         '<', '<', '<', '<',
         0, 0, 0, 0,
         0, 0, 0, 0,
@@ -149,7 +149,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         0, 0, 0, 0,
         BS, BS, BS, BS,
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 68
+        0, 0, 0, 0,             // 68
         '1', '1', '1', '1',
         0, 0, 0, 0,
         '4', '4', '4', '4',
@@ -165,7 +165,7 @@ static const uint8_t to_ascii[512] PROGMEM = {
         '8', '8', '8', '8',
         ESC, ESC, ESC, ESC,
         0, 0, 0, 0,
-        0, 0, 0, 0,                     // 78
+        0, 0, 0, 0,             // 78
         '+', '+', '+', '+',
         '3', '3', '3', '3',
         '-', '-', '-', '-',
@@ -190,79 +190,79 @@ void kb_decode (uint8_t sc)
         uint8_t tmp;
         if (! (kb_status & BREAKCODE)) {        // a key was pressed and/or held...
                 switch (sc) {
-            case 0xAA:                                  // Basic Assurance Test (BAT) succeeded
-                break;
-            case 0xFC:                                  // Basic Assurance Test (BAT) failed
-                printmsg (kb_fail_msg, stdout);
-                do_beep();
-                do_beep();
-                break;
-            case 0xE0:                                  // extended key make-code
-                kb_status |= EXTENDEDKEY;
-                break;
-            case 0xF0:                                  // break-code
-                kb_status |= BREAKCODE;
-                kb_status &= ~EXTENDEDKEY;
-                break;
-            case 0x58:                                  // Caps Lock
-                kb_status ^= CAPSLOCK;
-                break;
-            case 0x77:                                  // Num Lock
-                kb_status ^= NUMLOCK;
-                break;
-            case 0x14:                                  // left CONTROL
-                kb_status |= CONTROL;
-                break;
-            case 0x12:                                  // left SHIFT
-            case 0x59:                                  // right SHIFT
-                kb_status |= SHIFT;
-                break;
-            default:
-                // if CONTROL key is pressed ----------------------------------
-                if (kb_status & CONTROL) {
-                    if (sc == 0x21) break_flow = 1;                     // CTRL+C
-                    if (sc == 0x34) {                                           // CTRL+G
-                        // this has to be done right away,
-                        // since "beep" function disables keyboard ISR
-                        kb_status &= ~CONTROL;
-                        put_kb_buffer (BELL);
-                    }
-                    if (sc == 0x4B) put_kb_buffer (FF);         // CTRL+L
-                    if (sc == 0x1C) put_kb_buffer (HOME);       // CTRL+A
-                    if (sc == 0x24) put_kb_buffer (END);                // CTRL+E
+                        case 0xAA:              // Basic Assurance Test (BAT) succeeded
+                                break;
+                        case 0xFC:              // Basic Assurance Test (BAT) failed
+                                printmsg (kb_fail_msg, stdout);
+                                do_beep();
+                                do_beep();
+                                break;
+                        case 0xE0:              // extended key make-code
+                                kb_status |= EXTENDEDKEY;
+                                break;
+                        case 0xF0:              // break-code
+                                kb_status |= BREAKCODE;
+                                kb_status &= ~EXTENDEDKEY;
+                                break;
+                        case 0x58:              // Caps Lock
+                                kb_status ^= CAPSLOCK;
+                                break;
+                        case 0x77:              // Num Lock
+                                kb_status ^= NUMLOCK;
+                                break;
+                        case 0x14:              // left CONTROL
+                                kb_status |= CONTROL;
+                                break;
+                        case 0x12:              // left SHIFT
+                        case 0x59:              // right SHIFT
+                                kb_status |= SHIFT;
+                                break;
+                        default:
+                                // if CONTROL key is pressed ----------------------------------
+                                if (kb_status & CONTROL) {
+                                        if (sc == 0x21) break_flow = 1;         // CTRL+C
+                                        if (sc == 0x34) {                       // CTRL+G
+                                                // this has to be done right away,
+                                                // since "beep" function disables keyboard ISR
+                                                kb_status &= ~CONTROL;
+                                                put_kb_buffer (BELL);
+                                        }
+                                        if (sc == 0x4B) put_kb_buffer (FF);     // CTRL+L
+                                        if (sc == 0x1C) put_kb_buffer (HOME);   // CTRL+A
+                                        if (sc == 0x24) put_kb_buffer (END);    // CTRL+E
+                                }
+                                // if an EXTENDED KEY is pressed ------------------------------
+                                else if (kb_status & EXTENDEDKEY) {
+                                        if (sc == 0x5A) put_kb_buffer (CR);     // ENTER
+                                        if (sc == 0x75) put_kb_buffer (ARUP);   // ARROW UP
+                                        if (sc == 0x72) put_kb_buffer (ARDN);   // ARROW DOWN
+                                        if (sc == 0x6B) put_kb_buffer (ARLT);   // ARROW LEFT
+                                        if (sc == 0x74) put_kb_buffer (ARRT);   // ARROW RIGHT
+                                        if (sc == 0x6C) put_kb_buffer (HOME);   // HOME
+                                        if (sc == 0x69) put_kb_buffer (END);    // END
+                                        kb_status &= ~EXTENDEDKEY;
+                                }
+                                // in any other case ------------------------------------------
+                                else {
+                                        tmp = 0;
+                                        if (kb_status & SHIFT)
+                                                tmp += 1;
+                                        if (kb_status & CAPSLOCK)
+                                                tmp += 2;
+                                        put_kb_buffer (pgm_read_byte (to_ascii + 4 * sc + tmp));
+                                }
+                                break;
                 }
-                // if an EXTENDED KEY is pressed ------------------------------
-                else if (kb_status & EXTENDEDKEY) {
-                    if (sc == 0x5A) put_kb_buffer (CR);         // ENTER
-                    if (sc == 0x75) put_kb_buffer (ARUP);       // ARROW UP
-                    if (sc == 0x72) put_kb_buffer (ARDN);       // ARROW DOWN
-                    if (sc == 0x6B) put_kb_buffer (ARLT);       // ARROW LEFT
-                    if (sc == 0x74) put_kb_buffer (ARRT);       // ARROW RIGHT
-                    if (sc == 0x6C) put_kb_buffer (HOME);       // HOME
-                    if (sc == 0x69) put_kb_buffer (END);                // END
-                    kb_status &= ~EXTENDEDKEY;
-                }
-                // in any other case ------------------------------------------
-                else {
-                    tmp = 0;
-                    if (kb_status & SHIFT)
-                        tmp += 1;
-                    if (kb_status & CAPSLOCK)
-                        tmp += 2;
-                    put_kb_buffer (pgm_read_byte (to_ascii + 4 * sc + tmp));
-                }
-                break;
-                }
-        } else {                                                        // a pressed key was just released...
+        } else {                        // a pressed key was just released...
                 kb_status &= ~BREAKCODE;
                 switch (sc) {
-            case 0x14:                                  // left CONTROL
-                kb_status &= ~CONTROL;
-                break;
-            case 0x12:                                  // left SHIFT
-            case 0x59:                                  // right SHIFT
-                kb_status &= ~SHIFT;
-                break;
+                        case 0x14:      // left CONTROL
+                                kb_status &= ~CONTROL;
+                                break;
+                        case 0x12:      // left SHIFT
+                        case 0x59:      // right SHIFT
+                                kb_status &= ~SHIFT;
+                                break;
                 }
         }
 }
@@ -275,7 +275,7 @@ void kb_decode (uint8_t sc)
  *****************************************************************************/
 void put_kb_buffer (uint8_t chr)
 {
-    static uint8_t kb_write_ptr = 0;
+        static uint8_t kb_write_ptr = 0;
         // only proceed if keyboard buffer is not full
         if (kb_buffer_cnt < KB_BUFFER_SIZE) {
                 // store incoming byte in keyboard buffer
@@ -300,30 +300,37 @@ void init_io (void)
 {
         // setup fundamental stream
         stdout = stdin = &stream_physical;
+
         // configure analog to digital converter
         ADMUX = 0;
         ADCSRA = _BV (ADEN) | _BV (ADPS2) | _BV (ADPS1) | _BV (ADPS0);
+
         // do the first conversion (initialization)
         ADCSRA |= _BV (ADSC);
         while (ADCSRA & _BV (ADSC));
+
         // configure secondary data bus pins (inputs with pull-up resistors)
         sec_data_bus_dir = 0;
         sec_data_bus_out = 255;
+
         // configure buzzer and LED pin
         aux_ctl_bus_dir |= buzzer_led;
         aux_ctl_bus_out |= buzzer_led;
+
         // setup keyboard connection
         init_kb();
+
         // initial data bus value
         pri_data_bus_dir = 255;
+
         // setup GPU control pins
         peripheral_bus_dir &= ~from_gpu;
         peripheral_bus_dir |= to_gpu;
+
         // setup APU control pins
         peripheral_bus_dir &= ~from_apu;
         peripheral_bus_dir |= to_apu;
-        // display "boot" message
-        //putchar( vid_reset );
+
         // setup UART connection
         UBRR0H = UBRRH_VALUE;
         UBRR0L = UBRRL_VALUE;
@@ -372,18 +379,18 @@ void init_kb (void)
  *****************************************************************************/
 void do_beep (void)
 {
-    // disable keyboard interrupt
-    EIMSK &= ~KEYBOARD_INT;
-    uint8_t cnt = 100;
-    while (cnt > 0) {
-        aux_ctl_bus_out &= ~buzzer_led;
-        fx_delay_us (750);
-        aux_ctl_bus_out |= buzzer_led;
-        fx_delay_us (500);
-        cnt--;
-    }
-    // enable keyboard interrupt
-    EIMSK |= KEYBOARD_INT;
+        // disable keyboard interrupt
+        EIMSK &= ~KEYBOARD_INT;
+        uint8_t cnt = 100;
+        while (cnt > 0) {
+                aux_ctl_bus_out &= ~buzzer_led;
+                fx_delay_us (750);
+                aux_ctl_bus_out |= buzzer_led;
+                fx_delay_us (500);
+                cnt--;
+        }
+        // enable keyboard interrupt
+        EIMSK |= KEYBOARD_INT;
 }
 
 
@@ -431,10 +438,10 @@ void uart_ansi_move_cursor (uint8_t row, uint8_t col)
 int putchar_ser (char chr, FILE *stream)
 {
         if (chr == LF)
-        putchar_ser (CR, stream);
+                putchar_ser (CR, stream);
         loop_until_bit_is_set (UCSR0A, UDRE0);
         UDR0 = chr;
-    return 0;
+        return 0;
 }
 
 /** ***************************************************************************
@@ -467,7 +474,7 @@ int putchar_phy (char chr, FILE *stream)
                         fputc (SPACE, &stream_serial);
                         fputc (BS, &stream_serial);
                 } else
-            fputc (chr , &stream_serial);
+                        fputc (chr , &stream_serial);
         }
         return 0;
 }
@@ -480,11 +487,11 @@ int putchar_phy (char chr, FILE *stream)
  *****************************************************************************/
 int getchar_phy (FILE *stream)
 {
-    static uint8_t kb_read_ptr;
+        static uint8_t kb_read_ptr;
         uint8_t chr;
         // wait for a key
         while (kb_buffer_cnt == 0)
-        fx_delay_ms (15);
+                fx_delay_ms (15);
         // read key from keyboard buffer
         chr = kb_buffer[kb_read_ptr];
         // update buffer pointer and data counter
@@ -608,19 +615,20 @@ ISR (TIMER0_COMPA_vect)   // , ISR_NAKED )
  *****************************************************************************/
 ISR (INT0_vect)
 {
-        uint8_t bit_val;                                                // incoming bit
-        static uint8_t raw_data;                                // received scan code
+        uint8_t bit_val;                                // incoming bit
+        static uint8_t raw_data;                        // received scan code
         // get bit value as quickly as possible!
         bit_val = peripheral_bus_in;
         bit_val &= kb_dat_pin;
-        if (! edge) {
+        if (!edge) {
                 // start timer
                 if (kb_bit_cnt == 11)
-            TCCR0B = _BV (CS02) | _BV (CS00);
-        // useful data are in bits 3-10 (parity and start/stop bits are ignored)
+                        TCCR0B = _BV (CS02) | _BV (CS00);
+                // useful data are in bits 3-10 (parity and start/stop bits are ignored)
                 if (kb_bit_cnt < 11 && kb_bit_cnt > 2) {
                         raw_data = (raw_data >> 1);
-                        if (bit_val) raw_data = raw_data | 0x80;
+                        if (bit_val)
+                                raw_data = raw_data | 0x80;
                 }
                 EICRA = 3;                              // set interrupt on rising edge
                 edge = 1;                               // 1: rising edge

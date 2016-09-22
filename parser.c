@@ -190,26 +190,26 @@ int8_t scantable (const uint8_t *table)
  *****************************************************************************/
 static uint8_t get_effect (void)
 {
-        // EFFECT                       RETURN VALUE
-        //      none                            0
-        //      bend up                         1
-        //      bend down                       2
-        //      vibrato                         3
+        // EFFECT          RETURN VALUE
+        // none            0
+        // bend up         1
+        // bend down       2
+        // vibrato         3
         text_ptr++;
         switch (*text_ptr) {
-        case '=':       // vibrato
-            return 3;
-            break;
-        case '-':       // bend down
-            return 2;
-            break;
-        case '+':       // bend up
-            return 1;
-            break;
-        default:        // no effect
-            text_ptr--;
-            return 0;
-            break;
+                case '=':       // vibrato
+                    return 3;
+                    break;
+                case '-':       // bend down
+                    return 2;
+                    break;
+                case '+':       // bend up
+                    return 1;
+                    break;
+                default:        // no effect
+                    text_ptr--;
+                    return 0;
+                    break;
         }
 }
 
@@ -540,87 +540,87 @@ static int16_t parse_expr_s4 (void)
  *****************************************************************************/
 static uint8_t get_note (void)
 {
-        // NOTE         RETURN VALUE
-        //      C                       01
-        //      C#                      02
-        //      D                       03
-        //      Eb                      04
-        //      E                       05
-        //      F                       06
-        //      F#                      07
-        //      G                       08
-        //      G#                      09
-        //      A                       10
-        //      Bb                      11
-        //      B                       12
-        //      PAUSE           13
+        // NOTE       RETURN VALUE
+        // C          01
+        // C#         02
+        // D          03
+        // Eb         04
+        // E          05
+        // F          06
+        // F#         07
+        // G          08
+        // G#         09
+        // A          10
+        // Bb         11
+        // B          12
+        // PAUSE      13
         text_ptr++;
         switch (*text_ptr) {
-        case 'C':
-        case 'c':
-            text_ptr++;
-            if (*text_ptr == '#')
-                return 2;
-            else {
-                text_ptr--;
-                return 1;
-            }
-            break;
-        case 'D':
-        case 'd':
-            return 3;
-            break;
-        case 'E':
-        case 'e':
-            text_ptr++;
-            if (*text_ptr == 'B' || *text_ptr == 'b')
-                return 4;
-            else {
-                text_ptr--;
-                return 5;
-            }
-            break;
-        case 'F':
-        case 'f':
-            text_ptr++;
-            if (*text_ptr == '#')
-                return 7;
-            else {
-                text_ptr--;
-                return 6;
-            }
-            break;
-        case 'G':
-        case 'g':
-            text_ptr++;
-            if (*text_ptr == '#')
-                return 9;
-            else {
-                text_ptr--;
-                return 8;
-            }
-            break;
-        case 'A':
-        case 'a':
-            return 10;
-            break;
-        case 'B':
-        case 'b':
-            text_ptr++;
-            if (*text_ptr == 'B' || *text_ptr == 'b')
-                return 11;
-            else {
-                text_ptr--;
-                return 12;
-            }
-            break;
-        case 'P':
-        case 'p':
-            return 13;
-            break;
-        default:
-            error_code = 0x4;
-            break;
+                case 'C':
+                case 'c':
+                    text_ptr++;
+                    if (*text_ptr == '#')
+                        return 2;
+                    else {
+                        text_ptr--;
+                        return 1;
+                    }
+                    break;
+                case 'D':
+                case 'd':
+                    return 3;
+                    break;
+                case 'E':
+                case 'e':
+                    text_ptr++;
+                    if (*text_ptr == 'B' || *text_ptr == 'b')
+                        return 4;
+                    else {
+                        text_ptr--;
+                        return 5;
+                    }
+                    break;
+                case 'F':
+                case 'f':
+                    text_ptr++;
+                    if (*text_ptr == '#')
+                        return 7;
+                    else {
+                        text_ptr--;
+                        return 6;
+                    }
+                    break;
+                case 'G':
+                case 'g':
+                    text_ptr++;
+                    if (*text_ptr == '#')
+                        return 9;
+                    else {
+                        text_ptr--;
+                        return 8;
+                    }
+                    break;
+                case 'A':
+                case 'a':
+                    return 10;
+                    break;
+                case 'B':
+                case 'b':
+                    text_ptr++;
+                    if (*text_ptr == 'B' || *text_ptr == 'b')
+                        return 11;
+                    else {
+                        text_ptr--;
+                        return 12;
+                    }
+                    break;
+                case 'P':
+                case 'p':
+                    return 13;
+                    break;
+                default:
+                    error_code = 0x4;
+                    break;
         }
     return 0;
 }
@@ -636,10 +636,10 @@ static uint8_t get_note (void)
  *****************************************************************************/
 static uint8_t get_octave (void)
 {
-        // OCTAVE               RETURN VALUE
-        //      2                               2
-        //      ...                             ...
-        //      7                               7
+        // OCTAVE     RETURN VALUE
+        // 2          2
+        // ...        ...
+        // 7          7
         text_ptr++;
         if (*text_ptr >= '2' && *text_ptr <= '7')
                 return *text_ptr - '0';
@@ -663,15 +663,15 @@ static uint8_t get_octave (void)
  *****************************************************************************/
 static uint8_t get_duration (void)
 {
-        // DURATION                     RETURN VALUE
-        //      1/32                            1
-        //      1/16                            2
-        //      1/16* (3/32)            3
-        //      1/8                                     4
-        //      1/8*  (3/16)            5
-        //      1/4                                     6
-        //      1/4*  (3/8)                     7
-        //      1/2                                     8
+        // DURATION            RETURN VALUE
+        // 1/32                1
+        // 1/16                2
+        // 1/16* (3/32)        3
+        // 1/8                 4
+        // 1/8*  (3/16)        5
+        // 1/4                 6
+        // 1/4*  (3/8)         7
+        // 1/2                 8
         text_ptr++;
         if (*text_ptr >= '1' && *text_ptr <= '8')
                 return *text_ptr - '0';

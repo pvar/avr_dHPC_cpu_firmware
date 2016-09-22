@@ -231,14 +231,22 @@ uint8_t *find_line (void)
 }
 
 /** ***************************************************************************
- * @brief Normalize user input.
- * Ignore spaces and transform code (not strings) to upper case.
+ * @brief Ignore whitespace characters.
+ *
+ * If current character (indicated by \c text_ptr pointer) is SPACE or TAB
+ * advance pointer and move to next character
  *****************************************************************************/
 void ignorespace (void)
 {
         while (*text_ptr == SPACE || *text_ptr == TAB)
                 text_ptr++;
 }
+
+/** ***************************************************************************
+ * @brief Transform to uppercase.
+ *
+ * Transform everything but strings to uppercase.
+ *****************************************************************************/
 
 void uppercase (void)
 {
