@@ -53,10 +53,10 @@ void fx_delay_us (uint16_t us);
 // CONSTANTS
 // ------------------------------------------------------------------------------
 
-#define cfg_auto_run       1 // 1st bit
-#define cfg_run_after_load 2 // 2nd bit
-#define cfg_from_sdcard    4 // 3rd bit
-#define cfg_from_eeprom    8 // 4th bit
+#define cfg_auto_run        1  // 1st bit
+#define cfg_run_after_load  2  // 2nd bit
+#define cfg_from_serial     4  // 3rd bit
+#define cfg_from_eeprom     8  // 4th bit
 
 // ------------------------------------------------------------------------------
 // GLOBALS

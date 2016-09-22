@@ -29,125 +29,159 @@
  *****************************************************************************/
 int main (void)
 {
-    init_io();
-    text_color (TXT_COL_DEFAULT);
-    paper_color (0);
-    printmsg (msg_welcome, stdout);
-    do_beep();
+        init_io();
+        text_color (TXT_COL_DEFAULT);
+        paper_color (0);
+        printmsg (msg_welcome, stdout);
+        do_beep();
 
-    // setup timer2 for seed generation
-    TCCR2A = 0;
-    TCCR2B = _BV (CS22) | _BV (CS21) | _BV (CS20);
-    TIMSK2 = 0;
+        // configure timer2 (used for seed generation)
+        TCCR2A = 0;
+        TCCR2B = _BV (CS22) | _BV (CS21) | _BV (CS20);
+        TIMSK2 = 0;
 
-    //while (1)
-    basic_init();
-    interpreter();
+        basic_init();
+        interpreter();
+
         return 0;
 }
 
 /** ***************************************************************************
- * @brief Get a new line from EEPROM or STDIO.
+ * @brief Read from SERIAL or EEPROM.
+ *
+ * Keeps reading until a NULL character is received.
+ *****************************************************************************/
+
+void read_serial_eeprom (FILE input_stream) {
+        uint8_t in_chr;
+        while (1) {
+                in_chr = fgetc (&input_stream);
+                switch (in_chr) {
+                        // NULL -> stop reading
+                        case 0:
+                                sys_config &= ~cfg_from_serial;
+                                sys_config &= ~cfg_from_eeprom;
+                                return;
+                        // LINE FEED or CARRIAGE RETURN -> LINE FEED
+                        case LF:
+                        case CR:
+                                text_ptr[0] = LF;
+                                return;
+                        // OTHER CHARACTERS -> PUT IN BUFFER
+                        default:
+                                text_ptr[0] = in_chr;
+                                text_ptr++;
+                }
+        }
+}
+
+/** ***************************************************************************
+ * @brief Get line(s) from EEPROM, SERIAL or STDIO.
  *****************************************************************************/
 void get_line (void)
 {
-        uint8_t *maxpos;
-
         text_ptr = prog_end_ptr + sizeof (uint16_t);
-    maxpos = text_ptr;
-        uint8_t incoming_char;
-        uint8_t temp1, temp2;
-    // READ FROM EEPROM
+
+        uint8_t *maxpos = text_ptr;
+        uint8_t in_char, temp1, temp2;
+
+        /* READ FROM EEPROM */
         if (sys_config & cfg_from_eeprom) {
+                read_serial_eeprom (stream_eeprom);
+
+        /* READ FROM SERIAL */
+        } else if (sys_config & cfg_from_serial) {
+                read_serial_eeprom (stream_pseudo);
+
+        /* READ FROM STDIN */
+        } else {
                 while (1) {
-                        incoming_char = fgetc (&stream_eeprom);
-                        switch (incoming_char) {
-                        case 0:
-                                sys_config &= ~cfg_from_eeprom;
-                                return;
-                        case LF:
-                        case CR:
-                                text_ptr[0] = LF;
-                                return;
-                        default:
-                                text_ptr[0] = incoming_char;
-                                text_ptr++;
-                        }
-                }
-    // READ FROM STANDARD INPUT
-    } else {
-                while (1) {
-                        incoming_char = fgetc (stdin); // use &stream_pseudo to read from serial
-                        switch (incoming_char) {
-                        case BELL:              // make a short sound
-                                do_beep();
-                                break;
-                        case FF:                // FORM-FEED or NEW-PAGE (CTRL+L)
-                                break;
-                        case HOME:              // HOME
-                                if (text_ptr > prog_end_ptr + 2) {
-                                        putchar (vid_tosol);
-                                        // how many lines the cursor has to go up
-                                        temp1 = text_ptr - prog_end_ptr - 2;
-                                        putchar (temp1 / MAXCPL + 1);
-                                        text_ptr = prog_end_ptr + 2;
-                                }
-                                break;
-                        case END:               // END
-                                if (text_ptr < maxpos) {
-                                        putchar (vid_toeol);
-                                        // how many lines the cursor has to go down
-                                        temp1 = maxpos - prog_end_ptr - 2;       // characters to last position
-                                        temp2 = text_ptr - prog_end_ptr - 2;       // characters to current position
-                                        temp2 = temp1 / MAXCPL - temp2 / MAXCPL;
-                                        putchar (temp2 + 1);
-                                        // ending column
-                                        temp2 = temp1 - (temp1 / MAXCPL) * MAXCPL;
-                                        putchar (temp2);
+                        in_char = fgetc (stdin);
+                        switch (in_char) {
+                                // BELL
+                                case BELL:
+                                        do_beep();
+                                        break;
+                                // FORM FEED or NEW PAGE (CTRL+L)
+                                case FF:
+                                        break;
+                                // HOME
+                                case HOME:
+                                        if (text_ptr > prog_end_ptr + 2) {
+                                                putchar (vid_tosol);
+                                                // calculate lines to move the cursor up
+                                                temp1 = text_ptr - prog_end_ptr - 2;
+                                                putchar (temp1 / MAXCPL + 1);
+                                                text_ptr = prog_end_ptr + 2;
+                                        }
+                                        break;
+                                // END
+                                case END:
+                                        if (text_ptr < maxpos) {
+                                                putchar (vid_toeol);
+                                                // chars to end of line
+                                                temp1 = maxpos - prog_end_ptr - 2;
+                                                // chars from start of line
+                                                temp2 = text_ptr - prog_end_ptr - 2;
+                                                // calculate line-ending row
+                                                temp2 = temp1 / MAXCPL - temp2 / MAXCPL;
+                                                putchar (temp2 + 1);
+                                                // calculate line-ending column
+                                                temp2 = temp1 - (temp1 / MAXCPL) * MAXCPL;
+                                                putchar (temp2);
+                                                text_ptr = maxpos;
+                                        }
+                                        break;
+                                // ARROW LEFT
+                                case ARLT:
+                                        if (text_ptr <= prog_end_ptr + 2)
+                                                do_beep();
+                                        else {
+                                                putchar (vid_tolft);
+                                                text_ptr--;
+                                        }
+                                        break;
+                                // ARROW RIGHT
+                                case ARRT:
+                                        if (text_ptr < maxpos) {
+                                                text_ptr++;
+                                                putchar (vid_torgt);
+                                        } else do_beep();
+                                        break;
+                                // ARROW UP
+                                case ARUP:
+                                        break;
+                                // ARROW DOWN
+                                case ARDN:
+                                        break;
+                                // LINE FEED or CARRIAGE RETURN
+                                case LF:
+                                case CR:
+                                        // use LF for newline (like Unix)
                                         text_ptr = maxpos;
-                                }
-                                break;
-                        case ARLT:              // ARROW LEFT
-                                if (text_ptr <= prog_end_ptr + 2) do_beep();
-                                else {
-                                        putchar (vid_tolft);
-                                        text_ptr--;
-                                }
-                                break;
-                        case ARRT:              // ARROW RIGHT
-                                if (text_ptr < maxpos) {
-                                        text_ptr++;
-                                        putchar (vid_torgt);
-                                } else do_beep();
-                                break;
-                        ///////////////////////////////////////////////////////
-                        case ARUP:              // ARROW UP
-                        case ARDN:              // ARROW DOWN
-                                break;
-                        ///////////////////////////////////////////////////////
-                        case LF:
-                        case CR:
-                                // lines are always terminated with LF
-                                text_ptr = maxpos;
-                                text_ptr[0] = LF;
-                                newline (stdout);
-                                return;
-                        case BS:
-                                if (text_ptr <= prog_end_ptr + 2) do_beep();
-                                else {
-                                        putchar (BS);
-                                        text_ptr--;
-                                }
-                                break;
-                        default:
-                                // need at least one space to allow shuffling the lines
-                                if (text_ptr == variables_ptr - 2) do_beep();
-                                else {
-                                        putchar (incoming_char);
-                                        text_ptr[0] = incoming_char;
-                                        text_ptr++;
-                                        if (text_ptr > maxpos) maxpos = text_ptr;
-                                }
+                                        text_ptr[0] = LF;
+                                        newline (stdout);
+                                        return;
+                                // BACK SPACE
+                                case BS:
+                                        if (text_ptr <= prog_end_ptr + 2)
+                                                do_beep();
+                                        else {
+                                                putchar (BS);
+                                                text_ptr--;
+                                        }
+                                        break;
+                                // OTHER CHARACTERS
+                                default:
+                                        if (text_ptr == variables_ptr - 2)
+                                                do_beep();
+                                        else {
+                                                putchar (in_char);
+                                                text_ptr[0] = in_char;
+                                                text_ptr++;
+                                                if (text_ptr > maxpos)
+                                                        maxpos = text_ptr;
+                                        }
                         }
                 }
         }
@@ -201,14 +235,25 @@ void ignorespace (void)
 
 void uppercase (void)
 {
-        uint8_t *c = prog_end_ptr + sizeof (uint16_t);
         uint8_t quote = 0;
-        while (*c != LF) {
-                // are we in a quoted string?
-                if (*c == quote) quote = 0;
-                else if (*c == DQUOTE || *c == SQUOTE) quote = *c;
-                else if (quote == 0 && *c >= 'a' && *c <= 'z') *c = *c + 'A' - 'a';
-                c++;
+        uint8_t *chr = prog_end_ptr + sizeof (uint16_t);
+
+        while (*chr != LF) {
+                // current character == stored quote
+                if (*chr == quote)
+                        quote = 0;
+
+                // current character != stored quote
+                // current character == some quote
+                else if (*chr == DQUOTE || *chr == SQUOTE)
+                        quote = *chr;
+
+                // current character != stored quote
+                // current character != some quote
+                // stored quote == empty
+                else if (quote == 0 && *chr >= 'a' && *chr <= 'z')
+                        *chr = *chr + 'A' - 'a';
+                chr++;
         }
 }
 
@@ -250,16 +295,19 @@ int16_t str_to_num (uint8_t *strptr)
 {
         uint8_t negative = 0;
         int16_t value = 0;
+
         // check for minus sign
         if (*strptr == '-') {
                 strptr++;
                 negative = 1;
         }
+
         // calculate value of given number
         while (*strptr >= '0' && *strptr <= '9') {
                 value = 10 * value + (*strptr - '0');
                 strptr++;
         }
+
         if (negative)
                 return -value;
         else
