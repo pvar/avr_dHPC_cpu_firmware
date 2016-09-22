@@ -75,7 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -119,7 +119,7 @@ Functions</h2></td></tr>
 <tr class="memdesc:abc27b0a6c811c40164e0d9b8a3abb432"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a user defined string (enclosed in quotes)  <a href="#abc27b0a6c811c40164e0d9b8a3abb432">More...</a><br /></td></tr>
 <tr class="separator:abc27b0a6c811c40164e0d9b8a3abb432"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f15e634e2ffd09f87999205adb22b60"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="printing_8h.html#a2f15e634e2ffd09f87999205adb22b60">debug_print</a> (uint8_t chr)</td></tr>
-<tr class="memdesc:a2f15e634e2ffd09f87999205adb22b60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print a hash and the specified character for debug purposes.  <a href="#a2f15e634e2ffd09f87999205adb22b60">More...</a><br /></td></tr>
+<tr class="memdesc:a2f15e634e2ffd09f87999205adb22b60"><td class="mdescLeft">&#160;</td><td class="mdescRight">Print the specified character (only used for debug purposes)  <a href="#a2f15e634e2ffd09f87999205adb22b60">More...</a><br /></td></tr>
 <tr class="separator:a2f15e634e2ffd09f87999205adb22b60"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
@@ -140,7 +140,7 @@ Functions</h2></td></tr>
       </table>
 </div><div class="memdoc">
 
-<p>Print a hash and the specified character for debug purposes. </p>
+<p>Print the specified character (only used for debug purposes) </p>
 <hr/>
  
 </div>
@@ -169,7 +169,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="printing_8h_aa893fecf81f3b8383deb48439b24a27d_icgraph.png" border="0" usemap="#printing_8h_aa893fecf81f3b8383deb48439b24a27d_icgraph" alt=""/></div>
 <map name="printing_8h_aa893fecf81f3b8383deb48439b24a27d_icgraph" id="printing_8h_aa893fecf81f3b8383deb48439b24a27d_icgraph">
-<area shape="rect" id="node2" href="interpreter_8h.html#ad8667f20f0a1f7689ba90c07ea0460af" title="Initialization of language interpreter. " alt="" coords="255,5,333,32"/><area shape="rect" id="node4" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8" title="Print appropriate error mesage. " alt="" coords="240,259,348,285"/><area shape="rect" id="node6" href="main_8h.html#af44d438dc813084f712e286e88697bca" title="Get a new line from EEPROM or STDIO. " alt="" coords="123,309,189,336"/><area shape="rect" id="node7" href="printing_8h.html#a8788c3947bf9ede0778e41c57171473a" title="Print a program line. " alt="" coords="123,208,189,235"/><area shape="rect" id="node8" href="printing_8h.html#aa66328790b870e8b5b77352e26dc1fe9" title="Print selected message from FLASH (with new&#45;line) " alt="" coords="120,157,192,184"/><area shape="rect" id="node3" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe" title="Program entry point – the main function. " alt="" coords="524,56,575,83"/><area shape="rect" id="node5" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a" title="The interpreter main loop. " alt="" coords="396,208,476,235"/><area shape="rect" id="node9" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="255,208,333,235"/><area shape="rect" id="node10" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c" title="Perform a warm&#45;reset. " alt="" coords="249,157,339,184"/><area shape="rect" id="node11" href="io_8h.html#ac1d977279fb3e9ff3927d2e62e4737a2" title="Keyboard data decoding. " alt="" coords="251,107,337,133"/><area shape="rect" id="node12" href="io_8c.html#afea150fcd685610cb9f7672fce361e53" title="ISR: Gather bits sent from the keyboard and form packets. " alt="" coords="413,107,459,133"/></map>
+<area shape="rect" id="node2" href="interpreter_8h.html#ad8667f20f0a1f7689ba90c07ea0460af" title="Initialization of language interpreter. " alt="" coords="255,5,333,32"/><area shape="rect" id="node4" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8" title="Print appropriate error mesage. " alt="" coords="240,259,348,285"/><area shape="rect" id="node6" href="main_8h.html#af44d438dc813084f712e286e88697bca" title="Get line(s) from EEPROM, SERIAL or STDIO. " alt="" coords="123,309,189,336"/><area shape="rect" id="node7" href="printing_8h.html#a8788c3947bf9ede0778e41c57171473a" title="Print a program line. " alt="" coords="123,208,189,235"/><area shape="rect" id="node8" href="printing_8h.html#aa66328790b870e8b5b77352e26dc1fe9" title="Print selected message from FLASH (with new&#45;line) " alt="" coords="120,157,192,184"/><area shape="rect" id="node3" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe" title="Program entry point – the main function. " alt="" coords="524,56,575,83"/><area shape="rect" id="node5" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a" title="The interpreter main loop. " alt="" coords="396,208,476,235"/><area shape="rect" id="node9" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="255,208,333,235"/><area shape="rect" id="node10" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c" title="Perform a warm&#45;reset. " alt="" coords="249,157,339,184"/><area shape="rect" id="node11" href="io_8h.html#ac1d977279fb3e9ff3927d2e62e4737a2" title="Keyboard data decoding. " alt="" coords="251,107,337,133"/><area shape="rect" id="node12" href="io_8c.html#afea150fcd685610cb9f7672fce361e53" title="ISR: Gather bits sent from the keyboard and form packets. " alt="" coords="413,107,459,133"/></map>
 </div>
 </p>
 
@@ -192,6 +192,8 @@ Here is the caller graph for this function:</div>
 <p>Print a user defined string (enclosed in quotes) </p>
 <hr/>
  <dl class="section user"><dt>Note:</dt><dd>The opening delimiter of the string is pointed to by <code>text_ptr</code>. </dd></dl>
+
+<p>References <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
 
 </div>
 </div>

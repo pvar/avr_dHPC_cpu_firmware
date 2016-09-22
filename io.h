@@ -145,11 +145,26 @@ int getchar_rom (FILE *stream);
 // GLOBALS
 // ------------------------------------------------------------------------------
 
-// streams of data to and from IO devices
+/**
+ * Streams for data transfer to and from
+ * various subsystems:
+ * - \c srteam_serial: SERIAL port (9600bps)
+ * - \c srteam_eeprom: embedded EEPROM memory (2Kb)
+ * - \c srteam_physical: keyboard and graphics card
+ */
 FILE stream_physical, stream_serial, stream_eeprom;
 
-// global variables
+/**
+ * Pointer to current character in EEPROM space.
+ * This is mainly used for sweeping the available
+ * memory space, while reading or writing.
+ */
 uint16_t eeprom_ptr;
+
+/**
+ * This variable signifies whether the user
+ * has pressed the BREAK button or CTR+c.
+ */
 uint8_t break_flow;
 
 // keyboard connectivity messages (definitions in printing.c)

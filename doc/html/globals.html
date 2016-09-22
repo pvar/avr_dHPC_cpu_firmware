@@ -74,6 +74,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
     <ul class="tablist">
       <li class="current"><a href="globals.html"><span>All</span></a></li>
       <li><a href="globals_func.html"><span>Functions</span></a></li>
+      <li><a href="globals_vars.html"><span>Variables</span></a></li>
     </ul>
   </div>
   <div id="navrow4" class="tabs3">
@@ -93,6 +94,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
       <li><a href="#index_s"><span>s</span></a></li>
       <li><a href="#index_t"><span>t</span></a></li>
       <li><a href="#index_u"><span>u</span></a></li>
+      <li><a href="#index_v"><span>v</span></a></li>
       <li class="current"><a href="#index_w"><span>w</span></a></li>
     </ul>
   </div>
@@ -102,7 +104,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -118,6 +120,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>basic_init()
 : <a class="el" href="interpreter_8c.html#ad8667f20f0a1f7689ba90c07ea0460af">interpreter.c</a>
 , <a class="el" href="interpreter_8h.html#ad8667f20f0a1f7689ba90c07ea0460af">interpreter.h</a>
+</li>
+<li>break_flow
+: <a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">io.h</a>
 </li>
 <li>break_test()
 : <a class="el" href="main_8c.html#acd9b94c6ca68bfcee93930f454e37b6b">main.c</a>
@@ -139,6 +144,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_e"></a>- e -</h3><ul>
+<li>eeprom_ptr
+: <a class="el" href="io_8h.html#a751bb6be9e784f0feeacbf9e2c49e9c0">io.h</a>
+</li>
+<li>error_code
+: <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">interpreter.h</a>
+</li>
 <li>error_message()
 : <a class="el" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8">interpreter.c</a>
 </li>
@@ -168,8 +179,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 : <a class="el" href="parser_8c.html#a5f067be1dd6d96fbc8d54e689f2f5a7f">parser.c</a>
 </li>
 <li>get_line()
-: <a class="el" href="main_8c.html#af44d438dc813084f712e286e88697bca">main.c</a>
-, <a class="el" href="main_8h.html#af44d438dc813084f712e286e88697bca">main.h</a>
+: <a class="el" href="main_8h.html#af44d438dc813084f712e286e88697bca">main.h</a>
+, <a class="el" href="main_8c.html#af44d438dc813084f712e286e88697bca">main.c</a>
 </li>
 <li>get_linenumber()
 : <a class="el" href="interpreter_8c.html#a53ffad69860dc5d231424edd376470c0">interpreter.c</a>
@@ -186,12 +197,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="io_8h.html#a51032c9755914e8587e5465d3ede036c">io.h</a>
 </li>
 <li>getchar_rom()
-: <a class="el" href="io_8c.html#a8f8120e2e3a8f5840f165d4d5c1bfab9">io.c</a>
-, <a class="el" href="io_8h.html#a8f8120e2e3a8f5840f165d4d5c1bfab9">io.h</a>
+: <a class="el" href="io_8h.html#a8f8120e2e3a8f5840f165d4d5c1bfab9">io.h</a>
+, <a class="el" href="io_8c.html#a8f8120e2e3a8f5840f165d4d5c1bfab9">io.c</a>
 </li>
 <li>getchar_ser()
-: <a class="el" href="io_8c.html#a758462b5fb8ee008cc7d8b6db15d198a">io.c</a>
-, <a class="el" href="io_8h.html#a758462b5fb8ee008cc7d8b6db15d198a">io.h</a>
+: <a class="el" href="io_8h.html#a758462b5fb8ee008cc7d8b6db15d198a">io.h</a>
+, <a class="el" href="io_8c.html#a758462b5fb8ee008cc7d8b6db15d198a">io.c</a>
 </li>
 </ul>
 
@@ -202,22 +213,25 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="main_8h.html#ae363da215544e897ef8e44a64dabce48">main.h</a>
 </li>
 <li>init_io()
-: <a class="el" href="io_8c.html#a0a7500cb71e3070b5eefb6c66b4b0ede">io.c</a>
-, <a class="el" href="io_8h.html#a0a7500cb71e3070b5eefb6c66b4b0ede">io.h</a>
+: <a class="el" href="io_8h.html#a0a7500cb71e3070b5eefb6c66b4b0ede">io.h</a>
+, <a class="el" href="io_8c.html#a0a7500cb71e3070b5eefb6c66b4b0ede">io.c</a>
 </li>
 <li>init_kb()
 : <a class="el" href="io_8c.html#ac19e870c3ea785bd1c4dd30921e2b7e2">io.c</a>
 , <a class="el" href="io_8h.html#ac19e870c3ea785bd1c4dd30921e2b7e2">io.h</a>
 </li>
+<li>input_buffer
+: <a class="el" href="interpreter_8h.html#a4ce64dabdf0a9be0062e5a376515b926">interpreter.h</a>
+</li>
 <li>insert_line()
-: <a class="el" href="interpreter_8c.html#a4e69397ad10cbf2bb4e7b43db913ed51">interpreter.c</a>
+: <a class="el" href="interpreter_8c.html#af49382b389812666243c96753baca38f">interpreter.c</a>
 </li>
 <li>interpreter()
 : <a class="el" href="interpreter_8c.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter.c</a>
 , <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter.h</a>
 </li>
 <li>ISR()
-: <a class="el" href="io_8c.html#a30a0ad88a89a84c0161cf09eace108e8">io.c</a>
+: <a class="el" href="io_8c.html#afea150fcd685610cb9f7672fce361e53">io.c</a>
 </li>
 </ul>
 
@@ -231,6 +245,12 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_l"></a>- l -</h3><ul>
+<li>line_ptr
+: <a class="el" href="interpreter_8h.html#acf7b1dfb355ae3f65b6406fb56b525aa">interpreter.h</a>
+</li>
+<li>linenum
+: <a class="el" href="interpreter_8h.html#a0ea4bbfc2fd03f2467d6a1ce8869b79a">interpreter.h</a>
+</li>
 <li>locate_cursor()
 : <a class="el" href="io_8c.html#a8a8672299d2fbb329687ce8e20fdbc32">io.c</a>
 , <a class="el" href="io_8h.html#a8a8672299d2fbb329687ce8e20fdbc32">io.h</a>
@@ -263,8 +283,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="io_8h.html#addfd18c48b34a434eefe9ea8b4db82ee">io.h</a>
 </li>
 <li>parse_channel()
-: <a class="el" href="parser_8c.html#add20ad0e3bc2540ad0d16743399e2b85">parser.c</a>
-, <a class="el" href="parser_8h.html#add20ad0e3bc2540ad0d16743399e2b85">parser.h</a>
+: <a class="el" href="parser_8h.html#add20ad0e3bc2540ad0d16743399e2b85">parser.h</a>
+, <a class="el" href="parser_8c.html#add20ad0e3bc2540ad0d16743399e2b85">parser.c</a>
 </li>
 <li>parse_expr_s1()
 : <a class="el" href="parser_8c.html#a4fe92c8d54d0ce4ec516d64f098ee056">parser.c</a>
@@ -288,11 +308,11 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="main_8h.html#adf3033740afb6eb9200e539dbf783239">main.h</a>
 </li>
 <li>prep_line()
-: <a class="el" href="interpreter_8c.html#adb71e0a2fefda87b0a9472b743e2c7ff">interpreter.c</a>
+: <a class="el" href="interpreter_8c.html#ac78b765daf8c1127f58a6ae260d05454">interpreter.c</a>
 </li>
 <li>print_string()
-: <a class="el" href="printing_8c.html#abc27b0a6c811c40164e0d9b8a3abb432">printing.c</a>
-, <a class="el" href="printing_8h.html#abc27b0a6c811c40164e0d9b8a3abb432">printing.h</a>
+: <a class="el" href="printing_8h.html#abc27b0a6c811c40164e0d9b8a3abb432">printing.h</a>
+, <a class="el" href="printing_8c.html#abc27b0a6c811c40164e0d9b8a3abb432">printing.c</a>
 </li>
 <li>printline()
 : <a class="el" href="printing_8c.html#a8788c3947bf9ede0778e41c57171473a">printing.c</a>
@@ -313,9 +333,15 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>printstr()
 : <a class="el" href="printing_8c.html#aba5083de36d1bb1aad60181067520607">printing.c</a>
 </li>
+<li>prog_end_ptr
+: <a class="el" href="interpreter_8h.html#acb5ad0cb04bc14db0509f6218a9dedaa">interpreter.h</a>
+</li>
+<li>program_space
+: <a class="el" href="interpreter_8h.html#a56da2773163aaf73376eb52d468402d4">interpreter.h</a>
+</li>
 <li>push_byte()
-: <a class="el" href="main_8c.html#a55596b0bb88dc1bd3952f30685e42564">main.c</a>
-, <a class="el" href="main_8h.html#a4c04ca356b0652e389a2cce816cad172">main.h</a>
+: <a class="el" href="main_8h.html#a4c04ca356b0652e389a2cce816cad172">main.h</a>
+, <a class="el" href="main_8c.html#a55596b0bb88dc1bd3952f30685e42564">main.c</a>
 </li>
 <li>put_kb_buffer()
 : <a class="el" href="io_8c.html#a32c958c980bd758c71ce56378b408c95">io.c</a>
@@ -341,6 +367,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 
 
 <h3><a class="anchor" id="index_r"></a>- r -</h3><ul>
+<li>read_serial_eeprom()
+: <a class="el" href="main_8c.html#a98840489c057199354470e80b0779dfa">main.c</a>
+</li>
 <li>remove_line()
 : <a class="el" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe">interpreter.c</a>
 </li>
@@ -353,12 +382,24 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 , <a class="el" href="parser_8h.html#ad7ccacd8a08ca721b55ce29bf016a849">parser.h</a>
 </li>
 <li>send_to_apu()
-: <a class="el" href="io_8c.html#ab9297f8051f65a786c6b4260bc49a35b">io.c</a>
-, <a class="el" href="io_8h.html#ab9297f8051f65a786c6b4260bc49a35b">io.h</a>
+: <a class="el" href="io_8h.html#ab9297f8051f65a786c6b4260bc49a35b">io.h</a>
+, <a class="el" href="io_8c.html#ab9297f8051f65a786c6b4260bc49a35b">io.c</a>
+</li>
+<li>stack_limit
+: <a class="el" href="interpreter_8h.html#af53ecf3e64bfac64da65d8ba002f3d4e">interpreter.h</a>
+</li>
+<li>stack_ptr
+: <a class="el" href="interpreter_8h.html#a99c6d119cea1a7a603e8bf7ac96902a5">interpreter.h</a>
 </li>
 <li>str_to_num()
 : <a class="el" href="main_8c.html#a1aa2f7f0b4a7be1bb9b2325600fea4a9">main.c</a>
 , <a class="el" href="main_8h.html#a1aa2f7f0b4a7be1bb9b2325600fea4a9">main.h</a>
+</li>
+<li>stream_physical
+: <a class="el" href="io_8h.html#acebde0c2dfdc0d38d66e5aaed1de644d">io.h</a>
+</li>
+<li>sys_config
+: <a class="el" href="main_8h.html#afea8db9c05e9f1f32b5185e3ce8dcbff">main.h</a>
 </li>
 </ul>
 
@@ -367,6 +408,9 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>text_color()
 : <a class="el" href="io_8c.html#a7d70114448d3feba71392e25e0eb4d78">io.c</a>
 , <a class="el" href="io_8h.html#a7d70114448d3feba71392e25e0eb4d78">io.h</a>
+</li>
+<li>text_ptr
+: <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">interpreter.h</a>
 </li>
 </ul>
 
@@ -379,6 +423,13 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <li>uart_ansi_rst_clr()
 : <a class="el" href="io_8c.html#abbc5518f3ef5b3d0ef1b00aeffa0211e">io.c</a>
 , <a class="el" href="io_8h.html#abbc5518f3ef5b3d0ef1b00aeffa0211e">io.h</a>
+</li>
+</ul>
+
+
+<h3><a class="anchor" id="index_v"></a>- v -</h3><ul>
+<li>variables_ptr
+: <a class="el" href="interpreter_8h.html#a48db4bfdbf59612d2172da894652d739">interpreter.h</a>
 </li>
 </ul>
 

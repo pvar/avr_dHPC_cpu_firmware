@@ -181,7 +181,7 @@ uint8_t print_string (void)
 }
 
 /** ***************************************************************************
- * @brief Print a hash and the specified character for debug purposes
+ * @brief Print the specified character (only used for debug purposes)
  *****************************************************************************/
 void debug_print (uint8_t chr)
 {

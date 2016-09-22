@@ -49,7 +49,7 @@ int main (void)
 /** ***************************************************************************
  * @brief Read from SERIAL or EEPROM.
  *
- * Keeps reading until a NULL character is received.
+ * Keep reading from SERIAL or eeprom until a NULL character is received.
  *****************************************************************************/
 
 void read_serial_eeprom (FILE input_stream) {
@@ -77,6 +77,13 @@ void read_serial_eeprom (FILE input_stream) {
 
 /** ***************************************************************************
  * @brief Get line(s) from EEPROM, SERIAL or STDIO.
+ *
+ * Get one or more lines, depending on the selected input. If the system
+ * configuration (\c sys_config) dictates that new data should be received
+ * from EEPROM or SERIAL (this happens when loading programs from either
+ * source) the function will keep getting lines until a NULL character is
+ * received. If new data is to be received from STDIN (the user himself)
+ * the fuinction will only get a single line.
  *****************************************************************************/
 void get_line (void)
 {
@@ -216,7 +223,7 @@ uint8_t *find_line (void)
         while (1) {
                 if (line == prog_end_ptr)
                         return line;
-                if ( ((uint16_t *)line)[0] >= linenum)
+                if ( ((uint16_t *)line)[0] >= line_number)
                         return line;
                 // add line's lenght (this value is stored exactly after line number0
                 line += line[ sizeof (LINE_NUMBER) ];

@@ -21,7 +21,7 @@
 
 uint8_t gotoline (void)
 {
-    linenum = parse_expr_s1();
+    line_number = parse_expr_s1();
     if (error_code || *text_ptr != LF) {
         error_code = 0x4;
         return POST_CMD_WARM_RESET;
@@ -113,7 +113,7 @@ uint8_t loopfor (void)
 uint8_t gosub (void)
 {
         error_code = 0;
-        linenum = parse_expr_s1();
+        line_number = parse_expr_s1();
         if (!error_code && *text_ptr == LF) {
                 struct stack_gosub_frame *f;
                 if (stack_ptr + sizeof (struct stack_gosub_frame) < stack_limit) {

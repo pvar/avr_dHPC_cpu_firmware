@@ -172,7 +172,7 @@ int8_t poke (void)
 
 int8_t list (void)
 {
-        linenum = get_linenumber();
+        line_number = get_line_numberber();
 
         if (text_ptr[0] != LF) {
                 error_code = 0x4;

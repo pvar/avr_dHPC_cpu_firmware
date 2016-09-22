@@ -76,7 +76,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -154,41 +154,45 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 <div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        CMD_ECHAIN,</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;        CMD_ESAVE,</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;        CMD_ELOAD,</div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        CMD_FILES,</div>
-<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        CMD_CFORMAT,</div>
-<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        CMD_CCHAIN,</div>
-<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        CMD_CSAVE,</div>
-<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        CMD_CLOAD,</div>
-<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        CMD_PINDIR,</div>
-<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        CMD_PINDWRITE,</div>
-<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        CMD_UNKNOWN</div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;};</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;<span class="keyword">enum</span> {</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;        FN_PEEK = 0,</div>
-<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        FN_ABS,</div>
-<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;        FN_RND,</div>
-<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        FN_PINDREAD,</div>
-<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        FN_PINAREAD,</div>
-<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        FN_UNKNOWN</div>
-<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;};</div>
-<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;<span class="keyword">enum</span> OPERATORS {</div>
-<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        RELOP_GE = 0,</div>
-<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;        RELOP_NE,</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;        RELOP_GT,</div>
-<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;        RELOP_EQ,</div>
-<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        RELOP_LE,</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        RELOP_LT,</div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        RELOP_NE_BANG,</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        RELOP_UNKNOWN</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;<span class="preprocessor">#endif</span></div>
-<div class="ttc" id="parser_8h_html_ad7ccacd8a08ca721b55ce29bf016a849"><div class="ttname"><a href="parser_8h.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable</a></div><div class="ttdeci">int8_t scantable(const uint8_t *table)</div><div class="ttdoc">Search for any string in specified table. </div><div class="ttdef"><b>Definition:</b> parser.c:146</div></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;        CMD_SSAVE,</div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        CMD_SLOAD,</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;        CMD_FILES,</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160;        CMD_CFORMAT,</div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;        CMD_CCHAIN,</div>
+<div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        CMD_CSAVE,</div>
+<div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        CMD_CLOAD,</div>
+<div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        CMD_PINDIR,</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        CMD_PINDWRITE,</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;        CMD_UNKNOWN</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;};</div>
+<div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;</div>
+<div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;<span class="keyword">enum</span> {</div>
+<div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;        FN_PEEK = 0,</div>
+<div class="line"><a name="l00089"></a><span class="lineno">   89</span>&#160;        FN_ABS,</div>
+<div class="line"><a name="l00090"></a><span class="lineno">   90</span>&#160;        FN_RND,</div>
+<div class="line"><a name="l00091"></a><span class="lineno">   91</span>&#160;        FN_PINDREAD,</div>
+<div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;        FN_PINAREAD,</div>
+<div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;        FN_UNKNOWN</div>
+<div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;};</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;</div>
+<div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;<span class="keyword">enum</span> OPERATORS {</div>
+<div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        RELOP_GE = 0,</div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        RELOP_NE,</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        RELOP_GT,</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        RELOP_EQ,</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;        RELOP_LE,</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;        RELOP_LT,</div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;        RELOP_NE_BANG,</div>
+<div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;        RELOP_UNKNOWN</div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;};</div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;</div>
+<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="ttc" id="parser_8h_html_ad7ccacd8a08ca721b55ce29bf016a849"><div class="ttname"><a href="parser_8h.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable</a></div><div class="ttdeci">int8_t scantable(const uint8_t *table)</div><div class="ttdoc">Search for any string in specified table. </div><div class="ttdef"><b>Definition:</b> parser.c:148</div></div>
 <div class="ttc" id="interpreter_8h_html"><div class="ttname"><a href="interpreter_8h.html">interpreter.h</a></div><div class="ttdoc">System specifications, global variables and function prototypes. </div></div>
-<div class="ttc" id="parser_8h_html_a124d7501c04fc4ee446a9c2b8fc94d53"><div class="ttname"><a href="parser_8h.html#a124d7501c04fc4ee446a9c2b8fc94d53">parse_notes</a></div><div class="ttdeci">void parse_notes(void)</div><div class="ttdoc">Search for notes. </div><div class="ttdef"><b>Definition:</b> parser.c:240</div></div>
+<div class="ttc" id="parser_8h_html_a124d7501c04fc4ee446a9c2b8fc94d53"><div class="ttname"><a href="parser_8h.html#a124d7501c04fc4ee446a9c2b8fc94d53">parse_notes</a></div><div class="ttdeci">void parse_notes(void)</div><div class="ttdoc">Search for notes. </div><div class="ttdef"><b>Definition:</b> parser.c:242</div></div>
 <div class="ttc" id="main_8h_html"><div class="ttname"><a href="main_8h.html">main.h</a></div><div class="ttdoc">All the library inclusions for the mother of all header files. </div></div>
-<div class="ttc" id="parser_8h_html_add20ad0e3bc2540ad0d16743399e2b85"><div class="ttname"><a href="parser_8h.html#add20ad0e3bc2540ad0d16743399e2b85">parse_channel</a></div><div class="ttdeci">void parse_channel(void)</div><div class="ttdoc">Search for channel number. </div><div class="ttdef"><b>Definition:</b> parser.c:221</div></div>
-<div class="ttc" id="parser_8h_html_a4fe92c8d54d0ce4ec516d64f098ee056"><div class="ttname"><a href="parser_8h.html#a4fe92c8d54d0ce4ec516d64f098ee056">parse_expr_s1</a></div><div class="ttdeci">int16_t parse_expr_s1(void)</div><div class="ttdoc">Search for relational operators. </div><div class="ttdef"><b>Definition:</b> parser.c:274</div></div>
+<div class="ttc" id="parser_8h_html_add20ad0e3bc2540ad0d16743399e2b85"><div class="ttname"><a href="parser_8h.html#add20ad0e3bc2540ad0d16743399e2b85">parse_channel</a></div><div class="ttdeci">void parse_channel(void)</div><div class="ttdoc">Search for channel number. </div><div class="ttdef"><b>Definition:</b> parser.c:223</div></div>
+<div class="ttc" id="parser_8h_html_a4fe92c8d54d0ce4ec516d64f098ee056"><div class="ttname"><a href="parser_8h.html#a4fe92c8d54d0ce4ec516d64f098ee056">parse_expr_s1</a></div><div class="ttdeci">int16_t parse_expr_s1(void)</div><div class="ttdoc">Search for relational operators. </div><div class="ttdef"><b>Definition:</b> parser.c:276</div></div>
 </div><!-- fragment --></div><!-- contents -->
 <!-- HTML footer for doxygen 1.8.8-->
 <!-- start footer part -->

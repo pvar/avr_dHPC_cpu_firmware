@@ -75,7 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -191,7 +191,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="io_8c_a0d79c14d617757baa2806dc42d26f11a_icgraph.png" border="0" usemap="#io_8c_a0d79c14d617757baa2806dc42d26f11a_icgraph" alt=""/></div>
 <map name="io_8c_a0d79c14d617757baa2806dc42d26f11a_icgraph" id="io_8c_a0d79c14d617757baa2806dc42d26f11a_icgraph">
-<area shape="rect" id="node2" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="135,5,214,32"/><area shape="rect" id="node4" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe" title="Program entry point – the main function. " alt="" coords="407,81,457,108"/><area shape="rect" id="node5" href="main_8h.html#af44d438dc813084f712e286e88697bca" title="Get a new line from EEPROM or STDIO. " alt="" coords="141,56,208,83"/><area shape="rect" id="node6" href="io_8h.html#ac1d977279fb3e9ff3927d2e62e4737a2" title="Keyboard data decoding. " alt="" coords="273,183,359,209"/><area shape="rect" id="node8" href="io_8h.html#a32c958c980bd758c71ce56378b408c95" title="Put incoming data to keyboard&#45;buffer. " alt="" coords="124,208,225,235"/><area shape="rect" id="node3" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a" title="The interpreter main loop. " alt="" coords="276,56,356,83"/><area shape="rect" id="node7" href="io_8c.html#afea150fcd685610cb9f7672fce361e53" title="ISR: Gather bits sent from the keyboard and form packets. " alt="" coords="409,183,455,209"/></map>
+<area shape="rect" id="node2" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="135,5,214,32"/><area shape="rect" id="node4" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe" title="Program entry point – the main function. " alt="" coords="407,81,457,108"/><area shape="rect" id="node5" href="main_8h.html#af44d438dc813084f712e286e88697bca" title="Get line(s) from EEPROM, SERIAL or STDIO. " alt="" coords="141,56,208,83"/><area shape="rect" id="node6" href="io_8h.html#ac1d977279fb3e9ff3927d2e62e4737a2" title="Keyboard data decoding. " alt="" coords="273,183,359,209"/><area shape="rect" id="node8" href="io_8h.html#a32c958c980bd758c71ce56378b408c95" title="Put incoming data to keyboard&#45;buffer. " alt="" coords="124,208,225,235"/><area shape="rect" id="node3" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a" title="The interpreter main loop. " alt="" coords="276,56,356,83"/><area shape="rect" id="node7" href="io_8c.html#afea150fcd685610cb9f7672fce361e53" title="ISR: Gather bits sent from the keyboard and form packets. " alt="" coords="409,183,455,209"/></map>
 </div>
 </p>
 
@@ -246,6 +246,8 @@ Here is the call graph for this function:</div>
 <hr/>
 <p> This function reads a character from EEPROM. It is used by the EEPROM stream. </p>
 
+<p>References <a class="el" href="io_8h.html#a751bb6be9e784f0feeacbf9e2c49e9c0">eeprom_ptr</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a758462b5fb8ee008cc7d8b6db15d198a"></a>
@@ -285,7 +287,7 @@ Here is the call graph for this function:</div>
 <hr/>
 <p> This function configures the pins of the CPU (actually the microcontroller). It prepares the ADC, initializes the keyboard and prints some messages. </p>
 
-<p>References <a class="el" href="io_8c.html#ac19e870c3ea785bd1c4dd30921e2b7e2">init_kb()</a>, and <a class="el" href="io_8c.html#abbc5518f3ef5b3d0ef1b00aeffa0211e">uart_ansi_rst_clr()</a>.</p>
+<p>References <a class="el" href="io_8c.html#ac19e870c3ea785bd1c4dd30921e2b7e2">init_kb()</a>, <a class="el" href="io_8h.html#acebde0c2dfdc0d38d66e5aaed1de644d">stream_physical</a>, and <a class="el" href="io_8c.html#abbc5518f3ef5b3d0ef1b00aeffa0211e">uart_ansi_rst_clr()</a>.</p>
 
 <p>Referenced by <a class="el" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe">main()</a>.</p>
 
@@ -327,6 +329,8 @@ Here is the caller graph for this function:</div>
 <hr/>
 <p> This function configures the pins used for communicating with the keyboard and enables an interrupt for receiving the incoming data. </p>
 
+<p>References <a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">break_flow</a>.</p>
+
 <p>Referenced by <a class="el" href="io_8h.html#a0a7500cb71e3070b5eefb6c66b4b0ede">init_io()</a>.</p>
 
 <p><div class="dynheader">
@@ -357,6 +361,8 @@ Here is the caller graph for this function:</div>
 <p>ISR: Check if user pressed break button. </p>
 <hr/>
  
+<p>References <a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">break_flow</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="aec43762dc86e029b395d4e5819192c2d"></a>
@@ -426,7 +432,7 @@ Here is the call graph for this function:</div>
 <hr/>
 <p> This functions decodes the data transmitted by the keyboard and updates some variables which hold he state of key modifiers (CAPSLOCK, NUMLOCK, SHIFT and CTRL). The array to_ascii is only used for decoding the scancodes of normal (printable) characters. The decoded data are placed in a special buffer, with the help of <a class="el" href="io_8c.html#a32c958c980bd758c71ce56378b408c95" title="Put incoming data to keyboard-buffer. ">put_kb_buffer()</a> function. </p>
 
-<p>References <a class="el" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a">do_beep()</a>, <a class="el" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f">printmsg()</a>, and <a class="el" href="io_8c.html#a32c958c980bd758c71ce56378b408c95">put_kb_buffer()</a>.</p>
+<p>References <a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">break_flow</a>, <a class="el" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a">do_beep()</a>, <a class="el" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f">printmsg()</a>, and <a class="el" href="io_8c.html#a32c958c980bd758c71ce56378b408c95">put_kb_buffer()</a>.</p>
 
 <p>Referenced by <a class="el" href="io_8c.html#afea150fcd685610cb9f7672fce361e53">ISR()</a>.</p>
 
@@ -646,6 +652,8 @@ Here is the caller graph for this function:</div>
 <p>Put character in EEPROM. </p>
 <hr/>
 <p> This function writes a character in EEPROM. It is used by the EEPROM stream. </p>
+
+<p>References <a class="el" href="io_8h.html#a751bb6be9e784f0feeacbf9e2c49e9c0">eeprom_ptr</a>.</p>
 
 </div>
 </div>

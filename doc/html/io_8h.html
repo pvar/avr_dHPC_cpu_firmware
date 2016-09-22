@@ -75,7 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -87,7 +87,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">io.h File Reference</div>  </div>
 </div><!--header-->
@@ -154,6 +155,15 @@ Functions</h2></td></tr>
 <tr class="memitem:a8f8120e2e3a8f5840f165d4d5c1bfab9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8h.html#a8f8120e2e3a8f5840f165d4d5c1bfab9">getchar_rom</a> (FILE *stream)</td></tr>
 <tr class="memdesc:a8f8120e2e3a8f5840f165d4d5c1bfab9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get character in EEPROM.  <a href="#a8f8120e2e3a8f5840f165d4d5c1bfab9">More...</a><br /></td></tr>
 <tr class="separator:a8f8120e2e3a8f5840f165d4d5c1bfab9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:acebde0c2dfdc0d38d66e5aaed1de644d"><td class="memItemLeft" align="right" valign="top">FILE&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8h.html#acebde0c2dfdc0d38d66e5aaed1de644d">stream_physical</a></td></tr>
+<tr class="separator:acebde0c2dfdc0d38d66e5aaed1de644d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a751bb6be9e784f0feeacbf9e2c49e9c0"><td class="memItemLeft" align="right" valign="top">uint16_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8h.html#a751bb6be9e784f0feeacbf9e2c49e9c0">eeprom_ptr</a></td></tr>
+<tr class="separator:a751bb6be9e784f0feeacbf9e2c49e9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c6ea8f713d58eb3b0577ff890dc1d52"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">break_flow</a></td></tr>
+<tr class="separator:a2c6ea8f713d58eb3b0577ff890dc1d52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Peripheral communication commands and the expected prototypes. </p>
@@ -184,7 +194,7 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="io_8h_a0d79c14d617757baa2806dc42d26f11a_icgraph.png" border="0" usemap="#io_8h_a0d79c14d617757baa2806dc42d26f11a_icgraph" alt=""/></div>
 <map name="io_8h_a0d79c14d617757baa2806dc42d26f11a_icgraph" id="io_8h_a0d79c14d617757baa2806dc42d26f11a_icgraph">
-<area shape="rect" id="node2" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="135,5,214,32"/><area shape="rect" id="node4" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe" title="Program entry point – the main function. " alt="" coords="407,81,457,108"/><area shape="rect" id="node5" href="main_8h.html#af44d438dc813084f712e286e88697bca" title="Get a new line from EEPROM or STDIO. " alt="" coords="141,56,208,83"/><area shape="rect" id="node6" href="io_8h.html#ac1d977279fb3e9ff3927d2e62e4737a2" title="Keyboard data decoding. " alt="" coords="273,183,359,209"/><area shape="rect" id="node8" href="io_8h.html#a32c958c980bd758c71ce56378b408c95" title="Put incoming data to keyboard&#45;buffer. " alt="" coords="124,208,225,235"/><area shape="rect" id="node3" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a" title="The interpreter main loop. " alt="" coords="276,56,356,83"/><area shape="rect" id="node7" href="io_8c.html#afea150fcd685610cb9f7672fce361e53" title="ISR: Gather bits sent from the keyboard and form packets. " alt="" coords="409,183,455,209"/></map>
+<area shape="rect" id="node2" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="135,5,214,32"/><area shape="rect" id="node4" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe" title="Program entry point – the main function. " alt="" coords="407,81,457,108"/><area shape="rect" id="node5" href="main_8h.html#af44d438dc813084f712e286e88697bca" title="Get line(s) from EEPROM, SERIAL or STDIO. " alt="" coords="141,56,208,83"/><area shape="rect" id="node6" href="io_8h.html#ac1d977279fb3e9ff3927d2e62e4737a2" title="Keyboard data decoding. " alt="" coords="273,183,359,209"/><area shape="rect" id="node8" href="io_8h.html#a32c958c980bd758c71ce56378b408c95" title="Put incoming data to keyboard&#45;buffer. " alt="" coords="124,208,225,235"/><area shape="rect" id="node3" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a" title="The interpreter main loop. " alt="" coords="276,56,356,83"/><area shape="rect" id="node7" href="io_8c.html#afea150fcd685610cb9f7672fce361e53" title="ISR: Gather bits sent from the keyboard and form packets. " alt="" coords="409,183,455,209"/></map>
 </div>
 </p>
 
@@ -239,6 +249,8 @@ Here is the call graph for this function:</div>
 <hr/>
 <p> This function reads a character from EEPROM. It is used by the EEPROM stream. </p>
 
+<p>References <a class="el" href="io_8h.html#a751bb6be9e784f0feeacbf9e2c49e9c0">eeprom_ptr</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a758462b5fb8ee008cc7d8b6db15d198a"></a>
@@ -278,7 +290,7 @@ Here is the call graph for this function:</div>
 <hr/>
 <p> This function configures the pins of the CPU (actually the microcontroller). It prepares the ADC, initializes the keyboard and prints some messages. </p>
 
-<p>References <a class="el" href="io_8c.html#ac19e870c3ea785bd1c4dd30921e2b7e2">init_kb()</a>, and <a class="el" href="io_8c.html#abbc5518f3ef5b3d0ef1b00aeffa0211e">uart_ansi_rst_clr()</a>.</p>
+<p>References <a class="el" href="io_8c.html#ac19e870c3ea785bd1c4dd30921e2b7e2">init_kb()</a>, <a class="el" href="io_8h.html#acebde0c2dfdc0d38d66e5aaed1de644d">stream_physical</a>, and <a class="el" href="io_8c.html#abbc5518f3ef5b3d0ef1b00aeffa0211e">uart_ansi_rst_clr()</a>.</p>
 
 <p>Referenced by <a class="el" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe">main()</a>.</p>
 
@@ -320,6 +332,8 @@ Here is the caller graph for this function:</div>
 <hr/>
 <p> This function configures the pins used for communicating with the keyboard and enables an interrupt for receiving the incoming data. </p>
 
+<p>References <a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">break_flow</a>.</p>
+
 <p>Referenced by <a class="el" href="io_8h.html#a0a7500cb71e3070b5eefb6c66b4b0ede">init_io()</a>.</p>
 
 <p><div class="dynheader">
@@ -351,7 +365,7 @@ Here is the caller graph for this function:</div>
 <hr/>
 <p> This functions decodes the data transmitted by the keyboard and updates some variables which hold he state of key modifiers (CAPSLOCK, NUMLOCK, SHIFT and CTRL). The array to_ascii is only used for decoding the scancodes of normal (printable) characters. The decoded data are placed in a special buffer, with the help of <a class="el" href="io_8c.html#a32c958c980bd758c71ce56378b408c95" title="Put incoming data to keyboard-buffer. ">put_kb_buffer()</a> function. </p>
 
-<p>References <a class="el" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a">do_beep()</a>, <a class="el" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f">printmsg()</a>, and <a class="el" href="io_8c.html#a32c958c980bd758c71ce56378b408c95">put_kb_buffer()</a>.</p>
+<p>References <a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">break_flow</a>, <a class="el" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a">do_beep()</a>, <a class="el" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f">printmsg()</a>, and <a class="el" href="io_8c.html#a32c958c980bd758c71ce56378b408c95">put_kb_buffer()</a>.</p>
 
 <p>Referenced by <a class="el" href="io_8c.html#afea150fcd685610cb9f7672fce361e53">ISR()</a>.</p>
 
@@ -572,6 +586,8 @@ Here is the caller graph for this function:</div>
 <hr/>
 <p> This function writes a character in EEPROM. It is used by the EEPROM stream. </p>
 
+<p>References <a class="el" href="io_8h.html#a751bb6be9e784f0feeacbf9e2c49e9c0">eeprom_ptr</a>.</p>
+
 </div>
 </div>
 <a class="anchor" id="a0aa23286b329c281aa69acbc663b5a97"></a>
@@ -743,6 +759,56 @@ Here is the caller graph for this function:</div>
 <area shape="rect" id="node2" href="io_8h.html#a0a7500cb71e3070b5eefb6c66b4b0ede" title="Microcontroiller peripheral initialization. " alt="" coords="172,5,228,32"/><area shape="rect" id="node3" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe" title="Program entry point – the main function. " alt="" coords="276,5,327,32"/></map>
 </div>
 </p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="a2c6ea8f713d58eb3b0577ff890dc1d52"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t break_flow</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This variable signifies whether the user has pressed the BREAK button or CTR+c. </p>
+
+<p>Referenced by <a class="el" href="main_8h.html#acd9b94c6ca68bfcee93930f454e37b6b">break_test()</a>, <a class="el" href="io_8h.html#ac19e870c3ea785bd1c4dd30921e2b7e2">init_kb()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, <a class="el" href="io_8c.html#a30a0ad88a89a84c0161cf09eace108e8">ISR()</a>, and <a class="el" href="io_8h.html#ac1d977279fb3e9ff3927d2e62e4737a2">kb_decode()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a751bb6be9e784f0feeacbf9e2c49e9c0"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint16_t eeprom_ptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to current character in EEPROM space. This is mainly used for sweeping the available memory space, while reading or writing. </p>
+
+<p>Referenced by <a class="el" href="io_8h.html#a8f8120e2e3a8f5840f165d4d5c1bfab9">getchar_rom()</a>, and <a class="el" href="io_8h.html#a2be306ab6716a2bfa3d6dfc08c1a9afd">putchar_rom()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acebde0c2dfdc0d38d66e5aaed1de644d"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">FILE stream_physical</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Streams for data transfer to and from various subsystems:</p><ul>
+<li><code>srteam_serial:</code> SERIAL port (9600bps)</li>
+<li><code>srteam_eeprom:</code> embedded EEPROM memory (2Kb)</li>
+<li><code>srteam_physical:</code> keyboard and graphics card </li>
+</ul>
+
+<p>Referenced by <a class="el" href="io_8h.html#a0a7500cb71e3070b5eefb6c66b4b0ede">init_io()</a>.</p>
 
 </div>
 </div>

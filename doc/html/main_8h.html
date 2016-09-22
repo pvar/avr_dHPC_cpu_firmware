@@ -75,7 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -87,7 +87,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">main.h File Reference</div>  </div>
 </div><!--header-->
@@ -118,7 +119,7 @@ Functions</h2></td></tr>
 <tr class="memitem:a4fb1091799fbbfe6111481081e0b8e8d"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a4fb1091799fbbfe6111481081e0b8e8d">find_line</a> (void)</td></tr>
 <tr class="separator:a4fb1091799fbbfe6111481081e0b8e8d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af44d438dc813084f712e286e88697bca"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#af44d438dc813084f712e286e88697bca">get_line</a> (void)</td></tr>
-<tr class="memdesc:af44d438dc813084f712e286e88697bca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get a new line from EEPROM or STDIO.  <a href="#af44d438dc813084f712e286e88697bca">More...</a><br /></td></tr>
+<tr class="memdesc:af44d438dc813084f712e286e88697bca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get line(s) from EEPROM, SERIAL or STDIO.  <a href="#af44d438dc813084f712e286e88697bca">More...</a><br /></td></tr>
 <tr class="separator:af44d438dc813084f712e286e88697bca"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd9b94c6ca68bfcee93930f454e37b6b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#acd9b94c6ca68bfcee93930f454e37b6b">break_test</a> (void)</td></tr>
 <tr class="memdesc:acd9b94c6ca68bfcee93930f454e37b6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if BREAK button was pressed.  <a href="#acd9b94c6ca68bfcee93930f454e37b6b">More...</a><br /></td></tr>
@@ -126,6 +127,11 @@ Functions</h2></td></tr>
 <tr class="memitem:a77995f5f32cf02e2670d84114fa3c6b1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#a77995f5f32cf02e2670d84114fa3c6b1">fx_delay_ms</a> (uint16_t ms)</td></tr>
 <tr class="memdesc:a77995f5f32cf02e2670d84114fa3c6b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Busy-delay functions.  <a href="#a77995f5f32cf02e2670d84114fa3c6b1">More...</a><br /></td></tr>
 <tr class="separator:a77995f5f32cf02e2670d84114fa3c6b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:afea8db9c05e9f1f32b5185e3ce8dcbff"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="main_8h.html#afea8db9c05e9f1f32b5185e3ce8dcbff">sys_config</a></td></tr>
+<tr class="separator:afea8db9c05e9f1f32b5185e3ce8dcbff"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>All the library inclusions for the mother of all header files. </p>
@@ -148,6 +154,8 @@ Functions</h2></td></tr>
 <p>Check if BREAK button was pressed. </p>
 <hr/>
  
+<p>References <a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">break_flow</a>.</p>
+
 <p>Referenced by <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>.</p>
 
 <p><div class="dynheader">
@@ -176,6 +184,8 @@ Here is the caller graph for this function:</div>
 </div><div class="memdoc">
 <hr/>
  
+<p>References <a class="el" href="interpreter_8h.html#a0ea4bbfc2fd03f2467d6a1ce8869b79a">linenum</a>, <a class="el" href="interpreter_8h.html#acb5ad0cb04bc14db0509f6218a9dedaa">prog_end_ptr</a>, and <a class="el" href="interpreter_8h.html#a56da2773163aaf73376eb52d468402d4">program_space</a>.</p>
+
 <p>Referenced by <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>.</p>
 
 <p><div class="dynheader">
@@ -233,10 +243,11 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p>Get a new line from EEPROM or STDIO. </p>
+<p>Get line(s) from EEPROM, SERIAL or STDIO. </p>
 <hr/>
- 
-<p>References <a class="el" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a">do_beep()</a>, and <a class="el" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d">newline()</a>.</p>
+<p> Get one or more lines, depending on the selected input. If the system configuration (<code>sys_config</code>) dictates that new data should be received from EEPROM or SERIAL (this happens when loading programs from either source) the function will keep getting lines until a NULL character is received. If new data is to be received from STDIN (the user himself) the fuinction will only get a single line. </p>
+
+<p>References <a class="el" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a">do_beep()</a>, <a class="el" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d">newline()</a>, <a class="el" href="interpreter_8h.html#acb5ad0cb04bc14db0509f6218a9dedaa">prog_end_ptr</a>, <a class="el" href="main_8c.html#a98840489c057199354470e80b0779dfa">read_serial_eeprom()</a>, <a class="el" href="main_8h.html#afea8db9c05e9f1f32b5185e3ce8dcbff">sys_config</a>, <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>, and <a class="el" href="interpreter_8h.html#a48db4bfdbf59612d2172da894652d739">variables_ptr</a>.</p>
 
 <p>Referenced by <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>.</p>
 
@@ -245,7 +256,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8h_af44d438dc813084f712e286e88697bca_cgraph.png" border="0" usemap="#main_8h_af44d438dc813084f712e286e88697bca_cgraph" alt=""/></div>
 <map name="main_8h_af44d438dc813084f712e286e88697bca_cgraph" id="main_8h_af44d438dc813084f712e286e88697bca_cgraph">
-<area shape="rect" id="node2" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a" title="BEEP or flash the LED. " alt="" coords="120,5,191,32"/><area shape="rect" id="node3" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d" title="Print a NEW LINE character. " alt="" coords="122,56,189,83"/></map>
+<area shape="rect" id="node2" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a" title="BEEP or flash the LED. " alt="" coords="152,5,223,32"/><area shape="rect" id="node3" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d" title="Print a NEW LINE character. " alt="" coords="154,56,221,83"/><area shape="rect" id="node4" href="main_8c.html#a98840489c057199354470e80b0779dfa" title="Read from SERIAL or EEPROM. " alt="" coords="120,107,255,133"/></map>
 </div>
 </p>
 
@@ -277,6 +288,8 @@ Here is the caller graph for this function:</div>
 <p>Normalize user input. Ignore spaces and transform code (not strings) to upper case. </p>
 <hr/>
  
+<p>References <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
+
 <p>Referenced by <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="interpreter_8h.html#a53ffad69860dc5d231424edd376470c0">get_linenumber()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, <a class="el" href="parser_8c.html#ae642e2964ae1b7ad02e9f31475d6167b">parse_expr_s3()</a>, <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>, and <a class="el" href="parser_8h.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable()</a>.</p>
 
 <p><div class="dynheader">
@@ -314,7 +327,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="main_8h_a840291bc02cba5474a4cb46a9b9566fe_cgraph.png" border="0" usemap="#main_8h_a840291bc02cba5474a4cb46a9b9566fe_cgraph" alt=""/></div>
 <map name="main_8h_a840291bc02cba5474a4cb46a9b9566fe_cgraph" id="main_8h_a840291bc02cba5474a4cb46a9b9566fe_cgraph">
-<area shape="rect" id="node2" href="interpreter_8c.html#ad8667f20f0a1f7689ba90c07ea0460af" title="Initialization of language interpreter. " alt="" coords="253,208,330,235"/><area shape="rect" id="node4" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f" title="Print selected message from FLASH (with new&#45;line) " alt="" coords="416,360,488,387"/><area shape="rect" id="node9" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a" title="BEEP or flash the LED. " alt="" coords="417,512,487,539"/><area shape="rect" id="node10" href="io_8c.html#a0a7500cb71e3070b5eefb6c66b4b0ede" title="Microcontroiller peripheral initialization. " alt="" coords="116,917,172,944"/><area shape="rect" id="node13" href="interpreter_8c.html#a08a98a5503e4f3e1a5a19222d425275a" title="The interpreter main loop. " alt="" coords="104,461,184,488"/><area shape="rect" id="node15" href="io_8c.html#addfd18c48b34a434eefe9ea8b4db82ee" title="Change on&#45;screen background colour. " alt="" coords="407,5,497,32"/><area shape="rect" id="node17" href="io_8c.html#a7d70114448d3feba71392e25e0eb4d78" title="Change on&#45;screen text colour. " alt="" coords="413,56,491,83"/><area shape="rect" id="node3" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d" title="Print a NEW LINE character. " alt="" coords="575,259,642,285"/><area shape="rect" id="node6" href="printing_8c.html#ad62df87f7908fc3dd518b4f9f2cba2d2" title="Print specified integer number. " alt="" coords="573,157,645,184"/><area shape="rect" id="node5" href="printing_8c.html#aac89e2103a98020e1f0cf85e5d1df175" title="Print selected message from FLASH (without new&#45;line) " alt="" coords="553,335,664,361"/><area shape="rect" id="node7" href="main_8c.html#a55596b0bb88dc1bd3952f30685e42564" title="Push a byte in the STACK. " alt="" coords="717,132,799,159"/><area shape="rect" id="node8" href="main_8c.html#adf3033740afb6eb9200e539dbf783239" title="Pop a byte from the STACK. " alt="" coords="721,183,795,209"/><area shape="rect" id="node11" href="io_8c.html#ac19e870c3ea785bd1c4dd30921e2b7e2" title="Setup communication with keyboard. " alt="" coords="261,917,321,944"/><area shape="rect" id="node12" href="io_8c.html#abbc5518f3ef5b3d0ef1b00aeffa0211e" title="Reset terminal attached to serial port. " alt="" coords="232,968,351,995"/><area shape="rect" id="node14" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8" title="Print appropriate error mesage. " alt="" coords="237,157,345,184"/><area shape="rect" id="node18" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="252,613,331,640"/><area shape="rect" id="node21" href="main_8c.html#ae363da215544e897ef8e44a64dabce48" title="Normalize user input. Ignore spaces and transform code (not strings) to upper case. " alt="" coords="712,740,804,767"/><area shape="rect" id="node24" href="main_8c.html#a4fb1091799fbbfe6111481081e0b8e8d" title="find_line" alt="" coords="256,664,327,691"/><area shape="rect" id="node25" href="main_8c.html#af44d438dc813084f712e286e88697bca" title="Get a new line from EEPROM or STDIO. " alt="" coords="258,563,325,589"/><area shape="rect" id="node26" href="interpreter_8c.html#a53ffad69860dc5d231424edd376470c0" title="Get current line number. " alt="" coords="553,816,664,843"/><area shape="rect" id="node27" href="interpreter_8c.html#a4e69397ad10cbf2bb4e7b43db913ed51" title="Insert new line in the program. " alt="" coords="251,309,332,336"/><area shape="rect" id="node28" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961" title="Move line at the end of program memory. " alt="" coords="251,360,332,387"/><area shape="rect" id="node29" href="interpreter_8c.html#adb71e0a2fefda87b0a9472b743e2c7ff" title="Prepare line for merging with the program. " alt="" coords="254,411,329,437"/><area shape="rect" id="node30" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe" title="Remove line from program. " alt="" coords="245,461,337,488"/><area shape="rect" id="node31" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c" title="Perform a warm&#45;reset. " alt="" coords="246,259,337,285"/><area shape="rect" id="node16" href="printing_8c.html#a8788c3947bf9ede0778e41c57171473a" title="Print a program line. " alt="" coords="419,107,485,133"/><area shape="rect" id="node19" href="main_8c.html#acd9b94c6ca68bfcee93930f454e37b6b" title="Check if BREAK button was pressed. " alt="" coords="411,664,493,691"/><area shape="rect" id="node20" href="main_8c.html#a77995f5f32cf02e2670d84114fa3c6b1" title="Busy&#45;delay functions. " alt="" coords="404,563,500,589"/><area shape="rect" id="node22" href="parser_8c.html#a4fe92c8d54d0ce4ec516d64f098ee056" title="Search for relational operators. " alt="" coords="399,461,505,488"/><area shape="rect" id="node23" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849" title="Search for any string in specified table. " alt="" coords="569,613,648,640"/></map>
+<area shape="rect" id="node2" href="interpreter_8c.html#ad8667f20f0a1f7689ba90c07ea0460af" title="Initialization of language interpreter. " alt="" coords="253,309,330,336"/><area shape="rect" id="node4" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f" title="Print selected message from FLASH (with new&#45;line) " alt="" coords="430,411,502,437"/><area shape="rect" id="node9" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a" title="BEEP or flash the LED. " alt="" coords="431,715,501,741"/><area shape="rect" id="node10" href="io_8c.html#a0a7500cb71e3070b5eefb6c66b4b0ede" title="Microcontroiller peripheral initialization. " alt="" coords="116,917,172,944"/><area shape="rect" id="node13" href="interpreter_8c.html#a08a98a5503e4f3e1a5a19222d425275a" title="The interpreter main loop. " alt="" coords="104,537,184,564"/><area shape="rect" id="node15" href="io_8c.html#addfd18c48b34a434eefe9ea8b4db82ee" title="Change on&#45;screen background colour. " alt="" coords="421,5,511,32"/><area shape="rect" id="node17" href="io_8c.html#a7d70114448d3feba71392e25e0eb4d78" title="Change on&#45;screen text colour. " alt="" coords="427,107,505,133"/><area shape="rect" id="node3" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d" title="Print a NEW LINE character. " alt="" coords="603,360,670,387"/><area shape="rect" id="node6" href="printing_8c.html#ad62df87f7908fc3dd518b4f9f2cba2d2" title="Print specified integer number. " alt="" coords="601,247,673,273"/><area shape="rect" id="node5" href="printing_8c.html#aac89e2103a98020e1f0cf85e5d1df175" title="Print selected message from FLASH (without new&#45;line) " alt="" coords="581,171,692,197"/><area shape="rect" id="node7" href="main_8c.html#a55596b0bb88dc1bd3952f30685e42564" title="Push a byte in the STACK. " alt="" coords="745,272,827,299"/><area shape="rect" id="node8" href="main_8c.html#adf3033740afb6eb9200e539dbf783239" title="Pop a byte from the STACK. " alt="" coords="749,221,823,248"/><area shape="rect" id="node11" href="io_8c.html#ac19e870c3ea785bd1c4dd30921e2b7e2" title="Setup communication with keyboard. " alt="" coords="261,917,321,944"/><area shape="rect" id="node12" href="io_8c.html#abbc5518f3ef5b3d0ef1b00aeffa0211e" title="Reset terminal attached to serial port. " alt="" coords="232,968,351,995"/><area shape="rect" id="node14" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8" title="Print appropriate error mesage. " alt="" coords="237,259,345,285"/><area shape="rect" id="node18" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="252,563,331,589"/><area shape="rect" id="node21" href="main_8c.html#ae363da215544e897ef8e44a64dabce48" title="Normalize user input. Ignore spaces and transform code (not strings) to upper case. " alt="" coords="740,588,832,615"/><area shape="rect" id="node24" href="main_8c.html#a4fb1091799fbbfe6111481081e0b8e8d" title="find_line" alt="" coords="256,461,327,488"/><area shape="rect" id="node25" href="main_8c.html#af44d438dc813084f712e286e88697bca" title="Get line(s) from EEPROM, SERIAL or STDIO. " alt="" coords="258,816,325,843"/><area shape="rect" id="node27" href="interpreter_8c.html#a53ffad69860dc5d231424edd376470c0" title="Get current line number. " alt="" coords="581,83,692,109"/><area shape="rect" id="node28" href="interpreter_8c.html#af49382b389812666243c96753baca38f" title="Insert new line in the program. " alt="" coords="251,512,332,539"/><area shape="rect" id="node29" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961" title="Move line at the end of program memory. " alt="" coords="251,613,332,640"/><area shape="rect" id="node30" href="interpreter_8c.html#ac78b765daf8c1127f58a6ae260d05454" title="Prepare line for merging with the program. " alt="" coords="254,664,329,691"/><area shape="rect" id="node31" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe" title="Remove line from program. " alt="" coords="245,715,337,741"/><area shape="rect" id="node32" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c" title="Perform a warm&#45;reset. " alt="" coords="246,411,337,437"/><area shape="rect" id="node16" href="printing_8c.html#a8788c3947bf9ede0778e41c57171473a" title="Print a program line. " alt="" coords="433,259,499,285"/><area shape="rect" id="node19" href="main_8c.html#acd9b94c6ca68bfcee93930f454e37b6b" title="Check if BREAK button was pressed. " alt="" coords="425,563,507,589"/><area shape="rect" id="node20" href="main_8c.html#a77995f5f32cf02e2670d84114fa3c6b1" title="Busy&#45;delay functions. " alt="" coords="418,613,514,640"/><area shape="rect" id="node22" href="parser_8c.html#a4fe92c8d54d0ce4ec516d64f098ee056" title="Search for relational operators. " alt="" coords="413,512,519,539"/><area shape="rect" id="node23" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849" title="Search for any string in specified table. " alt="" coords="597,512,676,539"/><area shape="rect" id="node26" href="main_8c.html#a98840489c057199354470e80b0779dfa" title="Read from SERIAL or EEPROM. " alt="" coords="399,765,533,792"/></map>
 </div>
 </p>
 
@@ -337,6 +350,8 @@ Here is the call graph for this function:</div>
 <p>Pop a byte from the STACK. </p>
 <hr/>
  
+<p>References <a class="el" href="interpreter_8h.html#a99c6d119cea1a7a603e8bf7ac96902a5">stack_ptr</a>.</p>
+
 <p>Referenced by <a class="el" href="printing_8h.html#a81474d704fbed814bd96dc6400387397">printnum()</a>.</p>
 
 <p><div class="dynheader">
@@ -367,6 +382,8 @@ Here is the caller graph for this function:</div>
 <p>Push a byte in the STACK. </p>
 <hr/>
  
+<p>References <a class="el" href="interpreter_8h.html#a99c6d119cea1a7a603e8bf7ac96902a5">stack_ptr</a>.</p>
+
 <p>Referenced by <a class="el" href="printing_8h.html#a81474d704fbed814bd96dc6400387397">printnum()</a>.</p>
 
 <p><div class="dynheader">
@@ -397,6 +414,27 @@ Here is the caller graph for this function:</div>
 <p>Transform string representation to numeric. </p>
 <hr/>
  
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="afea8db9c05e9f1f32b5185e3ce8dcbff"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t sys_config</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>This variable holds settings that enable/disable various features:</p><ul>
+<li>auto run</li>
+<li>auto run after load (chain)</li>
+<li>get data from serial</li>
+<li>get data from eeprom </li>
+</ul>
+
+<p>Referenced by <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="main_8h.html#af44d438dc813084f712e286e88697bca">get_line()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, and <a class="el" href="main_8c.html#a98840489c057199354470e80b0779dfa">read_serial_eeprom()</a>.</p>
+
 </div>
 </div>
 </div><!-- contents -->

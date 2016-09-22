@@ -38,10 +38,10 @@
 
 static uint8_t execution (void);
 static void warm_reset (void);
-static void insert_line (void);
+static void insert_line (LINE_LENGTH chars_to_copy);
 static void remove_line (void);
 static void move_line (void);
-static void prep_line (void);
+static LINE_LENGTH prep_line (void);
 static void error_message (void);
 
 static uint8_t *start;
@@ -53,7 +53,7 @@ static uint8_t *start;
  * @note Scanning of current line begins at the character pointed by @c text_ptr.
  * @return The current line number.
  *****************************************************************************/
-uint16_t get_linenumber (void)
+uint16_t get_line_numberber (void)
 {
         uint16_t num = 0;
         ignorespace();
@@ -102,10 +102,11 @@ void basic_init (void)
  *****************************************************************************/
 void interpreter (void)
 {
-    uint8_t exec_status;
+        uint8_t exec_status;
+        LINE_LENGTH line_length;
 
-    /* start interpreter with a warm-reset */
-    exec_status = POST_CMD_WARM_RESET;
+        /* start interpreter with a warm-reset */
+        exec_status = POST_CMD_WARM_RESET;
 
     while(1) {
         /* if have to --> perform warm-reset */
@@ -130,14 +131,14 @@ void interpreter (void)
             move_line();
 
             /* attempt to read line number */
-            linenum = get_linenumber();
+            line_number = get_line_numberber();
             ignorespace();
 
             /* chech if line number was found */
-            if (linenum != 0) {
+            if (line_number != 0) {
 
                 /* invalid number --> ignore line & warm reset */
-                if (linenum == 0xFFFF) {
+                if (line_number == 0xFFFF) {
                     error_code = 0x9;
                     break;
                 }
@@ -145,7 +146,7 @@ void interpreter (void)
                 /* valid number --> merge with program */
                 else {
                     /* embed line number and line length */
-                    prep_line();
+                    line_length = prep_line();
                     /* remove line with same line number */
                     start = find_line();
                     remove_line();
@@ -153,7 +154,7 @@ void interpreter (void)
                     if (text_ptr[sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH)] == LF)
                         continue;
                     /* append new line to program */
-                    insert_line();
+                    insert_line(line_length);
                 }
             }
 
@@ -170,14 +171,14 @@ void interpreter (void)
 
         /* if no error --> start execution */
         if (error_code == 0)
-            exec_status = execution();
+                exec_status = execution();
 
         // do not combine these two checks!
         // should check for error again, after execution...
 
         /* if error --> print message */
         if (error_code)
-            error_message();
+                error_message();
     }
 }
 
@@ -398,14 +399,14 @@ static uint8_t execution (void)
  *****************************************************************************/
 static void warm_reset (void)
 {
-    // turn-on cursor
-    putchar (vid_cursor_on);
-    // turn-on scroll
-    putchar (vid_scroll_on);
-    // reset program-memory pointer
-    line_ptr = 0;
-    stack_ptr = program_space + MEMORY_SIZE;
-    printmsg (msg_ok, stdout);
+        // turn-on cursor
+        putchar (vid_cursor_on);
+        // turn-on scroll
+        putchar (vid_scroll_on);
+        // reset program-memory pointer
+        line_ptr = 0;
+        stack_ptr = program_space + MEMORY_SIZE;
+        printmsg (msg_ok, stdout);
 }
 
 /** ***************************************************************************
@@ -417,16 +418,16 @@ static void warm_reset (void)
  * @note The position at which the new line should be inserted,
  * is specified by the @c text_ptr pointer.
  *****************************************************************************/
-static void insert_line (void)
+static void insert_line (LINE_LENGTH chars_to_copy)
 {
         uint8_t *source, *dest, *new_end;
         uint16_t tomove, room_to_make;
 
-        while (linelen > 0) {
+        while (chars_to_copy > 0) {
                 // determine memory space to reserve
                 room_to_make = text_ptr - prog_end_ptr;
-                if (room_to_make > linelen)
-                        room_to_make = linelen;
+                if (room_to_make > chars_to_copy)
+                        room_to_make = chars_to_copy;
                 new_end = prog_end_ptr + room_to_make;
                 tomove = prog_end_ptr - start;
 
@@ -445,7 +446,7 @@ static void insert_line (void)
                         *start = *text_ptr;
                         text_ptr++;
                         start++;
-                        linelen--;
+                        chars_to_copy--;
                 }
                 prog_end_ptr = new_end;
         }
@@ -461,13 +462,13 @@ static void insert_line (void)
  *****************************************************************************/
 static void remove_line (void)
 {
-    if (start != prog_end_ptr && * ((uint16_t *)start) == linenum) {
-        // calculate the space taken by the line to be deleted
+        if (start != prog_end_ptr && * ((uint16_t *)start) == line_number) {
+                // calculate the space taken by the line to be deleted
                 uint8_t *dest, *from;
                 uint16_t tomove;
                 from = start + start[sizeof (uint16_t)];
                 dest = start;
-        // copy onver remaing code
+                // copy onver remaing code
                 tomove = prog_end_ptr - from;
                 while (tomove > 0) {
                         *dest = *from;
@@ -491,7 +492,7 @@ static void move_line (void)
         /* find end of new line */
         text_ptr = prog_end_ptr + sizeof (uint16_t);
         while (*text_ptr != LF)
-        text_ptr++;
+                text_ptr++;
 
         /* move line to the end of program_memory */
         uint8_t *dest;
@@ -499,7 +500,7 @@ static void move_line (void)
         while (1) {
                 *dest = *text_ptr;
                 if (text_ptr == prog_end_ptr + sizeof (uint16_t))
-            break;
+                        break;
                 dest--;
                 text_ptr--;
         }
@@ -512,23 +513,28 @@ static void move_line (void)
  * This function calculates the memory space needed for the storing of line,
  * accounting fot the line number as well.
  *****************************************************************************/
-static void prep_line (void)
+static LINE_LENGTH prep_line (void)
 {
-    /* find length of line */
-    linelen = 0;
-    while (text_ptr[linelen] != LF)
-        linelen++;
-    /* increase to account for LF */
-    linelen++;
-    /* increase even more for line-header */
-    linelen += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-    /* move pointer to the beginning of line header */
-    text_ptr -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
-    /* add line number and length*/
-    * ((LINE_NUMBER *)text_ptr) = linenum;
+        LINE_LENGTH length = 0;
 
-    text_ptr[sizeof (LINE_NUMBER)] = linelen;
-    //* ((LINE_LENGTH *)(text_ptr + sizeof(LINE_NUMBER))) = linelen;
+        /* find length of line */
+        while (text_ptr[length] != LF)
+                length++;
+
+        /* increase to account for LF */
+        length++;
+
+        /* increase even more for line-header */
+        length += sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+
+        /* move pointer to the beginning of line header */
+        text_ptr -= sizeof (LINE_NUMBER) + sizeof (LINE_LENGTH);
+
+        /* add line number and length*/
+        * ((LINE_NUMBER *)text_ptr) = line_number;
+        text_ptr[sizeof (LINE_NUMBER)] = length;
+
+        return length;
 }
 
 /** ***************************************************************************
@@ -543,82 +549,82 @@ static void error_message (void)
         text_color (TXT_COL_ERROR);
         paper_color (0);
         switch (error_code) {
-        case 0x1:       // not yet implemented
-            printmsg (err_msg01, stdout);
-            break;
-        case 0x2:       // syntax error
-            printmsg_noNL (err_msg02, stdout);
-            if (line_ptr != NULL) {
-                printf (" -- ");
-                uint8_t tmp = *text_ptr;
-                if (*text_ptr != LF)
-                    *text_ptr = '^';
+                case 0x1:       // not yet implemented
+                    printmsg (err_msg01, stdout);
+                    break;
+                case 0x2:       // syntax error
+                    printmsg_noNL (err_msg02, stdout);
+                    if (line_ptr != NULL) {
+                        printf (" -- ");
+                        uint8_t tmp = *text_ptr;
+                        if (*text_ptr != LF)
+                            *text_ptr = '^';
 
-                uint8_t *list = line_ptr;
-                printline (list, stdout);
-                *text_ptr = tmp;
-            }
-            newline (stdout);
-            break;
-        case 0x3:       // stack overflow
-            printmsg (err_msg03, stdout);
-            break;
-        case 0x4:       // unexpected character
-            printmsg (err_msg04, stdout);
-            break;
-        case 0x5:       // left parenthesis missing
-            printmsg (err_msgxl, stdout);
-            printmsg (err_msg05, stdout);
-            break;
-        case 0x6:       // right parenthesis missing
-            printmsg (err_msgxr, stdout);
-            printmsg (err_msg05, stdout);
-            break;
-        case 0x7:       // variable expected
-            printmsg (err_msg07, stdout);
-            break;
-        case 0x8:       // jump point not found
-            printmsg (err_msg08, stdout);
-            break;
-        case 0x9:       // invalid line number
-            printmsg (err_msg09, stdout);
-            break;
-        case 0xA:       // operator expected
-            printmsg (err_msg0A, stdout);
-            break;
-        case 0xB:       // division by zero
-            printmsg (err_msg0B, stdout);
-            break;
-        case 0xC:       // invalid pin
-            printmsg (err_msg0C, stdout);
-            break;
-        case 0xD:       // pin io error
-            printmsg (err_msg0D, stdout);
-            break;
-        case 0xE:       // unknown function
-            printmsg (err_msg0E, stdout);
-            break;
-        case 0xF:       // unknown command
-            printmsg (err_msg0F, stdout);
-            break;
-        case 0x10:      // invalid coordinates
-            printmsg (err_msg10, stdout);
-            break;
-        case 0x11:      // invalid variable name
-            printmsg (err_msg11, stdout);
-            break;
-        case 0x12:      // expected byte
-            printmsg (err_msg12, stdout);
-            break;
-        case 0x13:      // out of range
-            printmsg (err_msg13, stdout);
-            break;
-        case 0x14:      // expected color value
-            printmsg (err_msg14, stdout);
-            break;
-        case 0x15:      // expression expected
-            printmsg (err_msg15, stdout);
-            break;
+                        uint8_t *list = line_ptr;
+                        printline (list, stdout);
+                        *text_ptr = tmp;
+                    }
+                    newline (stdout);
+                    break;
+                case 0x3:       // stack overflow
+                    printmsg (err_msg03, stdout);
+                    break;
+                case 0x4:       // unexpected character
+                    printmsg (err_msg04, stdout);
+                    break;
+                case 0x5:       // left parenthesis missing
+                    printmsg (err_msgxl, stdout);
+                    printmsg (err_msg05, stdout);
+                    break;
+                case 0x6:       // right parenthesis missing
+                    printmsg (err_msgxr, stdout);
+                    printmsg (err_msg05, stdout);
+                    break;
+                case 0x7:       // variable expected
+                    printmsg (err_msg07, stdout);
+                    break;
+                case 0x8:       // jump point not found
+                    printmsg (err_msg08, stdout);
+                    break;
+                case 0x9:       // invalid line number
+                    printmsg (err_msg09, stdout);
+                    break;
+                case 0xA:       // operator expected
+                    printmsg (err_msg0A, stdout);
+                    break;
+                case 0xB:       // division by zero
+                    printmsg (err_msg0B, stdout);
+                    break;
+                case 0xC:       // invalid pin
+                    printmsg (err_msg0C, stdout);
+                    break;
+                case 0xD:       // pin io error
+                    printmsg (err_msg0D, stdout);
+                    break;
+                case 0xE:       // unknown function
+                    printmsg (err_msg0E, stdout);
+                    break;
+                case 0xF:       // unknown command
+                    printmsg (err_msg0F, stdout);
+                    break;
+                case 0x10:      // invalid coordinates
+                    printmsg (err_msg10, stdout);
+                    break;
+                case 0x11:      // invalid variable name
+                    printmsg (err_msg11, stdout);
+                    break;
+                case 0x12:      // expected byte
+                    printmsg (err_msg12, stdout);
+                    break;
+                case 0x13:      // out of range
+                    printmsg (err_msg13, stdout);
+                    break;
+                case 0x14:      // expected color value
+                    printmsg (err_msg14, stdout);
+                    break;
+                case 0x15:      // expression expected
+                    printmsg (err_msg15, stdout);
+                    break;
         }
         text_color (TXT_COL_DEFAULT);
         paper_color (0);

@@ -62,6 +62,15 @@ void fx_delay_us (uint16_t us);
 // GLOBALS
 // ------------------------------------------------------------------------------
 
+/**
+ * This variable holds settings that
+ * enable/disable various features:
+ * - auto run
+ * - auto run after load (chain)
+ * - get data from serial
+ * - get data from eeprom
+ */
+
 uint8_t sys_config;
 
 #endif

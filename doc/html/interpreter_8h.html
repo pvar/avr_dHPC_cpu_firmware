@@ -75,7 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -87,7 +87,8 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
 </div><!-- top -->
 <div class="header">
   <div class="summary">
-<a href="#func-members">Functions</a>  </div>
+<a href="#func-members">Functions</a> &#124;
+<a href="#var-members">Variables</a>  </div>
   <div class="headertitle">
 <div class="title">interpreter.h File Reference</div>  </div>
 </div><!--header-->
@@ -109,6 +110,29 @@ Functions</h2></td></tr>
 <tr class="memitem:a08a98a5503e4f3e1a5a19222d425275a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter</a> (void)</td></tr>
 <tr class="memdesc:a08a98a5503e4f3e1a5a19222d425275a"><td class="mdescLeft">&#160;</td><td class="mdescRight">The interpreter main loop.  <a href="#a08a98a5503e4f3e1a5a19222d425275a">More...</a><br /></td></tr>
 <tr class="separator:a08a98a5503e4f3e1a5a19222d425275a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="var-members"></a>
+Variables</h2></td></tr>
+<tr class="memitem:a0ea4bbfc2fd03f2467d6a1ce8869b79a"><td class="memItemLeft" align="right" valign="top">LINE_NUMBER&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#a0ea4bbfc2fd03f2467d6a1ce8869b79a">linenum</a></td></tr>
+<tr class="separator:a0ea4bbfc2fd03f2467d6a1ce8869b79a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56da2773163aaf73376eb52d468402d4"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#a56da2773163aaf73376eb52d468402d4">program_space</a> [MEMORY_SIZE]</td></tr>
+<tr class="separator:a56da2773163aaf73376eb52d468402d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4ce64dabdf0a9be0062e5a376515b926"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#a4ce64dabdf0a9be0062e5a376515b926">input_buffer</a> [INPUT_BUFFER_SIZE]</td></tr>
+<tr class="separator:a4ce64dabdf0a9be0062e5a376515b926"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48db4bfdbf59612d2172da894652d739"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#a48db4bfdbf59612d2172da894652d739">variables_ptr</a></td></tr>
+<tr class="separator:a48db4bfdbf59612d2172da894652d739"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99c6d119cea1a7a603e8bf7ac96902a5"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#a99c6d119cea1a7a603e8bf7ac96902a5">stack_ptr</a></td></tr>
+<tr class="separator:a99c6d119cea1a7a603e8bf7ac96902a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf7b1dfb355ae3f65b6406fb56b525aa"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#acf7b1dfb355ae3f65b6406fb56b525aa">line_ptr</a></td></tr>
+<tr class="separator:acf7b1dfb355ae3f65b6406fb56b525aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a40ae6511eb3d9ea1b3b1082798c63efc"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a></td></tr>
+<tr class="separator:a40ae6511eb3d9ea1b3b1082798c63efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb5ad0cb04bc14db0509f6218a9dedaa"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#acb5ad0cb04bc14db0509f6218a9dedaa">prog_end_ptr</a></td></tr>
+<tr class="separator:acb5ad0cb04bc14db0509f6218a9dedaa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af53ecf3e64bfac64da65d8ba002f3d4e"><td class="memItemLeft" align="right" valign="top">uint8_t *&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#af53ecf3e64bfac64da65d8ba002f3d4e">stack_limit</a></td></tr>
+<tr class="separator:af53ecf3e64bfac64da65d8ba002f3d4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45998c0b4dd5717ced32282d45d4ef9b"><td class="memItemLeft" align="right" valign="top">uint8_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a></td></tr>
+<tr class="separator:a45998c0b4dd5717ced32282d45d4ef9b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>System specifications, global variables and function prototypes. </p>
@@ -132,7 +156,7 @@ Functions</h2></td></tr>
 <hr/>
 <p> This function initializes pointers used by the interpreter and prints a welcome message along with the memory size. </p>
 
-<p>References <a class="el" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d">newline()</a>, <a class="el" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f">printmsg()</a>, and <a class="el" href="printing_8c.html#ad62df87f7908fc3dd518b4f9f2cba2d2">printnum()</a>.</p>
+<p>References <a class="el" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d">newline()</a>, <a class="el" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f">printmsg()</a>, <a class="el" href="printing_8c.html#ad62df87f7908fc3dd518b4f9f2cba2d2">printnum()</a>, <a class="el" href="interpreter_8h.html#acb5ad0cb04bc14db0509f6218a9dedaa">prog_end_ptr</a>, <a class="el" href="interpreter_8h.html#a56da2773163aaf73376eb52d468402d4">program_space</a>, <a class="el" href="interpreter_8h.html#af53ecf3e64bfac64da65d8ba002f3d4e">stack_limit</a>, <a class="el" href="interpreter_8h.html#a99c6d119cea1a7a603e8bf7ac96902a5">stack_ptr</a>, and <a class="el" href="interpreter_8h.html#a48db4bfdbf59612d2172da894652d739">variables_ptr</a>.</p>
 
 <p>Referenced by <a class="el" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe">main()</a>.</p>
 
@@ -175,7 +199,7 @@ Here is the caller graph for this function:</div>
 <p> This function scans current line and looks for a valid line number. </p><dl class="section user"><dt>Note:</dt><dd>Scanning of current line begins at the character pointed by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The current line number. </dd></dl>
 
-<p>References <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>.</p>
+<p>References <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, and <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
 
 <p>Referenced by <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>.</p>
 
@@ -217,7 +241,7 @@ Here is the caller graph for this function:</div>
 <hr/>
 <p> This function examines user input and determines if the last line entered was a command or a program line. In the first case, the command is executed immediately. In the second case, the line read is merged with the rest of the program and into appropriate position. </p>
 
-<p>References <a class="el" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8">error_message()</a>, <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="main_8c.html#a4fb1091799fbbfe6111481081e0b8e8d">find_line()</a>, <a class="el" href="main_8c.html#af44d438dc813084f712e286e88697bca">get_line()</a>, <a class="el" href="interpreter_8c.html#a53ffad69860dc5d231424edd376470c0">get_linenumber()</a>, <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, <a class="el" href="interpreter_8c.html#a4e69397ad10cbf2bb4e7b43db913ed51">insert_line()</a>, <a class="el" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961">move_line()</a>, <a class="el" href="interpreter_8c.html#adb71e0a2fefda87b0a9472b743e2c7ff">prep_line()</a>, <a class="el" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe">remove_line()</a>, and <a class="el" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c">warm_reset()</a>.</p>
+<p>References <a class="el" href="io_8h.html#a2c6ea8f713d58eb3b0577ff890dc1d52">break_flow</a>, <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a>, <a class="el" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8">error_message()</a>, <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="main_8c.html#a4fb1091799fbbfe6111481081e0b8e8d">find_line()</a>, <a class="el" href="main_8c.html#af44d438dc813084f712e286e88697bca">get_line()</a>, <a class="el" href="interpreter_8c.html#a53ffad69860dc5d231424edd376470c0">get_linenumber()</a>, <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, <a class="el" href="interpreter_8c.html#af49382b389812666243c96753baca38f">insert_line()</a>, <a class="el" href="interpreter_8h.html#acf7b1dfb355ae3f65b6406fb56b525aa">line_ptr</a>, <a class="el" href="interpreter_8h.html#a0ea4bbfc2fd03f2467d6a1ce8869b79a">linenum</a>, <a class="el" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961">move_line()</a>, <a class="el" href="interpreter_8c.html#ac78b765daf8c1127f58a6ae260d05454">prep_line()</a>, <a class="el" href="interpreter_8h.html#acb5ad0cb04bc14db0509f6218a9dedaa">prog_end_ptr</a>, <a class="el" href="interpreter_8h.html#a56da2773163aaf73376eb52d468402d4">program_space</a>, <a class="el" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe">remove_line()</a>, <a class="el" href="main_8h.html#afea8db9c05e9f1f32b5185e3ce8dcbff">sys_config</a>, <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>, and <a class="el" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c">warm_reset()</a>.</p>
 
 <p>Referenced by <a class="el" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe">main()</a>.</p>
 
@@ -226,7 +250,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a_cgraph.png" border="0" usemap="#interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a_cgraph" alt=""/></div>
 <map name="interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a_cgraph" id="interpreter_8h_a08a98a5503e4f3e1a5a19222d425275a_cgraph">
-<area shape="rect" id="node2" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8" title="Print appropriate error mesage. " alt="" coords="133,137,241,164"/><area shape="rect" id="node10" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="148,467,227,493"/><area shape="rect" id="node14" href="main_8c.html#ae363da215544e897ef8e44a64dabce48" title="Normalize user input. Ignore spaces and transform code (not strings) to upper case. " alt="" coords="603,593,695,620"/><area shape="rect" id="node18" href="main_8c.html#a4fb1091799fbbfe6111481081e0b8e8d" title="find_line" alt="" coords="152,745,223,772"/><area shape="rect" id="node19" href="main_8c.html#af44d438dc813084f712e286e88697bca" title="Get a new line from EEPROM or STDIO. " alt="" coords="154,340,221,367"/><area shape="rect" id="node20" href="interpreter_8c.html#a53ffad69860dc5d231424edd376470c0" title="Get current line number. " alt="" coords="444,695,555,721"/><area shape="rect" id="node21" href="interpreter_8c.html#a4e69397ad10cbf2bb4e7b43db913ed51" title="Insert new line in the program. " alt="" coords="147,796,228,823"/><area shape="rect" id="node22" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961" title="Move line at the end of program memory. " alt="" coords="147,847,228,873"/><area shape="rect" id="node23" href="interpreter_8c.html#adb71e0a2fefda87b0a9472b743e2c7ff" title="Prepare line for merging with the program. " alt="" coords="150,897,225,924"/><area shape="rect" id="node24" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe" title="Remove line from program. " alt="" coords="141,948,233,975"/><area shape="rect" id="node25" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c" title="Perform a warm&#45;reset. " alt="" coords="142,264,233,291"/><area shape="rect" id="node3" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d" title="Print a NEW LINE character. " alt="" coords="466,239,533,265"/><area shape="rect" id="node4" href="io_8c.html#addfd18c48b34a434eefe9ea8b4db82ee" title="Change on&#45;screen background colour. " alt="" coords="298,36,387,63"/><area shape="rect" id="node5" href="printing_8c.html#a8788c3947bf9ede0778e41c57171473a" title="Print a program line. " alt="" coords="309,137,376,164"/><area shape="rect" id="node7" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f" title="Print selected message from FLASH (with new&#45;line) " alt="" coords="307,239,379,265"/><area shape="rect" id="node8" href="printing_8c.html#aac89e2103a98020e1f0cf85e5d1df175" title="Print selected message from FLASH (without new&#45;line) " alt="" coords="444,188,555,215"/><area shape="rect" id="node9" href="io_8c.html#a7d70114448d3feba71392e25e0eb4d78" title="Change on&#45;screen text colour. " alt="" coords="303,87,382,113"/><area shape="rect" id="node6" href="printing_8c.html#ad62df87f7908fc3dd518b4f9f2cba2d2" title="Print specified integer number. " alt="" coords="463,137,535,164"/><area shape="rect" id="node11" href="main_8c.html#acd9b94c6ca68bfcee93930f454e37b6b" title="Check if BREAK button was pressed. " alt="" coords="301,391,384,417"/><area shape="rect" id="node12" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a" title="BEEP or flash the LED. " alt="" coords="307,340,378,367"/><area shape="rect" id="node13" href="main_8c.html#a77995f5f32cf02e2670d84114fa3c6b1" title="Busy&#45;delay functions. " alt="" coords="295,441,391,468"/><area shape="rect" id="node15" href="parser_8c.html#a4fe92c8d54d0ce4ec516d64f098ee056" title="Search for relational operators. " alt="" coords="289,593,396,620"/><area shape="rect" id="node17" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849" title="Search for any string in specified table. " alt="" coords="460,543,539,569"/><area shape="rect" id="node16" href="parser_8c.html#aaa34262580f9ec1997162ce62c1dcb94" title="Search for subtraction or addition operators. " alt="" coords="446,593,553,620"/></map>
+<area shape="rect" id="node2" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8" title="Print appropriate error mesage. " alt="" coords="133,142,241,169"/><area shape="rect" id="node10" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e" title="Execute specified line. " alt="" coords="148,472,227,498"/><area shape="rect" id="node14" href="main_8c.html#ae363da215544e897ef8e44a64dabce48" title="Normalize user input. Ignore spaces and transform code (not strings) to upper case. " alt="" coords="631,612,723,638"/><area shape="rect" id="node18" href="main_8c.html#a4fb1091799fbbfe6111481081e0b8e8d" title="find_line" alt="" coords="152,548,223,574"/><area shape="rect" id="node19" href="main_8c.html#af44d438dc813084f712e286e88697bca" title="Get line(s) from EEPROM, SERIAL or STDIO. " alt="" coords="154,598,221,625"/><area shape="rect" id="node21" href="interpreter_8c.html#a53ffad69860dc5d231424edd376470c0" title="Get current line number. " alt="" coords="472,826,583,853"/><area shape="rect" id="node22" href="interpreter_8c.html#af49382b389812666243c96753baca38f" title="Insert new line in the program. " alt="" coords="147,700,228,726"/><area shape="rect" id="node23" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961" title="Move line at the end of program memory. " alt="" coords="147,750,228,777"/><area shape="rect" id="node24" href="interpreter_8c.html#ac78b765daf8c1127f58a6ae260d05454" title="Prepare line for merging with the program. " alt="" coords="150,801,225,828"/><area shape="rect" id="node25" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe" title="Remove line from program. " alt="" coords="141,852,233,878"/><area shape="rect" id="node26" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c" title="Perform a warm&#45;reset. " alt="" coords="142,320,233,346"/><area shape="rect" id="node3" href="printing_8c.html#aa893fecf81f3b8383deb48439b24a27d" title="Print a NEW LINE character. " alt="" coords="494,244,561,270"/><area shape="rect" id="node4" href="io_8c.html#addfd18c48b34a434eefe9ea8b4db82ee" title="Change on&#45;screen background colour. " alt="" coords="312,92,401,118"/><area shape="rect" id="node5" href="printing_8c.html#a8788c3947bf9ede0778e41c57171473a" title="Print a program line. " alt="" coords="323,142,390,169"/><area shape="rect" id="node7" href="printing_8c.html#a7a9e102ce8d3edbc9937a84bcbc8c83f" title="Print selected message from FLASH (with new&#45;line) " alt="" coords="321,244,393,270"/><area shape="rect" id="node8" href="printing_8c.html#aac89e2103a98020e1f0cf85e5d1df175" title="Print selected message from FLASH (without new&#45;line) " alt="" coords="472,193,583,220"/><area shape="rect" id="node9" href="io_8c.html#a7d70114448d3feba71392e25e0eb4d78" title="Change on&#45;screen text colour. " alt="" coords="317,41,396,68"/><area shape="rect" id="node6" href="printing_8c.html#ad62df87f7908fc3dd518b4f9f2cba2d2" title="Print specified integer number. " alt="" coords="491,142,563,169"/><area shape="rect" id="node11" href="main_8c.html#acd9b94c6ca68bfcee93930f454e37b6b" title="Check if BREAK button was pressed. " alt="" coords="315,345,398,372"/><area shape="rect" id="node12" href="io_8c.html#a0d79c14d617757baa2806dc42d26f11a" title="BEEP or flash the LED. " alt="" coords="321,598,392,625"/><area shape="rect" id="node13" href="main_8c.html#a77995f5f32cf02e2670d84114fa3c6b1" title="Busy&#45;delay functions. " alt="" coords="309,294,405,321"/><area shape="rect" id="node15" href="parser_8c.html#a4fe92c8d54d0ce4ec516d64f098ee056" title="Search for relational operators. " alt="" coords="303,548,410,574"/><area shape="rect" id="node17" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849" title="Search for any string in specified table. " alt="" coords="488,522,567,549"/><area shape="rect" id="node16" href="parser_8c.html#aaa34262580f9ec1997162ce62c1dcb94" title="Search for subtraction or addition operators. " alt="" coords="474,573,581,600"/><area shape="rect" id="node20" href="main_8c.html#a98840489c057199354470e80b0779dfa" title="Read from SERIAL or EEPROM. " alt="" coords="289,649,424,676"/></map>
 </div>
 </p>
 
@@ -238,6 +262,155 @@ Here is the caller graph for this function:</div>
 <area shape="rect" id="node2" href="main_8h.html#a840291bc02cba5474a4cb46a9b9566fe" title="Program entry point – the main function. " alt="" coords="133,5,184,32"/></map>
 </div>
 </p>
+
+</div>
+</div>
+<h2 class="groupheader">Variable Documentation</h2>
+<a class="anchor" id="a45998c0b4dd5717ced32282d45d4ef9b"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t error_code</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A special number that indicates the detected error. </p>
+
+<p>Referenced by <a class="el" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8">error_message()</a>, <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="parser_8c.html#a69ca2b492fb7b4fd14e1a3f90a516ecd">get_duration()</a>, <a class="el" href="parser_8c.html#a6f49f829c37ce2c78cf358856378b116">get_note()</a>, <a class="el" href="parser_8c.html#a2563d634bb11c4e3b491e3a26180c9b6">get_octave()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, <a class="el" href="parser_8h.html#add20ad0e3bc2540ad0d16743399e2b85">parse_channel()</a>, <a class="el" href="parser_8h.html#a4fe92c8d54d0ce4ec516d64f098ee056">parse_expr_s1()</a>, <a class="el" href="parser_8c.html#ae642e2964ae1b7ad02e9f31475d6167b">parse_expr_s3()</a>, and <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a4ce64dabdf0a9be0062e5a376515b926"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t input_buffer[INPUT_BUFFER_SIZE]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A table for reading user input, when executing INPUT command. </p>
+
+</div>
+</div>
+<a class="anchor" id="acf7b1dfb355ae3f65b6406fb56b525aa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* line_ptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to current line in program memory &ndash; the one being/to-be executed. </p>
+
+<p>Referenced by <a class="el" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8">error_message()</a>, <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, and <a class="el" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c">warm_reset()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a0ea4bbfc2fd03f2467d6a1ce8869b79a"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">LINE_NUMBER linenum</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Holds the line number of current line. </p>
+
+<p>Referenced by <a class="el" href="main_8h.html#a4fb1091799fbbfe6111481081e0b8e8d">find_line()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, <a class="el" href="interpreter_8c.html#ac78b765daf8c1127f58a6ae260d05454">prep_line()</a>, and <a class="el" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe">remove_line()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="acb5ad0cb04bc14db0509f6218a9dedaa"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* prog_end_ptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to last character of stored program. </p>
+
+<p>Referenced by <a class="el" href="interpreter_8h.html#ad8667f20f0a1f7689ba90c07ea0460af">basic_init()</a>, <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="main_8h.html#a4fb1091799fbbfe6111481081e0b8e8d">find_line()</a>, <a class="el" href="main_8h.html#af44d438dc813084f712e286e88697bca">get_line()</a>, <a class="el" href="interpreter_8c.html#af49382b389812666243c96753baca38f">insert_line()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, <a class="el" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961">move_line()</a>, and <a class="el" href="interpreter_8c.html#a80f48f3afb5e7166e7d9b93a20248afe">remove_line()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a56da2773163aaf73376eb52d468402d4"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t program_space[MEMORY_SIZE]</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>A huge table for storing user programs. </p>
+
+<p>Referenced by <a class="el" href="interpreter_8h.html#ad8667f20f0a1f7689ba90c07ea0460af">basic_init()</a>, <a class="el" href="main_8h.html#a4fb1091799fbbfe6111481081e0b8e8d">find_line()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>, and <a class="el" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c">warm_reset()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="af53ecf3e64bfac64da65d8ba002f3d4e"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* stack_limit</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The upper bound fof stack space. </p>
+
+<p>Referenced by <a class="el" href="interpreter_8h.html#ad8667f20f0a1f7689ba90c07ea0460af">basic_init()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a99c6d119cea1a7a603e8bf7ac96902a5"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* stack_ptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer for accessing "internal" &ndash; the one used by user programs. </p>
+
+<p>Referenced by <a class="el" href="interpreter_8h.html#ad8667f20f0a1f7689ba90c07ea0460af">basic_init()</a>, <a class="el" href="main_8h.html#adf3033740afb6eb9200e539dbf783239">pop_byte()</a>, <a class="el" href="main_8h.html#a4c04ca356b0652e389a2cce816cad172">push_byte()</a>, and <a class="el" href="interpreter_8c.html#ad441e17fe29b6b71e917f8ff03fd347c">warm_reset()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a40ae6511eb3d9ea1b3b1082798c63efc"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* text_ptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer to character being examined or stored, when parsing or getting data. </p>
+
+<p>Referenced by <a class="el" href="interpreter_8c.html#afe087d3248bda92aa0ace94a8d3839b8">error_message()</a>, <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="parser_8c.html#a69ca2b492fb7b4fd14e1a3f90a516ecd">get_duration()</a>, <a class="el" href="parser_8c.html#a5f067be1dd6d96fbc8d54e689f2f5a7f">get_effect()</a>, <a class="el" href="main_8h.html#af44d438dc813084f712e286e88697bca">get_line()</a>, <a class="el" href="interpreter_8h.html#a53ffad69860dc5d231424edd376470c0">get_linenumber()</a>, <a class="el" href="parser_8c.html#a6f49f829c37ce2c78cf358856378b116">get_note()</a>, <a class="el" href="parser_8c.html#a2563d634bb11c4e3b491e3a26180c9b6">get_octave()</a>, <a class="el" href="main_8h.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, <a class="el" href="interpreter_8c.html#af49382b389812666243c96753baca38f">insert_line()</a>, <a class="el" href="interpreter_8h.html#a08a98a5503e4f3e1a5a19222d425275a">interpreter()</a>, <a class="el" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961">move_line()</a>, <a class="el" href="parser_8h.html#add20ad0e3bc2540ad0d16743399e2b85">parse_channel()</a>, <a class="el" href="parser_8c.html#aaa34262580f9ec1997162ce62c1dcb94">parse_expr_s2()</a>, <a class="el" href="parser_8c.html#ae642e2964ae1b7ad02e9f31475d6167b">parse_expr_s3()</a>, <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>, <a class="el" href="interpreter_8c.html#ac78b765daf8c1127f58a6ae260d05454">prep_line()</a>, <a class="el" href="printing_8h.html#abc27b0a6c811c40164e0d9b8a3abb432">print_string()</a>, <a class="el" href="main_8c.html#a98840489c057199354470e80b0779dfa">read_serial_eeprom()</a>, and <a class="el" href="parser_8h.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable()</a>.</p>
+
+</div>
+</div>
+<a class="anchor" id="a48db4bfdbf59612d2172da894652d739"></a>
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">uint8_t* variables_ptr</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Pointer for accessing variables memory space. </p>
+
+<p>Referenced by <a class="el" href="interpreter_8h.html#ad8667f20f0a1f7689ba90c07ea0460af">basic_init()</a>, <a class="el" href="main_8h.html#af44d438dc813084f712e286e88697bca">get_line()</a>, <a class="el" href="interpreter_8c.html#a3fc708ab62376ff333a697900b557961">move_line()</a>, and <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>.</p>
 
 </div>
 </div>

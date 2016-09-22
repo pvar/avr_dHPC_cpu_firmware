@@ -75,7 +75,7 @@ var searchBox = new SearchBox("searchBox", "search",false,'Search');
      onmouseover="return searchBox.OnSearchSelectShow()"
      onmouseout="return searchBox.OnSearchSelectHide()"
      onkeydown="return searchBox.OnSearchSelectKey(event)">
-<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Pages</a></div>
+<a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(0)"><span class="SelectionMark">&#160;</span>All</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(1)"><span class="SelectionMark">&#160;</span>Files</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(2)"><span class="SelectionMark">&#160;</span>Functions</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(3)"><span class="SelectionMark">&#160;</span>Variables</a><a class="SelectItem" href="javascript:void(0)" onclick="searchBox.OnSelectItem(4)"><span class="SelectionMark">&#160;</span>Pages</a></div>
 
 <!-- iframe showing the search results (closed by default) -->
 <div id="MSearchResultsWindow">
@@ -164,6 +164,8 @@ Functions</h2></td></tr>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>A number indicating the defined duration. </dd></dl>
 
+<p>References <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a>, and <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
+
 <p>Referenced by <a class="el" href="parser_8h.html#a124d7501c04fc4ee446a9c2b8fc94d53">parse_notes()</a>.</p>
 
 <p><div class="dynheader">
@@ -204,6 +206,8 @@ Here is the caller graph for this function:</div>
 <p> This function examines current line and searches for a valid effect mark.</p>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>A number indicating the defined effect. </dd></dl>
+
+<p>References <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
 
 <p>Referenced by <a class="el" href="parser_8h.html#a124d7501c04fc4ee446a9c2b8fc94d53">parse_notes()</a>.</p>
 
@@ -246,6 +250,8 @@ Here is the caller graph for this function:</div>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>A number indicating the defined note. </dd></dl>
 
+<p>References <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a>, and <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
+
 <p>Referenced by <a class="el" href="parser_8h.html#a124d7501c04fc4ee446a9c2b8fc94d53">parse_notes()</a>.</p>
 
 <p><div class="dynheader">
@@ -287,6 +293,8 @@ Here is the caller graph for this function:</div>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>A number indicating the defined octave. </dd></dl>
 
+<p>References <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a>, and <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
+
 <p>Referenced by <a class="el" href="parser_8h.html#a124d7501c04fc4ee446a9c2b8fc94d53">parse_notes()</a>.</p>
 
 <p><div class="dynheader">
@@ -319,7 +327,7 @@ Here is the caller graph for this function:</div>
 <p> This function examines current line and searches for sound-channel number.</p>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 
-<p>References <a class="el" href="io_8c.html#ab9297f8051f65a786c6b4260bc49a35b">send_to_apu()</a>.</p>
+<p>References <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a>, <a class="el" href="io_8c.html#ab9297f8051f65a786c6b4260bc49a35b">send_to_apu()</a>, and <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
 
 <p><div class="dynheader">
 Here is the call graph for this function:</div>
@@ -352,7 +360,7 @@ Here is the call graph for this function:</div>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The result from the evaluation of the whole expression. </dd></dl>
 
-<p>References <a class="el" href="parser_8c.html#aaa34262580f9ec1997162ce62c1dcb94">parse_expr_s2()</a>, and <a class="el" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable()</a>.</p>
+<p>References <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a>, <a class="el" href="parser_8c.html#aaa34262580f9ec1997162ce62c1dcb94">parse_expr_s2()</a>, and <a class="el" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable()</a>.</p>
 
 <p>Referenced by <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, and <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>.</p>
 
@@ -404,7 +412,7 @@ Here is the caller graph for this function:</div>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The result from the evaluation of the sub-expression. </dd></dl>
 
-<p>References <a class="el" href="parser_8c.html#ae642e2964ae1b7ad02e9f31475d6167b">parse_expr_s3()</a>.</p>
+<p>References <a class="el" href="parser_8c.html#ae642e2964ae1b7ad02e9f31475d6167b">parse_expr_s3()</a>, and <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
 
 <p>Referenced by <a class="el" href="parser_8h.html#a4fe92c8d54d0ce4ec516d64f098ee056">parse_expr_s1()</a>.</p>
 
@@ -456,7 +464,7 @@ Here is the caller graph for this function:</div>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The result from the evaluation of the sub-expression. </dd></dl>
 
-<p>References <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, and <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>.</p>
+<p>References <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a>, <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>, and <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
 
 <p>Referenced by <a class="el" href="parser_8c.html#aaa34262580f9ec1997162ce62c1dcb94">parse_expr_s2()</a>.</p>
 
@@ -508,7 +516,7 @@ Here is the caller graph for this function:</div>
 <dl class="section user"><dt>Note:</dt><dd>Scanning begins at the character pointed to by <code>text_ptr</code>. </dd></dl>
 <dl class="section return"><dt>Returns</dt><dd>The result from the evaluation of the sub-expression. </dd></dl>
 
-<p>References <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, <a class="el" href="parser_8c.html#a4fe92c8d54d0ce4ec516d64f098ee056">parse_expr_s1()</a>, and <a class="el" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable()</a>.</p>
+<p>References <a class="el" href="interpreter_8h.html#a45998c0b4dd5717ced32282d45d4ef9b">error_code</a>, <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, <a class="el" href="parser_8c.html#a4fe92c8d54d0ce4ec516d64f098ee056">parse_expr_s1()</a>, <a class="el" href="interpreter_8h.html#a56da2773163aaf73376eb52d468402d4">program_space</a>, <a class="el" href="parser_8c.html#ad7ccacd8a08ca721b55ce29bf016a849">scantable()</a>, <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>, and <a class="el" href="interpreter_8h.html#a48db4bfdbf59612d2172da894652d739">variables_ptr</a>.</p>
 
 <p>Referenced by <a class="el" href="parser_8c.html#ae642e2964ae1b7ad02e9f31475d6167b">parse_expr_s3()</a>.</p>
 
@@ -590,7 +598,7 @@ Here is the call graph for this function:</div>
 </dl>
 <dl class="section return"><dt>Returns</dt><dd>The position (index) of the detected string in array. </dd></dl>
 
-<p>References <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>.</p>
+<p>References <a class="el" href="main_8c.html#ae363da215544e897ef8e44a64dabce48">ignorespace()</a>, and <a class="el" href="interpreter_8h.html#a40ae6511eb3d9ea1b3b1082798c63efc">text_ptr</a>.</p>
 
 <p>Referenced by <a class="el" href="interpreter_8c.html#ae0c498ea10540cc81b1388062c7cf86e">execution()</a>, <a class="el" href="parser_8h.html#a4fe92c8d54d0ce4ec516d64f098ee056">parse_expr_s1()</a>, and <a class="el" href="parser_8c.html#ad38a783e0f6ac48469c7e9ff1175f217">parse_expr_s4()</a>.</p>
 

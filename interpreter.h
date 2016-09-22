@@ -27,7 +27,7 @@
 // PROTOTYPES
 // ------------------------------------------------------------------------------
 
-uint16_t get_linenumber (void);
+uint16_t get_line_numberber (void);
 void basic_init (void);
 void interpreter (void);
 
@@ -139,19 +139,27 @@ extern const uint8_t to_tab[3];
 extern const uint8_t step_tab[5];
 extern const uint8_t highlow_tab[12];
 
-LINE_LENGTH linelen;
-LINE_NUMBER linenum;
+/** Holds the line number of current line. */
+LINE_NUMBER line_number;
 
+/** A huge table for storing user programs. */
 uint8_t program_space[MEMORY_SIZE];
+/** A table for reading user input, when executing INPUT command. */
 uint8_t input_buffer[INPUT_BUFFER_SIZE];
 
+/** Pointer for accessing variables memory space. */
 uint8_t *variables_ptr;
+/** Pointer for accessing "internal" -- the one used by user programs. */
 uint8_t *stack_ptr;
+/** Pointer to current line in program memory -- the one being/to-be executed. */
 uint8_t *line_ptr;
+/** Pointer to character being examined or stored, when parsing or getting data. */
 uint8_t *text_ptr;
+/** Pointer to last character of stored program. */
 uint8_t *prog_end_ptr;
+/** The upper bound fof stack space. */
 uint8_t *stack_limit;
+/** A special number that indicates the detected error. */
 uint8_t error_code;
-
 
 #endif
