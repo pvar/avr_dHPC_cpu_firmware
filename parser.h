@@ -72,6 +72,8 @@ enum COMMANDS {
         CMD_ECHAIN,
         CMD_ESAVE,
         CMD_ELOAD,
+        CMD_SSAVE,
+        CMD_SLOAD,
         CMD_FILES,
         CMD_CFORMAT,
         CMD_CCHAIN,

@@ -19,6 +19,7 @@
 #include "cmd_screen.h"
 #include "cmd_flow.h"
 #include "cmd_eeprom.h"
+#include "cmd_serial.h"
 #include "cmd_pinctl.h"
 #include "cmd_other.h"
 

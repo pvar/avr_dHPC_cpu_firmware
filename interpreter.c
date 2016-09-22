@@ -311,6 +311,12 @@ static uint8_t execution (void)
             case CMD_ELOAD:
                 cmd_status = eload();
                 break;
+            case CMD_SSAVE:
+                cmd_status = ssave();
+                break;
+            case CMD_SLOAD:
+                cmd_status = sload();
+                break;
             case CMD_RST:
                 cmd_status = reset_display();
                 break;
