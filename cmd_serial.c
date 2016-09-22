@@ -1,5 +1,5 @@
 /*
- * Implementation of flow-control commands of nstBASIC. of nstBASIC.
+ * Implementation of eeprom related commands of nstBASIC.
  *
  * Copyright 2016, Panagiotis Varelas <varelaspanos@gmail.com>
  *
@@ -17,18 +17,27 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
+#include "cmd_serial.h"
 
-#ifndef CMD_FLOW_H
-#define CMD_FLOW_H
+uint8_t sload (void)
+{
+        // get lines from SERIAL
+        sys_config |= cfg_from_serial;
+        // reset program space pointer
+        prog_end_ptr = program_space;
 
-#include "interpreter.h"
-#include "parser.h"
+        return POST_CMD_WARM_RESET;
+}
 
-uint8_t gotoline (void);
-uint8_t check (void);
-uint8_t loopfor (void);
-uint8_t gosub (void);
-uint8_t next (void);
-uint8_t gosub_return (uint8_t cmd);
-
-#endif
+uint8_t ssave (void)
+{
+        uint8_t *line = find_line();
+        LINE_LENGTH length = 0;
+        while (line != prog_end_ptr) {
+                printline (line, &stream_serial);
+                length = (LINE_LENGTH) (*(line + sizeof (LINE_NUMBER)));
+                line += length;
+        }
+        fputc (0, &stream_serial);
+        return POST_CMD_NEXT_LINE;
+}

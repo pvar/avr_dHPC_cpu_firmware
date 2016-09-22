@@ -20,8 +20,6 @@
 #ifndef CMD_AUDIO_H
 #define CMD_AUDIO_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "interpreter.h"
 #include "parser.h"
 

@@ -1,5 +1,5 @@
 /*
- * Implementation of flow-control commands of nstBASIC. of nstBASIC.
+ * Implementation of eeprom related commands of nstBASIC.
  *
  * Copyright 2016, Panagiotis Varelas <varelaspanos@gmail.com>
  *
@@ -17,18 +17,13 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/gpl-3.0.html>.
  */
 
-
-#ifndef CMD_FLOW_H
-#define CMD_FLOW_H
+#ifndef CMD_SERIAL_H
+#define CMD_SERIAL_H
 
 #include "interpreter.h"
 #include "parser.h"
 
-uint8_t gotoline (void);
-uint8_t check (void);
-uint8_t loopfor (void);
-uint8_t gosub (void);
-uint8_t next (void);
-uint8_t gosub_return (uint8_t cmd);
+uint8_t sload (void);
+uint8_t ssave (void);
 
 #endif

@@ -20,8 +20,6 @@
 #ifndef CMD_SCREEN_H
 #define CMD_SCREEN_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include "interpreter.h"
 #include "parser.h"
 
