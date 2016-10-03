@@ -84,6 +84,6 @@ from which nstBASIC was born.
 was built as an excuse to write lots of cool articles, for the said magazine.
 
 [delta]:    http://deltahacker.gr                      "ethical hacking magazine"
-[dhpc]:     https://github.com/pvar/dhpc_apu_hardware  "schematics and PCB"
+[dhpc]:     https://github.com/pvar/dhpc_hardware      "schematics and PCB"
 [tbasic]:   https://github.com/BleuLlama/TinyBasicPlus "source code repository"
 [GPL3]:     www.gnu.org/licenses/gpl-3.0.html          "official license text"
