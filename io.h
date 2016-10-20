@@ -54,15 +54,19 @@ int getchar_rom (FILE *stream);
 
 #define KB_BUFFER_SIZE  16
 
+/* data bus to GPU and APU */
 #define pri_data_bus_dir    DDRC
 #define pri_data_bus_out    PORTC
 #define pri_data_bus_in     PINC
+/* GPIO pins */
 #define sec_data_bus_dir    DDRA
 #define sec_data_bus_out    PORTA
 #define sec_data_bus_in     PINA
+/* UART, PS2, GPU and APU signals */
 #define peripheral_bus_dir  DDRD
 #define peripheral_bus_out  PORTD
 #define peripheral_bus_in   PIND
+/* BREAK, LED/BUZZER, external SRAM */
 #define aux_ctl_bus_dir     DDRB
 #define aux_ctl_bus_out     PORTB
 #define aux_ctl_bus_in      PINB
@@ -175,6 +179,12 @@ extern const uint8_t kb_success_msg[32];
 // ASSEMBLER MACROS
 // ------------------------------------------------------------------------------
 
+/*
+set PortD#7
+check PinD#6
+loop until PinD#6 is set
+clear PortD#7
+*/
 #define tovga() asm volatile \
         ( \
                 "sbi 0x0b, 7 \n\t" \

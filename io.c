@@ -315,7 +315,7 @@ void init_io (void)
 
         // configure buzzer and LED pin
         aux_ctl_bus_dir |= buzzer_led;
-        aux_ctl_bus_out |= buzzer_led;
+        aux_ctl_bus_out &= ~buzzer_led;
 
         // setup keyboard connection
         init_kb();
@@ -383,10 +383,10 @@ void do_beep (void)
         EIMSK &= ~KEYBOARD_INT;
         uint8_t cnt = 100;
         while (cnt > 0) {
-                aux_ctl_bus_out &= ~buzzer_led;
-                fx_delay_us (750);
                 aux_ctl_bus_out |= buzzer_led;
-                fx_delay_us (500);
+                fx_delay_us (600);
+                aux_ctl_bus_out &= ~buzzer_led;
+                fx_delay_us (600);
                 cnt--;
         }
         // enable keyboard interrupt
@@ -464,10 +464,13 @@ int getchar_ser (FILE *stream)
 int putchar_phy (char chr, FILE *stream)
 {
         // send to VGA
-        pri_data_bus_out = chr;
         vgaready();
+        pri_data_bus_out = chr;
         tovga();
-        // send to UART
+        pri_data_bus_out = 0;
+
+        /*
+        // echo on UART
         if (chr < 128) {
                 if (chr == BS) {
                         fputc (BS, &stream_serial);
@@ -476,6 +479,7 @@ int putchar_phy (char chr, FILE *stream)
                 } else
                         fputc (chr , &stream_serial);
         }
+        */
         return 0;
 }
 
