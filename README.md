@@ -10,9 +10,9 @@ It tells the whole story.
 
 This project is an improved version of TinyBasicPlus which, in turn,
 improves upon [Tiny BASIC][tbasic]. And although the word 'improved' is loosely
-used, keep in mind that this implementation has many differences from it's
+used, keep in mind that this implementation has many differences from its
 predecessors in almost every aspect. It features an enriched command set and
-the main parts of the program have been rewritten in a (hopefuylly) more
+the main parts of the program have been rewritten in a (hopefully) more
 clear manner. It's not-so-tiny anymore and the name nstBASIC sprang from
 exactly this realisation. Besides, keeping the word tiny in the name, helps
 denote the heritage of the code.
